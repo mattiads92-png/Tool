@@ -13,19 +13,24 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <style>
-        body { font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #f8fafc; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
+        /* Altezza dinamica per evitare problemi con la tastiera mobile */
+        .modal-container { max-height: 85dvh; } 
     </style>
 </head>
-<body class="text-slate-800 h-screen flex flex-col items-center justify-center overflow-hidden">
+<body class="text-slate-800 h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-slate-200 via-slate-50 to-slate-200">
 
-    <div id="auth-screen" class="w-full max-w-sm px-6 flex flex-col items-center text-center z-50 absolute bg-slate-50 h-full justify-center">
+    <div id="auth-screen" class="w-full px-6 flex flex-col items-center text-center z-50 absolute inset-0 justify-center backdrop-blur-md bg-white/60">
         <img src="MLogo.webp" alt="FinPe Light Logo" class="w-24 h-24 rounded-2xl shadow-lg mb-6 object-cover bg-white" onerror="this.src='https://via.placeholder.com/100?text=F';">
         <h1 class="font-black text-4xl mb-1 text-slate-900">Fin<span class="text-blue-600">Pe</span> <span class="text-xl text-gray-400 font-light">Light</span></h1>
         
-        <input type="password" id="pin-input" class="w-full text-center text-4xl tracking-[0.5em] py-4 rounded-xl border-2 border-slate-200 mt-8 mb-4 outline-none focus:border-blue-500 transition" maxlength="4" placeholder="••••" inputmode="numeric">
+        <input type="password" id="pin-input" class="w-full max-w-sm text-center text-4xl tracking-[0.5em] py-4 rounded-xl border-2 border-slate-300 bg-white/80 mt-8 mb-4 outline-none focus:border-blue-500 transition shadow-sm" maxlength="4" placeholder="••••" inputmode="numeric">
         
-        <div class="flex gap-2 w-full">
+        <div class="flex gap-2 w-full max-w-sm">
             <button id="btn-verify-pin" class="flex-1 py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-lg hover:bg-blue-700 transition transform active:scale-95">Sblocca</button>
             <button id="btn-biometric" class="py-4 px-6 bg-slate-900 text-white font-bold rounded-2xl shadow-lg hover:bg-slate-800 transition transform active:scale-95">
                 <i class="fas fa-fingerprint text-xl"></i>
@@ -34,65 +39,67 @@
         <p id="auth-msg" class="text-red-500 text-sm mt-4 hidden font-medium"></p>
     </div>
 
-    <div id="firebase-login-screen" class="hidden w-full max-w-sm px-6 flex-col items-center text-center z-40 absolute bg-slate-50 h-full justify-center">
-        <h2 class="font-black text-2xl mb-2">Connessione Database</h2>
-        <p class="text-sm text-gray-500 mb-6">Inserisci le credenziali di Firebase per il primo accesso.</p>
-        <input type="email" id="fb-email" class="w-full p-4 rounded-xl border-2 border-slate-200 mb-3" placeholder="Email Firebase">
-        <input type="password" id="fb-pass" class="w-full p-4 rounded-xl border-2 border-slate-200 mb-6" placeholder="Password Firebase">
-        <button id="btn-fb-login" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg hover:bg-slate-800 transition">Connetti</button>
-        <p id="fb-error" class="text-red-500 text-sm mt-4 hidden"></p>
+    <div id="firebase-login-screen" class="hidden w-full px-6 flex-col items-center text-center z-40 absolute inset-0 justify-center backdrop-blur-md bg-white/60">
+        <div class="w-full max-w-sm bg-white p-6 rounded-3xl shadow-xl border border-slate-100">
+            <h2 class="font-black text-2xl mb-2">Connessione DB</h2>
+            <p class="text-sm text-gray-500 mb-6">Inserisci le credenziali di Firebase.</p>
+            <input type="email" id="fb-email" class="w-full p-4 rounded-xl border-2 border-slate-200 mb-3" placeholder="Email Firebase">
+            <input type="password" id="fb-pass" class="w-full p-4 rounded-xl border-2 border-slate-200 mb-6" placeholder="Password Firebase">
+            <button id="btn-fb-login" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg hover:bg-slate-800 transition">Connetti</button>
+            <p id="fb-error" class="text-red-500 text-sm mt-4 hidden"></p>
+        </div>
     </div>
 
-    <div id="app-screen" class="hidden w-full h-full flex-col max-w-md mx-auto relative bg-white shadow-2xl overflow-hidden">
+    <div id="app-screen" class="hidden w-full h-full flex-col max-w-md md:max-w-3xl mx-auto relative bg-white/90 backdrop-blur-sm shadow-2xl overflow-hidden border-x border-slate-200/50">
         
-        <header class="p-4 border-b flex justify-between items-center bg-white sticky top-0 z-10 shadow-sm">
+        <header class="p-4 border-b border-slate-200 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10 shadow-sm">
             <div class="flex items-center gap-3">
                 <img src="MLogo.webp" alt="Logo" class="w-8 h-8 rounded-lg shadow-sm" onerror="this.style.display='none';">
                 <h2 class="font-black text-xl">Fin<span class="text-blue-600">Pe</span></h2>
             </div>
             <div class="flex gap-2">
-                <button onclick="toggleSettings()" class="w-10 h-10 rounded-full bg-gray-50 text-gray-600 flex items-center justify-center hover:bg-gray-200 transition"><i class="fas fa-cog"></i></button>
-                <button onclick="lockApp()" class="w-10 h-10 rounded-full bg-gray-50 text-gray-600 flex items-center justify-center hover:bg-gray-200 transition"><i class="fas fa-lock"></i></button>
+                <button onclick="toggleSettings()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition"><i class="fas fa-cog"></i></button>
+                <button onclick="lockApp()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition"><i class="fas fa-lock"></i></button>
             </div>
         </header>
 
-        <nav class="flex border-b bg-gray-50">
+        <nav class="flex border-b border-slate-200 bg-white/80">
             <button onclick="switchTab('cycle')" id="tab-cycle" class="flex-1 py-3 text-sm font-bold border-b-2 border-blue-600 text-blue-600 transition">Ciclo 20-20</button>
             <button onclick="switchTab('calendar')" id="tab-calendar" class="flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-gray-500 transition">Calendario</button>
             <button onclick="switchTab('annual')" id="tab-annual" class="flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-gray-500 transition">Annuale</button>
         </nav>
         
-        <main class="flex-1 overflow-y-auto bg-slate-50 relative pb-24 hide-scrollbar">
+        <main class="flex-1 overflow-y-auto relative pb-24 hide-scrollbar">
             
-            <div id="view-cycle" class="p-4 space-y-4">
-                <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-100">
-                    <button onclick="changeCycle(-1)" class="w-8 h-8 rounded-full bg-gray-100 text-gray-600"><i class="fas fa-chevron-left"></i></button>
+            <div id="view-cycle" class="p-4 space-y-4 max-w-2xl mx-auto">
+                <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-200">
+                    <button onclick="changeCycle(-1)" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"><i class="fas fa-chevron-left"></i></button>
                     <div class="text-center">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ciclo Spese</div>
                         <div id="cycle-label" class="font-bold text-slate-800 text-sm">...</div>
                     </div>
-                    <button onclick="changeCycle(1)" class="w-8 h-8 rounded-full bg-gray-100 text-gray-600"><i class="fas fa-chevron-right"></i></button>
+                    <button onclick="changeCycle(1)" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-3 mb-6">
-                    <div class="bg-white p-4 rounded-2xl border-l-4 border-red-500 shadow-sm text-center">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
                         <div class="text-xs font-bold text-gray-400 uppercase mb-1">Da Affrontare</div>
-                        <div id="cycle-pending" class="text-xl font-black text-red-600">€ 0.00</div>
+                        <div id="cycle-pending" class="text-xl font-black text-slate-800">€ 0.00</div>
                     </div>
-                    <div class="bg-white p-4 rounded-2xl border-l-4 border-green-500 shadow-sm text-center">
-                        <div class="text-xs font-bold text-gray-400 uppercase mb-1">Affrontate</div>
-                        <div id="cycle-paid" class="text-xl font-black text-green-600">€ 0.00</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
+                        <div class="text-xs font-bold text-gray-400 uppercase mb-1 text-red-800/70">Affrontate</div>
+                        <div id="cycle-paid" class="text-xl font-black text-red-800/80">€ 0.00</div>
                     </div>
                 </div>
 
-                <div id="cycle-list" class="space-y-3"></div>
+                <div id="cycle-list" class="space-y-2"></div>
             </div>
 
-            <div id="view-calendar" class="hidden p-4">
-                <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-100 mb-4">
-                    <button onclick="changeCalMonth(-1)" class="w-8 h-8 rounded-full bg-gray-100"><i class="fas fa-chevron-left"></i></button>
+            <div id="view-calendar" class="hidden p-4 max-w-2xl mx-auto">
+                <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-200 mb-4">
+                    <button onclick="changeCalMonth(-1)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-chevron-left"></i></button>
                     <div id="cal-label" class="font-bold text-slate-800 text-sm capitalize">...</div>
-                    <button onclick="changeCalMonth(1)" class="w-8 h-8 rounded-full bg-gray-100"><i class="fas fa-chevron-right"></i></button>
+                    <button onclick="changeCalMonth(1)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 <div class="grid grid-cols-7 gap-1 mb-1 text-center text-xs font-bold text-gray-400">
                     <div>L</div><div>M</div><div>M</div><div>G</div><div>V</div><div>S</div><div>D</div>
@@ -100,70 +107,70 @@
                 <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
             </div>
 
-            <div id="view-annual" class="hidden p-4 space-y-4">
-                <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-100">
-                    <button onclick="changeYear(-1)" class="w-8 h-8 rounded-full bg-gray-100"><i class="fas fa-chevron-left"></i></button>
+            <div id="view-annual" class="hidden p-4 space-y-4 max-w-2xl mx-auto">
+                <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-200">
+                    <button onclick="changeYear(-1)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-chevron-left"></i></button>
                     <div id="year-label" class="font-bold text-slate-800 text-lg">2026</div>
-                    <button onclick="changeYear(1)" class="w-8 h-8 rounded-full bg-gray-100"><i class="fas fa-chevron-right"></i></button>
+                    <button onclick="changeYear(1)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 
-                <div class="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-6 rounded-3xl shadow-lg text-center relative overflow-hidden">
+                <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-lg text-center relative overflow-hidden">
                     <div class="relative z-10">
-                        <span class="text-slate-400 text-xs font-bold uppercase tracking-widest block mb-1">Totale Uscite Anno</span>
+                        <span class="text-slate-300 text-xs font-bold uppercase tracking-widest block mb-1">Totale Uscite Anno</span>
                         <div id="year-total" class="text-4xl font-black tracking-tight">€ 0.00</div>
                     </div>
                 </div>
 
-                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
                     <div>
-                        <div class="flex justify-between text-sm font-bold mb-1"><span class="text-green-600">Pagate</span><span id="year-paid">€ 0.00</span></div>
-                        <div class="w-full bg-slate-100 rounded-full h-2"><div id="bar-paid" class="bg-green-500 h-2 rounded-full" style="width: 0%"></div></div>
+                        <div class="flex justify-between text-sm font-bold mb-1"><span class="text-red-800/80">Pagate</span><span id="year-paid">€ 0.00</span></div>
+                        <div class="w-full bg-slate-100 rounded-full h-2"><div id="bar-paid" class="bg-red-800/70 h-2 rounded-full" style="width: 0%"></div></div>
                     </div>
                     <div>
-                        <div class="flex justify-between text-sm font-bold mb-1"><span class="text-red-600">Da Pagare</span><span id="year-pending">€ 0.00</span></div>
-                        <div class="w-full bg-slate-100 rounded-full h-2"><div id="bar-pending" class="bg-red-500 h-2 rounded-full" style="width: 0%"></div></div>
+                        <div class="flex justify-between text-sm font-bold mb-1"><span class="text-slate-800">Da Pagare</span><span id="year-pending">€ 0.00</span></div>
+                        <div class="w-full bg-slate-100 rounded-full h-2"><div id="bar-pending" class="bg-slate-400 h-2 rounded-full" style="width: 0%"></div></div>
                     </div>
                 </div>
             </div>
 
         </main>
 
-        <button onclick="openExpenseModal()" class="absolute bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-xl flex items-center justify-center text-2xl z-20 hover:scale-105 active:scale-95 transition-transform">
+        <button onclick="openExpenseModal()" class="absolute bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-xl flex items-center justify-center text-2xl z-20 hover:scale-105 active:scale-95 transition-transform border-2 border-white">
             <i class="fas fa-plus"></i>
         </button>
 
-        <div id="settings-panel" class="absolute inset-0 bg-white z-30 hidden flex-col">
-            <header class="p-4 border-b flex items-center gap-4 bg-gray-50">
-                <button onclick="toggleSettings()" class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center"><i class="fas fa-arrow-left"></i></button>
+        <div id="settings-panel" class="absolute inset-0 bg-slate-50 z-30 hidden flex-col">
+            <header class="p-4 border-b border-slate-200 flex items-center gap-4 bg-white">
+                <button onclick="toggleSettings()" class="w-10 h-10 rounded-full bg-slate-100 shadow-sm flex items-center justify-center hover:bg-slate-200"><i class="fas fa-arrow-left"></i></button>
                 <h2 class="font-bold text-lg">Impostazioni</h2>
             </header>
-            <div class="p-6">
+            <div class="p-6 max-w-2xl mx-auto w-full">
                 <div class="p-5 border border-red-200 bg-red-50 rounded-2xl">
                     <h3 class="font-bold text-red-600 mb-2"><i class="fas fa-tools"></i> Migrazione Vecchi Dati</h3>
-                    <p class="text-xs text-red-500 mb-4">Questa operazione prende tutte le vecchie "Uscite", le sposta nel nuovo sistema e cancella tutto il resto del vecchio database (Entrate, Categorie). Usa questo pulsante una volta sola.</p>
-                    <button id="btn-migrate" onclick="migrateData()" class="w-full py-3 bg-red-600 text-white font-bold rounded-xl shadow hover:bg-red-700 transition">Esegui Migrazione Ora</button>
+                    <p class="text-xs text-red-500 mb-4">Sposta le vecchie "Uscite" nel nuovo sistema e cancella il resto.</p>
+                    <button id="btn-migrate" onclick="migrateData()" class="w-full py-3 bg-red-600 text-white font-bold rounded-xl shadow hover:bg-red-700 transition">Esegui Migrazione</button>
                 </div>
             </div>
         </div>
 
-        <div id="expense-modal" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden flex-col justify-end">
-            <div class="bg-white rounded-t-3xl p-6 shadow-2xl transform transition-transform" style="max-height: 90vh; overflow-y: auto;">
-                <div class="flex justify-between items-center mb-6">
+        <div id="expense-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden flex-col items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 shadow-2xl w-full max-w-md flex flex-col modal-container">
+                <div class="flex justify-between items-center mb-6 shrink-0">
                     <h3 id="modal-title" class="font-black text-2xl">Nuova Spesa</h3>
-                    <button onclick="closeExpenseModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fas fa-times"></i></button>
+                    <button onclick="closeExpenseModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition"><i class="fas fa-times"></i></button>
                 </div>
                 
                 <input type="hidden" id="exp-id">
                 
-                <div class="space-y-4">
+                <div class="space-y-4 overflow-y-auto hide-scrollbar flex-1 pb-2">
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase">Descrizione</label>
-                        <input type="text" id="exp-desc" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold" placeholder="Es. Bollo Auto">
+                        <input type="text" id="exp-desc" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold focus:border-blue-500 outline-none transition" placeholder="Es. Bollo Auto">
                     </div>
                     
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase">Importo (€)</label>
-                        <input type="number" id="exp-amount" step="0.01" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-black text-2xl text-blue-600" placeholder="0.00">
+                        <input type="number" id="exp-amount" step="0.01" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-black text-2xl text-blue-600 focus:border-blue-500 outline-none transition" placeholder="0.00">
                     </div>
 
                     <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-xl">
@@ -172,13 +179,13 @@
                     </div>
 
                     <div>
-                        <input type="date" id="exp-date-exact" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold">
-                        <input type="month" id="exp-date-month" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold hidden">
+                        <input type="date" id="exp-date-exact" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold outline-none focus:border-blue-500">
+                        <input type="month" id="exp-date-month" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold hidden outline-none focus:border-blue-500">
                     </div>
 
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase">Ricorrenza</label>
-                        <select id="exp-recurrence" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold">
+                        <select id="exp-recurrence" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold outline-none focus:border-blue-500">
                             <option value="none">Nessuna</option>
                             <option value="1m">Ogni mese</option>
                             <option value="2m">Ogni 2 mesi</option>
@@ -189,13 +196,13 @@
 
                     <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
                         <input type="checkbox" id="exp-status" class="w-6 h-6 rounded text-blue-600">
-                        <label for="exp-status" class="font-bold cursor-pointer select-none">Segna come PAGATO</label>
+                        <label for="exp-status" class="font-bold cursor-pointer select-none text-slate-800">Segna come PAGATO</label>
                     </div>
+                </div>
 
-                    <div class="flex gap-2 pt-4">
-                        <button id="btn-delete" onclick="deleteExpense()" class="hidden px-4 py-4 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition"><i class="fas fa-trash"></i></button>
-                        <button onclick="saveExpense()" class="flex-1 py-4 bg-slate-900 text-white font-bold rounded-xl shadow-lg hover:bg-slate-800 transition active:scale-95">Salva Spesa</button>
-                    </div>
+                <div class="flex gap-2 pt-4 mt-2 border-t border-slate-100 shrink-0">
+                    <button id="btn-delete" onclick="deleteExpense()" class="hidden px-4 py-4 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition"><i class="fas fa-trash"></i></button>
+                    <button onclick="saveExpense()" class="flex-1 py-4 bg-slate-900 text-white font-bold rounded-xl shadow-lg hover:bg-slate-800 transition active:scale-95">Salva Spesa</button>
                 </div>
             </div>
         </div>
@@ -203,7 +210,6 @@
     </div>
 
     <script>
-        // CONFIGURAZIONE FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBJo5E4GjwNw9qyS30_4mHHGpo4ve5nErE",
             authDomain: "finpe-385e6.firebaseapp.com",
@@ -216,7 +222,6 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // DATI LOCALI
         const APP_PIN = "4036";
         let expenses = [];
         let currentCycleDate = new Date();
@@ -272,7 +277,6 @@
             document.getElementById('pin-input').value = "";
         }
 
-        // INIZIALIZZAZIONE APP
         function initApp() {
             document.getElementById('app-screen').classList.remove('hidden');
             document.getElementById('app-screen').classList.add('flex');
@@ -281,14 +285,12 @@
 
         function loadData() {
             if(!auth.currentUser) return;
-            // Leggiamo la nuova collection "expenses_light"
             db.collection('users').doc(auth.currentUser.uid).collection('expenses_light').onSnapshot(snap => {
                 expenses = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
                 renderAll();
             });
         }
 
-        // MIGRAZIONE DATI (ZONA PERICOLO)
         async function migrateData() {
             if(!confirm("ATTENZIONE: Questa azione prenderà le spese della vecchia app e distruggerà tutto il resto (Entrate, Fondi). Procedere?")) return;
             const btn = document.getElementById('btn-migrate'); btn.textContent = "Lavoro in corso..."; btn.disabled = true;
@@ -298,7 +300,6 @@
                 const newExpRef = db.collection('users').doc(uid).collection('expenses_light');
                 const batch = db.batch();
 
-                // 1. Sposta le vecchie spese
                 oldTrans.forEach(doc => {
                     const data = doc.data();
                     if(data.type === 'expense') {
@@ -312,10 +313,9 @@
                             recurrence: 'none'
                         });
                     }
-                    batch.delete(doc.ref); // 2. Cancella la vecchia transazione
+                    batch.delete(doc.ref); 
                 });
 
-                // 3. Cancella le vecchie categorie
                 const oldCats = await db.collection('users').doc(uid).collection('categories').get();
                 oldCats.forEach(doc => batch.delete(doc.ref));
 
@@ -325,11 +325,10 @@
             } catch (error) {
                 alert("Errore migrazione: " + error.message);
             } finally {
-                btn.textContent = "Esegui Migrazione Ora"; btn.disabled = false;
+                btn.textContent = "Esegui Migrazione"; btn.disabled = false;
             }
         }
 
-        // LOGICA UI
         function switchTab(tab) {
             ['cycle', 'calendar', 'annual'].forEach(t => {
                 document.getElementById(`view-${t}`).classList.add('hidden');
@@ -351,7 +350,6 @@
             renderCycle(); renderCalendar(); renderAnnual();
         }
 
-        // MOTORE CICLO 20-20
         function getCycleDates(refDate) {
             const d = new Date(refDate);
             let start, end;
@@ -387,17 +385,28 @@
             const listHtml = filtered.map(e => {
                 if(e.status === 'paid') paid += e.amount; else pending += e.amount;
                 const isPaid = e.status === 'paid';
+                
+                // Formattazione data (Mese/Anno o Giorno/Mese)
+                let displayDate = "";
+                if (e.dateType === 'month') {
+                    const parts = e.date.split('-');
+                    displayDate = `${parts[1]}/${parts[0]}`;
+                } else {
+                    const parts = e.date.split('-');
+                    displayDate = `${parts[2]}/${parts[1]}`;
+                }
+
+                // Struttura a 3 colonne
                 return `
-                <div onclick="openExpenseModal('${e.id}')" class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center active:scale-95 transition cursor-pointer">
-                    <div class="flex items-center gap-3">
-                        <div class="w-1.5 h-10 rounded-full ${isPaid ? 'bg-green-500' : 'bg-red-500'}"></div>
-                        <div>
-                            <div class="font-bold text-slate-800 ${isPaid?'line-through text-gray-400':''}">${e.desc}</div>
-                            <div class="text-xs text-gray-400 font-bold tracking-wider">${e.dateType==='month' ? e.date.split('-').reverse().join('/') : e.date.split('-').reverse().join('/')}</div>
-                        </div>
+                <div onclick="openExpenseModal('${e.id}')" class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 grid grid-cols-[auto_1fr_auto] gap-3 items-center active:scale-95 transition cursor-pointer hover:bg-slate-50">
+                    <div class="text-xs font-bold text-gray-500 whitespace-nowrap bg-slate-100 px-2 py-1 rounded">
+                        ${displayDate}
                     </div>
-                    <div class="text-right">
-                        <div class="font-black text-lg ${isPaid ? 'text-green-600' : 'text-slate-800'}">€ ${e.amount.toFixed(2)}</div>
+                    <div class="font-bold truncate ${isPaid ? 'line-through text-red-800/60' : 'text-slate-800'}">
+                        ${e.desc}
+                    </div>
+                    <div class="font-black text-right whitespace-nowrap ${isPaid ? 'text-red-800/80' : 'text-slate-800'}">
+                        € ${e.amount.toFixed(2)}
                     </div>
                 </div>`;
             }).join('');
@@ -407,7 +416,6 @@
             document.getElementById('cycle-list').innerHTML = listHtml || '<p class="text-center text-gray-400 text-sm py-6">Nessuna spesa in questo ciclo.</p>';
         }
 
-        // MOTORE CALENDARIO
         function changeCalMonth(dir) {
             currentCalDate.setMonth(currentCalDate.getMonth() + dir);
             renderCalendar();
@@ -430,14 +438,14 @@
                 let dotHtml = '';
                 if(dayExps.length > 0) {
                     const hasPending = dayExps.some(e => e.status === 'pending');
-                    dotHtml = `<div class="w-2 h-2 rounded-full mx-auto mt-1 ${hasPending ? 'bg-red-500' : 'bg-green-500'}"></div>`;
+                    // Rosso scuro se tutto è pagato, sennò nero/grigio (da pagare)
+                    dotHtml = `<div class="w-2 h-2 rounded-full mx-auto mt-1 ${hasPending ? 'bg-slate-800' : 'bg-red-800/70'}"></div>`;
                 }
 
-                grid.innerHTML += `<div class="bg-white rounded-xl p-2 h-14 border border-slate-100 flex flex-col items-center justify-center relative cursor-pointer active:bg-blue-50 transition" onclick="alert('Spese del giorno:\\n${dayExps.map(e=>e.desc).join('\\n')||'Nessuna'}')"><span class="text-sm font-bold text-slate-700">${i}</span>${dotHtml}</div>`;
+                grid.innerHTML += `<div class="bg-white rounded-xl p-2 h-14 border border-slate-100 flex flex-col items-center justify-center relative cursor-pointer active:bg-slate-50 transition" onclick="alert('Spese del giorno:\\n${dayExps.map(e=>e.desc).join('\\n')||'Nessuna'}')"><span class="text-sm font-bold text-slate-700">${i}</span>${dotHtml}</div>`;
             }
         }
 
-        // MOTORE ANNUALE
         function changeYear(dir) { currentYear += dir; renderAnnual(); }
 
         function renderAnnual() {
@@ -457,7 +465,6 @@
             document.getElementById('bar-pending').style.width = tot ? `${(pending/tot)*100}%` : '0%';
         }
 
-        // GESTIONE MODALE E CRUD SPESE
         function openExpenseModal(id = null) {
             const m = document.getElementById('expense-modal');
             const todayStr = new Date().toISOString().slice(0,10);
@@ -504,11 +511,11 @@
 
             if(type === 'exact') {
                 bExact.className = 'py-2 text-sm font-bold rounded-lg bg-white shadow text-blue-600';
-                bMonth.className = 'py-2 text-sm font-bold rounded-lg text-gray-500';
+                bMonth.className = 'py-2 text-sm font-bold rounded-lg text-gray-500 hover:bg-slate-200 transition';
                 iExact.classList.remove('hidden'); iMonth.classList.add('hidden');
             } else {
                 bMonth.className = 'py-2 text-sm font-bold rounded-lg bg-white shadow text-blue-600';
-                bExact.className = 'py-2 text-sm font-bold rounded-lg text-gray-500';
+                bExact.className = 'py-2 text-sm font-bold rounded-lg text-gray-500 hover:bg-slate-200 transition';
                 iMonth.classList.remove('hidden'); iExact.classList.add('hidden');
             }
         }
@@ -532,7 +539,6 @@
                     const oldExp = expenses.find(x => x.id === id);
                     await db.collection('users').doc(uid).collection('expenses_light').doc(id).update(expData);
                     
-                    // Logica a "staffetta" per la ricorrenza
                     if (status === 'paid' && oldExp.status === 'pending' && recurrence !== 'none') {
                         let nextDate = new Date(dateType === 'month' ? `${dateStr}-01` : dateStr);
                         if (recurrence === '1m') nextDate.setMonth(nextDate.getMonth() + 1);
