@@ -138,18 +138,20 @@
                     </div>
 
                     <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase">Ricorrenza</label>
-                        <select id="exp-recurrence" class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold outline-none focus:border-blue-500">
-                            <option value="none">Nessuna</option>
-                            <option value="1m">Ogni mese</option>
-                            <option value="2m">Ogni 2 mesi</option>
-                            <option value="6m">Ogni 6 mesi</option>
-                            <option value="1y">Ogni anno</option>
-                        </select>
+                        <label class="text-xs font-bold text-gray-500 uppercase">Ripeti ogni...</label>
+                        <div class="flex gap-2 items-center mt-1">
+                            <input type="number" id="exp-recurrence-val" min="1" value="1" class="hidden w-20 p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold outline-none focus:border-blue-500 text-center text-slate-800">
+                            <select id="exp-recurrence-type" class="p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold outline-none focus:border-blue-500 flex-1 text-slate-800" onchange="toggleRecurrenceValue()">
+                                <option value="none">Nessuna ricorrenza</option>
+                                <option value="d">Giorno/i</option>
+                                <option value="m">Mese/i</option>
+                                <option value="y">Anno/i</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <input type="checkbox" id="exp-status" class="w-6 h-6 rounded text-blue-600">
+                    <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200 mt-2">
+                        <input type="checkbox" id="exp-status" class="w-6 h-6 rounded text-blue-600 border-slate-300">
                         <label for="exp-status" class="font-bold cursor-pointer select-none text-slate-800">Segna come PAGATO</label>
                     </div>
                 </div>
@@ -244,7 +246,7 @@
         }
 
         async function migrateData() {
-            if(!confirm("ATTENZIONE: Questa azione prenderà le spese della vecchia app e distruggerà tutto il resto (Entrate, Fondi). Procedere?")) return;
+            if(!confirm("ATTENZIONE: Questa azione prenderà le spese della vecchia app e distruggerà tutto il resto. Procedere?")) return;
             const btn = document.getElementById('btn-migrate'); btn.textContent = "Lavoro in corso..."; btn.disabled = true;
             try {
                 const uid = auth.currentUser.uid;
@@ -360,6 +362,16 @@
             document.getElementById('cycle-list').innerHTML = listHtml || '<p class="text-center text-gray-400 text-sm py-6">Nessuna spesa in questo ciclo.</p>';
         }
 
+        function toggleRecurrenceValue() {
+            const type = document.getElementById('exp-recurrence-type').value;
+            const valInput = document.getElementById('exp-recurrence-val');
+            if(type === 'none') {
+                valInput.classList.add('hidden');
+            } else {
+                valInput.classList.remove('hidden');
+            }
+        }
+
         function openExpenseModal(id = null) {
             const m = document.getElementById('expense-modal');
             const todayStr = new Date().toISOString().slice(0,10);
@@ -374,7 +386,20 @@
                 setExpDateType(e.dateType || 'exact');
                 if(e.dateType === 'month') document.getElementById('exp-date-month').value = e.date;
                 else document.getElementById('exp-date-exact').value = e.date;
-                document.getElementById('exp-recurrence').value = e.recurrence || 'none';
+                
+                // Ricostruisce la visualizzazione della ricorrenza
+                if(e.recurrence && e.recurrence !== 'none') {
+                    const match = e.recurrence.match(/(\d+)([dmy])/);
+                    if(match) {
+                        document.getElementById('exp-recurrence-val').value = match[1];
+                        document.getElementById('exp-recurrence-type').value = match[2];
+                    }
+                } else {
+                    document.getElementById('exp-recurrence-val').value = 1;
+                    document.getElementById('exp-recurrence-type').value = 'none';
+                }
+                toggleRecurrenceValue();
+
                 document.getElementById('exp-status').checked = (e.status === 'paid');
                 document.getElementById('btn-delete').classList.remove('hidden');
             } else {
@@ -385,7 +410,11 @@
                 setExpDateType('exact');
                 document.getElementById('exp-date-exact').value = todayStr;
                 document.getElementById('exp-date-month').value = monthStr;
-                document.getElementById('exp-recurrence').value = 'none';
+                
+                document.getElementById('exp-recurrence-val').value = 1;
+                document.getElementById('exp-recurrence-type').value = 'none';
+                toggleRecurrenceValue();
+
                 document.getElementById('exp-status').checked = false;
                 document.getElementById('btn-delete').classList.add('hidden');
             }
@@ -422,7 +451,13 @@
             const status = document.getElementById('exp-status').checked ? 'paid' : 'pending';
             const dateType = currentExpDateType;
             const dateStr = dateType === 'exact' ? document.getElementById('exp-date-exact').value : document.getElementById('exp-date-month').value;
-            const recurrence = document.getElementById('exp-recurrence').value;
+            
+            let recurrence = 'none';
+            const recType = document.getElementById('exp-recurrence-type').value;
+            if(recType !== 'none') {
+                const recVal = document.getElementById('exp-recurrence-val').value || 1;
+                recurrence = recVal + recType; // es. 3m, 2y, 15d
+            }
 
             if(!desc || !dateStr) return alert("Inserisci descrizione e data.");
 
@@ -434,18 +469,24 @@
                     const oldExp = expenses.find(x => x.id === id);
                     await db.collection('users').doc(uid).collection('expenses_light').doc(id).update(expData);
                     
+                    // Logica a "staffetta" per la ricorrenza
                     if (status === 'paid' && oldExp.status === 'pending' && recurrence !== 'none') {
                         let nextDate = new Date(dateType === 'month' ? `${dateStr}-01` : dateStr);
-                        if (recurrence === '1m') nextDate.setMonth(nextDate.getMonth() + 1);
-                        if (recurrence === '2m') nextDate.setMonth(nextDate.getMonth() + 2);
-                        if (recurrence === '6m') nextDate.setMonth(nextDate.getMonth() + 6);
-                        if (recurrence === '1y') nextDate.setFullYear(nextDate.getFullYear() + 1);
+                        const rMatch = recurrence.match(/(\d+)([dmy])/);
                         
-                        const nextDateStr = dateType === 'month' ? nextDate.toISOString().slice(0,7) : nextDate.toISOString().slice(0,10);
-                        
-                        await db.collection('users').doc(uid).collection('expenses_light').add({
-                            ...expData, status: 'pending', date: nextDateStr
-                        });
+                        if(rMatch) {
+                            const rVal = parseInt(rMatch[1]);
+                            const rUnit = rMatch[2];
+                            if (rUnit === 'd') nextDate.setDate(nextDate.getDate() + rVal);
+                            if (rUnit === 'm') nextDate.setMonth(nextDate.getMonth() + rVal);
+                            if (rUnit === 'y') nextDate.setFullYear(nextDate.getFullYear() + rVal);
+                            
+                            const nextDateStr = dateType === 'month' ? nextDate.toISOString().slice(0,7) : nextDate.toISOString().slice(0,10);
+                            
+                            await db.collection('users').doc(uid).collection('expenses_light').add({
+                                ...expData, status: 'pending', date: nextDateStr
+                            });
+                        }
                     }
                 } else {
                     await db.collection('users').doc(uid).collection('expenses_light').add(expData);
