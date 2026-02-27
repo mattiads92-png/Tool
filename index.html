@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FinPe Light</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -46,6 +46,9 @@
             -webkit-tap-highlight-color: transparent; 
             background-color: #ffffff;
         }
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .modal-container { max-height: 85dvh; } 
         .stagger-1 { animation-delay: 50ms; }
@@ -59,7 +62,9 @@
 
     <div id="auth-screen" class="w-full px-6 flex flex-col items-center text-center z-50 absolute inset-0 justify-center bg-white transition-all duration-500">
         <img src="MLogo.webp" alt="FinPe Light Logo" class="w-28 h-28 rounded-3xl shadow-lg mb-6 object-cover bg-white animate-fade-in-up" onerror="this.src='https://via.placeholder.com/100?text=F';">
-        <h1 class="font-black text-5xl mb-12 text-slate-950 animate-fade-in-up stagger-1 tracking-tight">FinPe <span class="font-light text-gray-500">light</span></h1>
+        <h1 class="font-black text-5xl mb-12 text-slate-950 animate-fade-in-up stagger-1 tracking-tight flex items-center justify-center gap-2">
+            FinPe <span class="font-cursive text-gray-400 font-bold text-5xl lowercase tracking-normal mt-2">light</span>
+        </h1>
         
         <input type="password" id="pin-input" class="w-full max-w-sm text-center text-4xl tracking-[0.5em] py-5 rounded-2xl border border-slate-200 bg-white mb-6 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all shadow-md animate-fade-in-up stagger-2 text-slate-950" maxlength="4" placeholder="••••" inputmode="numeric">
         
@@ -88,7 +93,9 @@
         <header class="p-5 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10 animate-slide-down">
             <div class="flex items-center gap-3">
                 <img src="MLogo.webp" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-slate-100" onerror="this.style.display='none';">
-                <h2 class="font-black text-2xl tracking-tight text-slate-950">FinPe <span class="font-light text-gray-500 text-lg">light</span></h2>
+                <h2 class="font-black text-2xl tracking-tight text-slate-950 flex items-center gap-1">
+                    FinPe <span class="font-cursive text-gray-400 text-3xl lowercase tracking-normal mt-1">light</span>
+                </h2>
             </div>
             <div class="flex gap-2">
                 <button onclick="toggleSettings()" class="w-11 h-11 rounded-full bg-white shadow-md border border-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-50 transition transform active:scale-90"><i class="fas fa-cog"></i></button>
@@ -134,7 +141,9 @@
             <div class="p-6 max-w-2xl mx-auto w-full flex-1 flex flex-col justify-end pb-12">
                 <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-md text-center mb-6">
                     <img src="MLogo.webp" alt="Logo" class="w-16 h-16 rounded-2xl mx-auto mb-4 grayscale" onerror="this.style.display='none';">
-                    <p class="font-bold text-slate-950">FinPe <span class="font-light text-gray-500">light</span></p>
+                    <p class="font-bold text-slate-950 flex justify-center items-center gap-1">
+                        FinPe <span class="font-cursive text-gray-500 font-bold text-xl lowercase">light</span>
+                    </p>
                     <p class="text-sm text-gray-500 mt-1">Sincronizzazione Cloud Attiva</p>
                 </div>
                 <button onclick="lockApp()" class="w-full py-4 bg-slate-950 text-white font-bold rounded-2xl shadow-xl hover:bg-slate-800 transition transform active:scale-95 flex items-center justify-center gap-3 text-lg">
@@ -338,6 +347,7 @@
                     displayDate = `${parts[2]}/${parts[1]}`;
                 }
 
+                // Inversione Colori secondo indicazioni (Rosso da pagare, Nero pagato)
                 const colorClass = isPaid ? 'text-slate-950 line-through' : 'text-red-600';
                 const descClass = isPaid ? 'text-slate-950 line-through opacity-70' : 'text-red-600';
                 
