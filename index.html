@@ -18,7 +18,6 @@
             -webkit-tap-highlight-color: transparent; 
         }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        /* Altezza dinamica per evitare problemi con la tastiera mobile */
         .modal-container { max-height: 85dvh; } 
     </style>
 </head>
@@ -62,20 +61,14 @@
                 <button onclick="lockApp()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition"><i class="fas fa-lock"></i></button>
             </div>
         </header>
-
-        <nav class="flex border-b border-slate-200 bg-white/80">
-            <button onclick="switchTab('cycle')" id="tab-cycle" class="flex-1 py-3 text-sm font-bold border-b-2 border-blue-600 text-blue-600 transition">Ciclo 20-20</button>
-            <button onclick="switchTab('calendar')" id="tab-calendar" class="flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-gray-500 transition">Calendario</button>
-            <button onclick="switchTab('annual')" id="tab-annual" class="flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-gray-500 transition">Annuale</button>
-        </nav>
         
         <main class="flex-1 overflow-y-auto relative pb-24 hide-scrollbar">
-            
-            <div id="view-cycle" class="p-4 space-y-4 max-w-2xl mx-auto">
+            <div class="p-4 space-y-4 max-w-2xl mx-auto">
+                
                 <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-200">
                     <button onclick="changeCycle(-1)" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"><i class="fas fa-chevron-left"></i></button>
                     <div class="text-center">
-                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ciclo Spese</div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Periodo Attuale</div>
                         <div id="cycle-label" class="font-bold text-slate-800 text-sm">...</div>
                     </div>
                     <button onclick="changeCycle(1)" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"><i class="fas fa-chevron-right"></i></button>
@@ -83,56 +76,17 @@
                 
                 <div class="grid grid-cols-2 gap-3 mb-6">
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
-                        <div class="text-xs font-bold text-gray-400 uppercase mb-1">Da Affrontare</div>
-                        <div id="cycle-pending" class="text-xl font-black text-slate-800">€ 0.00</div>
+                        <div class="text-xs font-bold text-red-600 uppercase mb-1">Da Pagare</div>
+                        <div id="cycle-pending" class="text-xl font-black text-red-600">€ 0.00</div>
                     </div>
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 text-center">
-                        <div class="text-xs font-bold text-gray-400 uppercase mb-1 text-red-800/70">Affrontate</div>
-                        <div id="cycle-paid" class="text-xl font-black text-red-800/80">€ 0.00</div>
+                        <div class="text-xs font-bold text-gray-500 uppercase mb-1">Pagate</div>
+                        <div id="cycle-paid" class="text-xl font-black text-slate-800">€ 0.00</div>
                     </div>
                 </div>
 
-                <div id="cycle-list" class="space-y-2"></div>
+                <div id="cycle-list" class="space-y-3"></div>
             </div>
-
-            <div id="view-calendar" class="hidden p-4 max-w-2xl mx-auto">
-                <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-200 mb-4">
-                    <button onclick="changeCalMonth(-1)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-chevron-left"></i></button>
-                    <div id="cal-label" class="font-bold text-slate-800 text-sm capitalize">...</div>
-                    <button onclick="changeCalMonth(1)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                <div class="grid grid-cols-7 gap-1 mb-1 text-center text-xs font-bold text-gray-400">
-                    <div>L</div><div>M</div><div>M</div><div>G</div><div>V</div><div>S</div><div>D</div>
-                </div>
-                <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
-            </div>
-
-            <div id="view-annual" class="hidden p-4 space-y-4 max-w-2xl mx-auto">
-                <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-200">
-                    <button onclick="changeYear(-1)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-chevron-left"></i></button>
-                    <div id="year-label" class="font-bold text-slate-800 text-lg">2026</div>
-                    <button onclick="changeYear(1)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                
-                <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-lg text-center relative overflow-hidden">
-                    <div class="relative z-10">
-                        <span class="text-slate-300 text-xs font-bold uppercase tracking-widest block mb-1">Totale Uscite Anno</span>
-                        <div id="year-total" class="text-4xl font-black tracking-tight">€ 0.00</div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-1"><span class="text-red-800/80">Pagate</span><span id="year-paid">€ 0.00</span></div>
-                        <div class="w-full bg-slate-100 rounded-full h-2"><div id="bar-paid" class="bg-red-800/70 h-2 rounded-full" style="width: 0%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-1"><span class="text-slate-800">Da Pagare</span><span id="year-pending">€ 0.00</span></div>
-                        <div class="w-full bg-slate-100 rounded-full h-2"><div id="bar-pending" class="bg-slate-400 h-2 rounded-full" style="width: 0%"></div></div>
-                    </div>
-                </div>
-            </div>
-
         </main>
 
         <button onclick="openExpenseModal()" class="absolute bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-xl flex items-center justify-center text-2xl z-20 hover:scale-105 active:scale-95 transition-transform border-2 border-white">
@@ -225,8 +179,6 @@
         const APP_PIN = "4036";
         let expenses = [];
         let currentCycleDate = new Date();
-        let currentCalDate = new Date();
-        let currentYear = new Date().getFullYear();
         let currentExpDateType = 'exact';
 
         // GESTIONE SBLOCCO SCHERMATE
@@ -287,7 +239,7 @@
             if(!auth.currentUser) return;
             db.collection('users').doc(auth.currentUser.uid).collection('expenses_light').onSnapshot(snap => {
                 expenses = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
-                renderAll();
+                renderCycle();
             });
         }
 
@@ -329,25 +281,9 @@
             }
         }
 
-        function switchTab(tab) {
-            ['cycle', 'calendar', 'annual'].forEach(t => {
-                document.getElementById(`view-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.remove('border-blue-600', 'text-blue-600');
-                document.getElementById(`tab-${t}`).classList.add('border-transparent', 'text-gray-500');
-            });
-            document.getElementById(`view-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).classList.remove('border-transparent', 'text-gray-500');
-            document.getElementById(`tab-${tab}`).classList.add('border-blue-600', 'text-blue-600');
-            renderAll();
-        }
-
         function toggleSettings() {
             const p = document.getElementById('settings-panel');
             p.classList.toggle('hidden'); p.classList.toggle('flex');
-        }
-
-        function renderAll() {
-            renderCycle(); renderCalendar(); renderAnnual();
         }
 
         function getCycleDates(refDate) {
@@ -386,7 +322,6 @@
                 if(e.status === 'paid') paid += e.amount; else pending += e.amount;
                 const isPaid = e.status === 'paid';
                 
-                // Formattazione data (Mese/Anno o Giorno/Mese)
                 let displayDate = "";
                 if (e.dateType === 'month') {
                     const parts = e.date.split('-');
@@ -396,16 +331,25 @@
                     displayDate = `${parts[2]}/${parts[1]}`;
                 }
 
-                // Struttura a 3 colonne
+                const colorClass = isPaid ? 'text-slate-500 line-through' : 'text-red-600';
+                const descClass = isPaid ? 'text-slate-500 line-through opacity-70' : 'text-slate-800';
+
                 return `
-                <div onclick="openExpenseModal('${e.id}')" class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 grid grid-cols-[auto_1fr_auto] gap-3 items-center active:scale-95 transition cursor-pointer hover:bg-slate-50">
-                    <div class="text-xs font-bold text-gray-500 whitespace-nowrap bg-slate-100 px-2 py-1 rounded">
-                        ${displayDate}
+                <div onclick="openExpenseModal('${e.id}')" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 active:scale-95 transition cursor-pointer hover:bg-slate-50">
+                    <div class="flex justify-between items-center w-full sm:w-auto">
+                        <div class="text-xs font-bold text-gray-500 whitespace-nowrap bg-slate-100 px-2 py-1 rounded">
+                            ${displayDate}
+                        </div>
+                        <div class="font-black sm:hidden ${colorClass}">
+                            € ${e.amount.toFixed(2)}
+                        </div>
                     </div>
-                    <div class="font-bold truncate ${isPaid ? 'line-through text-red-800/60' : 'text-slate-800'}">
+                    
+                    <div class="font-bold flex-1 break-words leading-snug ${descClass}">
                         ${e.desc}
                     </div>
-                    <div class="font-black text-right whitespace-nowrap ${isPaid ? 'text-red-800/80' : 'text-slate-800'}">
+                    
+                    <div class="hidden sm:block font-black text-right whitespace-nowrap ${colorClass}">
                         € ${e.amount.toFixed(2)}
                     </div>
                 </div>`;
@@ -414,55 +358,6 @@
             document.getElementById('cycle-paid').textContent = `€ ${paid.toFixed(2)}`;
             document.getElementById('cycle-pending').textContent = `€ ${pending.toFixed(2)}`;
             document.getElementById('cycle-list').innerHTML = listHtml || '<p class="text-center text-gray-400 text-sm py-6">Nessuna spesa in questo ciclo.</p>';
-        }
-
-        function changeCalMonth(dir) {
-            currentCalDate.setMonth(currentCalDate.getMonth() + dir);
-            renderCalendar();
-        }
-
-        function renderCalendar() {
-            const y = currentCalDate.getFullYear(), m = currentCalDate.getMonth();
-            document.getElementById('cal-label').textContent = `${currentCalDate.toLocaleString('it',{month:'long'})} ${y}`;
-            const grid = document.getElementById('calendar-grid'); grid.innerHTML = '';
-            
-            const firstDay = new Date(y, m, 1).getDay() || 7;
-            const daysInMonth = new Date(y, m + 1, 0).getDate();
-
-            for(let i=1; i<firstDay; i++) grid.innerHTML += `<div></div>`;
-            
-            for(let i=1; i<=daysInMonth; i++) {
-                const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
-                const dayExps = expenses.filter(e => (e.dateType === 'exact' && e.date === dateStr) || (e.dateType === 'month' && e.date === `${y}-${String(m+1).padStart(2,'0')}` && i===1));
-                
-                let dotHtml = '';
-                if(dayExps.length > 0) {
-                    const hasPending = dayExps.some(e => e.status === 'pending');
-                    // Rosso scuro se tutto è pagato, sennò nero/grigio (da pagare)
-                    dotHtml = `<div class="w-2 h-2 rounded-full mx-auto mt-1 ${hasPending ? 'bg-slate-800' : 'bg-red-800/70'}"></div>`;
-                }
-
-                grid.innerHTML += `<div class="bg-white rounded-xl p-2 h-14 border border-slate-100 flex flex-col items-center justify-center relative cursor-pointer active:bg-slate-50 transition" onclick="alert('Spese del giorno:\\n${dayExps.map(e=>e.desc).join('\\n')||'Nessuna'}')"><span class="text-sm font-bold text-slate-700">${i}</span>${dotHtml}</div>`;
-            }
-        }
-
-        function changeYear(dir) { currentYear += dir; renderAnnual(); }
-
-        function renderAnnual() {
-            document.getElementById('year-label').textContent = currentYear;
-            let paid = 0, pending = 0;
-            expenses.forEach(e => {
-                if(e.date.startsWith(currentYear.toString())) {
-                    if(e.status === 'paid') paid += e.amount; else pending += e.amount;
-                }
-            });
-            const tot = paid + pending;
-            document.getElementById('year-total').textContent = `€ ${tot.toFixed(2)}`;
-            document.getElementById('year-paid').textContent = `€ ${paid.toFixed(2)}`;
-            document.getElementById('year-pending').textContent = `€ ${pending.toFixed(2)}`;
-            
-            document.getElementById('bar-paid').style.width = tot ? `${(paid/tot)*100}%` : '0%';
-            document.getElementById('bar-pending').style.width = tot ? `${(pending/tot)*100}%` : '0%';
         }
 
         function openExpenseModal(id = null) {
