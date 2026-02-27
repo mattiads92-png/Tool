@@ -80,8 +80,7 @@
 
     <div id="auth-screen" class="w-full px-6 flex flex-col items-center text-center z-50 absolute inset-0 justify-center backdrop-blur-xl bg-white/40 dark:bg-slate-900/60 transition-all duration-500">
         <img src="MLogo.webp" alt="FinPe Light Logo" class="w-28 h-28 rounded-3xl shadow-2xl mb-6 object-cover bg-white animate-fade-in-up" onerror="this.src='https://via.placeholder.com/100?text=F';">
-        <h1 class="font-black text-5xl mb-1 text-slate-900 dark:text-white animate-fade-in-up stagger-1 tracking-tight">Fin<span class="text-blue-600 dark:text-blue-400">Pe</span></h1>
-        <p class="text-sm font-bold tracking-widest uppercase text-gray-500 dark:text-gray-400 animate-fade-in-up stagger-1 mb-10">Light Edition</p>
+        <h1 class="font-black text-5xl mb-10 text-slate-900 dark:text-white animate-fade-in-up stagger-1 tracking-tight">Fin<span class="text-blue-600 dark:text-blue-400">Pe</span> <span class="text-2xl text-gray-500 dark:text-gray-400 font-light italic">light</span></h1>
         
         <input type="password" id="pin-input" class="w-full max-w-sm text-center text-4xl tracking-[0.5em] py-5 rounded-2xl border border-white/50 dark:border-slate-700/50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm mb-6 outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 transition-all shadow-lg animate-fade-in-up stagger-2 text-slate-900 dark:text-white" maxlength="4" placeholder="••••" inputmode="numeric">
         
@@ -105,12 +104,12 @@
         </div>
     </div>
 
-    <div id="app-screen" class="hidden w-full h-full flex-col max-w-md md:max-w-3xl mx-auto relative bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl shadow-2xl overflow-hidden border-x border-white/50 dark:border-slate-700/50 transition-colors duration-500">
+    <div id="app-screen" class="hidden w-full h-full flex-col max-w-md md:max-w-3xl mx-auto relative bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl shadow-2xl overflow-hidden border-x border-white/50 dark:border-slate-700/50 transition-colors duration-500">
         
         <header class="p-5 border-b border-slate-200/50 dark:border-slate-800/50 flex justify-between items-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-md sticky top-0 z-10 transition-colors duration-500 animate-slide-down">
             <div class="flex items-center gap-3">
                 <img src="MLogo.webp" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-white/50 dark:border-slate-700/50" onerror="this.style.display='none';">
-                <h2 class="font-black text-2xl tracking-tight dark:text-white">Fin<span class="text-blue-600 dark:text-blue-400">Pe</span></h2>
+                <h2 class="font-black text-2xl tracking-tight dark:text-white">Fin<span class="text-blue-600 dark:text-blue-400">Pe</span> <span class="font-light italic text-gray-500 dark:text-gray-400 text-lg">light</span></h2>
             </div>
             <div class="flex gap-2">
                 <button onclick="toggleTheme()" class="w-11 h-11 rounded-full bg-white/80 dark:bg-slate-800/80 shadow-sm border border-slate-100 dark:border-slate-700 text-slate-600 dark:text-yellow-400 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-700 transition transform active:scale-90">
@@ -123,31 +122,33 @@
         <main class="flex-1 overflow-y-auto relative pb-28 hide-scrollbar">
             <div class="p-4 sm:p-6 space-y-6 max-w-2xl mx-auto">
                 
-                <div class="flex justify-between items-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-md p-5 rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-700/50 transition-all hover:shadow-md animate-fade-in-up">
-                    <button onclick="changeCycle(-1)" class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition transform active:scale-90 flex items-center justify-center text-lg"><i class="fas fa-chevron-left"></i></button>
+                <div class="flex justify-between items-center bg-gradient-to-br from-white/90 to-white/50 dark:from-slate-800/90 dark:to-slate-800/50 backdrop-blur-md p-5 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 dark:border-slate-700/50 transition-all hover:shadow-lg animate-fade-in-up">
+                    <button onclick="changeCycle(-1)" class="w-12 h-12 rounded-full bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-600 transition transform active:scale-90 flex items-center justify-center text-lg border border-slate-100 dark:border-slate-600"><i class="fas fa-chevron-left"></i></button>
                     <div class="text-center">
                         <div class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">Periodo Attuale</div>
                         <div id="cycle-label" class="font-black text-slate-800 dark:text-slate-100 text-xl tracking-tight">...</div>
                     </div>
-                    <button onclick="changeCycle(1)" class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition transform active:scale-90 flex items-center justify-center text-lg"><i class="fas fa-chevron-right"></i></button>
+                    <button onclick="changeCycle(1)" class="w-12 h-12 rounded-full bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-600 transition transform active:scale-90 flex items-center justify-center text-lg border border-slate-100 dark:border-slate-600"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md p-5 rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-700/50 text-center transition-all animate-fade-in-up stagger-1">
-                        <div class="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider mb-2">Da Pagare</div>
-                        <div id="cycle-pending" class="text-3xl font-black text-red-600 dark:text-red-400 tracking-tight">€ 0.00</div>
+                    <div class="bg-gradient-to-br from-white/90 to-white/50 dark:from-slate-800/90 dark:to-slate-800/50 backdrop-blur-md p-5 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 dark:border-slate-700/50 text-center transition-all animate-fade-in-up stagger-1 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-16 h-16 bg-red-500/10 dark:bg-red-500/5 rounded-full blur-xl pointer-events-none"></div>
+                        <div class="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider mb-2 relative z-10">Da Pagare</div>
+                        <div id="cycle-pending" class="text-3xl font-black text-red-600 dark:text-red-400 tracking-tight relative z-10">€ 0.00</div>
                     </div>
-                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md p-5 rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-700/50 text-center transition-all animate-fade-in-up stagger-1">
-                        <div class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Pagate</div>
-                        <div id="cycle-paid" class="text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight">€ 0.00</div>
+                    <div class="bg-gradient-to-br from-white/90 to-white/50 dark:from-slate-800/90 dark:to-slate-800/50 backdrop-blur-md p-5 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 dark:border-slate-700/50 text-center transition-all animate-fade-in-up stagger-1 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-16 h-16 bg-slate-500/10 dark:bg-slate-500/5 rounded-full blur-xl pointer-events-none"></div>
+                        <div class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 relative z-10">Pagate</div>
+                        <div id="cycle-paid" class="text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight relative z-10">€ 0.00</div>
                     </div>
                 </div>
 
-                <div id="cycle-list" class="space-y-3 pt-2"></div>
+                <div id="cycle-list" class="space-y-4 pt-2"></div>
             </div>
         </main>
 
-        <button onclick="openExpenseModal()" class="absolute bottom-8 right-8 w-16 h-16 bg-gradient-to-tr from-blue-600 to-indigo-500 text-white rounded-2xl shadow-blue-500/40 shadow-2xl flex items-center justify-center text-2xl z-20 hover:-translate-y-1 hover:shadow-blue-500/60 active:scale-95 active:translate-y-0 transition-all duration-300 animate-bounce-slight">
+        <button onclick="openExpenseModal()" class="absolute bottom-8 right-8 w-16 h-16 bg-gradient-to-tr from-blue-600 to-indigo-500 text-white rounded-2xl shadow-[0_8px_30px_rgb(59,130,246,0.4)] flex items-center justify-center text-2xl z-20 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgb(59,130,246,0.6)] active:scale-95 active:translate-y-0 transition-all duration-300 animate-bounce-slight border border-white/20">
             <i class="fas fa-plus"></i>
         </button>
 
@@ -159,8 +160,8 @@
             <div class="p-6 max-w-2xl mx-auto w-full flex-1 flex flex-col justify-end">
                 <div class="bg-white/80 dark:bg-slate-800/80 p-6 rounded-3xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm text-center mb-6">
                     <img src="MLogo.webp" alt="Logo" class="w-16 h-16 rounded-2xl mx-auto mb-4 opacity-50 grayscale" onerror="this.style.display='none';">
-                    <p class="font-bold text-slate-800 dark:text-white">FinPe Light Edition</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Connesso e Sincronizzato</p>
+                    <p class="font-bold text-slate-800 dark:text-white">FinPe <span class="font-light italic text-gray-500">light</span></p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Sincronizzazione attiva</p>
                 </div>
                 <button onclick="lockApp()" class="w-full py-4 bg-slate-900 dark:bg-slate-800 text-white font-bold rounded-2xl shadow-xl hover:bg-slate-800 dark:hover:bg-slate-700 transition transform active:scale-95 flex items-center justify-center gap-3">
                     <i class="fas fa-lock"></i> Blocca App
@@ -383,12 +384,18 @@
                     displayDate = `${parts[2]}/${parts[1]}`;
                 }
 
-                const colorClass = isPaid ? 'text-slate-500 dark:text-slate-500 line-through' : 'text-red-600 dark:text-red-400';
-                const descClass = isPaid ? 'text-slate-500 dark:text-slate-500 line-through opacity-70' : 'text-slate-800 dark:text-slate-200';
+                const colorClass = isPaid ? 'text-slate-400 dark:text-slate-500 line-through' : 'text-red-600 dark:text-red-400';
+                const descClass = isPaid ? 'text-slate-400 dark:text-slate-500 line-through opacity-70' : 'text-red-600 dark:text-red-400';
+                
+                // Stili Premium per i Riquadri (Glassmorphism e Bordi Laterali)
+                const borderClass = isPaid ? 'border-l-4 border-l-slate-300 dark:border-l-slate-600 border-y border-r border-white/40 dark:border-slate-700/50' : 'border-l-4 border-l-red-500 dark:border-l-red-500 border-y border-r border-white/60 dark:border-slate-700/80';
+                const bgClass = isPaid ? 'bg-white/40 dark:bg-slate-800/40' : 'bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70';
+                const shadowClass = isPaid ? 'shadow-sm' : 'shadow-[0_8px_30px_rgb(239,68,68,0.1)] dark:shadow-[0_8px_30px_rgb(239,68,68,0.05)]';
+                
                 const staggerClass = `stagger-${(index % 5) + 1}`;
 
                 return `
-                <div onclick="openExpenseModal('${e.id}')" class="animate-fade-in-up ${staggerClass} bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-700/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 active:scale-95 hover:-translate-y-1 hover:shadow-md transition-all duration-300 cursor-pointer">
+                <div onclick="openExpenseModal('${e.id}')" class="animate-fade-in-up ${staggerClass} ${bgClass} ${borderClass} ${shadowClass} backdrop-blur-md p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 active:scale-95 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer">
                     <div class="flex justify-between items-center w-full sm:w-auto">
                         <div class="text-xs font-bold text-gray-500 dark:text-gray-400 whitespace-nowrap bg-slate-100/80 dark:bg-slate-700/80 px-3 py-1.5 rounded-lg transition-colors">
                             ${displayDate}
