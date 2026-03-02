@@ -68,24 +68,10 @@
         
         <input type="password" id="pin-input" class="w-full max-w-sm text-center text-4xl tracking-[0.5em] py-5 rounded-2xl border border-slate-200 bg-white mb-6 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all shadow-md animate-fade-in-up stagger-2 text-slate-950" maxlength="4" placeholder="••••" inputmode="numeric">
         
-        <div class="flex gap-3 w-full max-w-sm animate-fade-in-up stagger-3">
-            <button id="btn-verify-pin" class="flex-1 py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition transform active:scale-95 text-lg">Sblocca</button>
-            <button id="btn-biometric" class="py-4 px-6 bg-slate-900 text-white font-bold rounded-2xl shadow-lg hover:bg-slate-800 transition transform active:scale-95">
-                <i class="fas fa-fingerprint text-2xl"></i>
-            </button>
+        <div class="w-full max-w-sm animate-fade-in-up stagger-3">
+            <button id="btn-verify-pin" class="w-full py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition transform active:scale-95 text-lg">Sblocca App</button>
         </div>
         <p id="auth-msg" class="text-red-500 text-sm mt-6 hidden font-medium bg-red-50 px-4 py-2 rounded-lg"></p>
-    </div>
-
-    <div id="firebase-login-screen" class="hidden w-full h-full px-6 flex-col items-center text-center z-40 absolute inset-0 justify-center bg-white/95 backdrop-blur-sm">
-        <div class="w-full max-w-sm bg-white p-8 rounded-[2rem] shadow-2xl border border-slate-100">
-            <h2 class="font-black text-3xl mb-2 text-slate-950 tracking-tight">Cloud Sync</h2>
-            <p class="text-sm font-medium text-gray-500 mb-8">Connessione sicura al database.</p>
-            <input type="email" id="fb-email" class="w-full p-4 rounded-xl border border-slate-200 bg-white mb-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition" placeholder="Email Firebase">
-            <input type="password" id="fb-pass" class="w-full p-4 rounded-xl border border-slate-200 bg-white mb-8 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition" placeholder="Password Firebase">
-            <button id="btn-fb-login" class="w-full py-4 bg-slate-950 text-white font-bold rounded-2xl shadow-xl hover:bg-slate-800 transition transform active:scale-95">Sincronizza Dati</button>
-            <p id="fb-error" class="text-red-500 text-sm mt-4 hidden"></p>
-        </div>
     </div>
 
     <div id="app-screen" class="hidden w-full h-full flex-col max-w-md md:max-w-3xl mx-auto relative bg-white overflow-hidden border-x border-slate-100">
@@ -223,7 +209,11 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // ---- LE TUE CREDENZIALI INVISIBILI ----
         const APP_PIN = "4036";
+        const FB_EMAIL = "mattiads92@gmail.com"; // Sostituisci questo! (es: "mario.rossi@email.it")
+        const FB_PASS = "-273.15m"; // Sostituisci questo!
+
         let expenses = [];
         let currentCycleDate = new Date();
         let currentExpDateType = 'exact';
@@ -232,45 +222,33 @@
         document.getElementById('pin-input').addEventListener('keypress', e => { if (e.key === 'Enter') unlockWithPin(); });
 
         function unlockWithPin() {
-            if(document.getElementById('pin-input').value === APP_PIN) checkFirebaseAuth();
-            else alert("PIN Errato!");
-        }
-
-        document.getElementById('btn-biometric').addEventListener('click', async () => {
-            try {
-                const challenge = new Uint8Array(32); window.crypto.getRandomValues(challenge);
-                const cred = await navigator.credentials.create({ publicKey: { challenge, rp: { name: "FinPe Light" }, user: { id: new Uint8Array(16), name: "user", displayName: "User" }, pubKeyCredParams: [{type: "public-key", alg: -7}], authenticatorSelection: { userVerification: "required" }, timeout: 60000 } });
-                if(cred) checkFirebaseAuth();
-            } catch (err) { alert("Impronta non rilevata. Usa il PIN."); }
-        });
-
-        function checkFirebaseAuth() {
-            const authScreen = document.getElementById('auth-screen');
-            authScreen.style.opacity = '0';
-            setTimeout(() => {
-                authScreen.classList.add('hidden');
-                if (auth.currentUser) {
-                    initApp();
-                } else {
-                    document.getElementById('firebase-login-screen').classList.remove('hidden');
-                    document.getElementById('firebase-login-screen').classList.add('flex');
-                }
-            }, 300);
-        }
-
-        document.getElementById('btn-fb-login').addEventListener('click', async () => {
-            const email = document.getElementById('fb-email').value;
-            const pass = document.getElementById('fb-pass').value;
-            try {
-                await auth.signInWithEmailAndPassword(email, pass);
-                document.getElementById('firebase-login-screen').classList.add('hidden');
-                document.getElementById('firebase-login-screen').classList.remove('flex');
-                initApp();
-            } catch (error) {
-                document.getElementById('fb-error').textContent = error.message;
-                document.getElementById('fb-error').classList.remove('hidden');
+            if(document.getElementById('pin-input').value === APP_PIN) {
+                const authScreen = document.getElementById('auth-screen');
+                authScreen.style.opacity = '0';
+                setTimeout(() => {
+                    authScreen.classList.add('hidden');
+                    doBackgroundLogin();
+                }, 300);
+            } else {
+                alert("PIN Errato!");
             }
-        });
+        }
+
+        async function doBackgroundLogin() {
+            if (auth.currentUser) {
+                initApp();
+            } else {
+                try {
+                    await auth.signInWithEmailAndPassword(FB_EMAIL, FB_PASS);
+                    initApp();
+                } catch (error) {
+                    alert("Errore di accesso al database invisibile. Assicurati di aver inserito email e password corrette nel codice: " + error.message);
+                    document.getElementById('auth-screen').classList.remove('hidden');
+                    document.getElementById('auth-screen').style.opacity = '1';
+                    document.getElementById('pin-input').value = "";
+                }
+            }
+        }
 
         function lockApp() {
             document.getElementById('app-screen').classList.add('hidden');
@@ -330,20 +308,26 @@
             
             let paid = 0, pending = 0;
             
-            // Array separati per mantenere l'ordine esatto: Scadute -> Da Pagare (Mese) -> Pagate
             const overdueExps = [];
             const currentPendingExps = [];
             const currentPaidExps = [];
 
+            const today = new Date();
+            const todayStr = today.toISOString().slice(0,10); 
+            const todayMonthStr = todayStr.slice(0,7);
+
             expenses.forEach(e => {
                 let expDateStr = e.dateType === 'month' ? `${e.date}-01` : e.date;
-                
-                // Se la data è precedente al ciclo ed è da pagare -> SCADUTA
-                if (expDateStr < cycle.startStr && e.status === 'pending') {
+                let isOverdue = false;
+
+                // Calcolo scadenza intelligente basato su OGgi
+                if (e.dateType === 'exact' && e.date < todayStr) isOverdue = true;
+                if (e.dateType === 'month' && e.date < todayMonthStr) isOverdue = true;
+
+                if (e.status === 'pending' && isOverdue) {
                     overdueExps.push(e);
-                    pending += e.amount; // Sommiamo le scadute nel totale da pagare
+                    pending += e.amount;
                 } 
-                // Se è nel ciclo attuale
                 else if (expDateStr >= cycle.startStr && expDateStr <= cycle.endStr) {
                     if (e.status === 'pending') {
                         currentPendingExps.push(e);
@@ -355,7 +339,6 @@
                 }
             });
 
-            // Ordinamento per data crescente all'interno di ogni blocco
             const sortByDate = (a, b) => (a.date > b.date ? 1 : -1);
             overdueExps.sort(sortByDate);
             currentPendingExps.sort(sortByDate);
@@ -379,11 +362,12 @@
                 let pillBg = 'bg-slate-100 text-gray-500';
                 let extraBadge = '';
 
+                // Logica dei colori a tre stati
                 if (type === 'overdue') {
                     colorClass = 'text-red-700';
                     descClass = 'text-red-700';
-                    containerBg = 'bg-red-50 border-red-100'; // Sfondo rosso chiaro
-                    pillBg = 'bg-white/80 text-red-800'; 
+                    containerBg = 'bg-red-50 border-red-100'; 
+                    pillBg = 'bg-white/80 text-red-800 border border-red-200/50'; 
                     extraBadge = `<span class="text-[10px] bg-red-600 text-white font-bold px-2 py-0.5 rounded-md ml-2 uppercase tracking-wider shadow-sm">Scaduta</span>`;
                 } else if (type === 'current-pending') {
                     colorClass = 'text-red-600';
@@ -401,7 +385,7 @@
                 <div onclick="openExpenseModal('${e.id}')" class="animate-fade-in-up ${staggerClass} ${shadowClass} ${containerBg} p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 transition-all duration-300 cursor-pointer border border-slate-100">
                     <div class="flex justify-between items-center w-full sm:w-auto">
                         <div class="flex items-center">
-                            <div class="text-xs font-bold whitespace-nowrap ${pillBg} px-3 py-1.5 rounded-lg border border-slate-200/50">
+                            <div class="text-xs font-bold whitespace-nowrap ${pillBg} px-3 py-1.5 rounded-lg">
                                 ${displayDate}
                             </div>
                             ${extraBadge}
