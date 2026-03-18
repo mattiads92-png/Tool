@@ -131,7 +131,7 @@
 
                 <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100">
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Pasti di oggi</h3>
-                    <div id="diet-logs-container" class="space-y-3"></div>
+                    <div id="diet-logs-container" class="space-y-4"></div>
                 </div>
             </div>
             <button onclick="openDietModal()" class="fixed bottom-24 right-6 w-16 h-16 bg-emerald-600 text-white rounded-2xl shadow-lg flex items-center justify-center text-2xl z-20 active:scale-95 transition border border-white/20">
@@ -294,7 +294,7 @@
         let dailyChartInstance = null;
         let weeklyChartInstance = null;
 
-        // DATABASE NUTRIZIONALE (Valori stimati per 100g -> {kcal, carboidrati, proteine, grassi})
+        // DATABASE NUTRIZIONALE (Valori stimati per 100g)
         const NUTRITION_DB = {
             "Pane Semintegrale Tostato": { kcal: 250, c: 45, p: 8, f: 3 },
             "Salmone Affumicato": { kcal: 117, c: 0, p: 18, f: 4 },
@@ -302,7 +302,7 @@
             "The Verde": { kcal: 0, c: 0, p: 0, f: 0 },
             "Kukicha": { kcal: 0, c: 0, p: 0, f: 0 },
             "Caffè": { kcal: 2, c: 0, p: 0, f: 0 },
-            "Olio e Sale": { kcal: 900, c: 0, p: 0, f: 100 }, // Olio evo (100g)
+            "Olio e Sale": { kcal: 900, c: 0, p: 0, f: 100 }, 
             "Mela": { kcal: 52, c: 14, p: 0.3, f: 0.2 },
             "Ananas": { kcal: 50, c: 13, p: 0.5, f: 0.1 },
             "Fragole": { kcal: 32, c: 8, p: 0.7, f: 0.3 },
@@ -313,7 +313,7 @@
             "Nasello": { kcal: 71, c: 0, p: 16, f: 0.6 },
             "Sogliola": { kcal: 86, c: 0, p: 18, f: 1.5 },
             "Pasta": { kcal: 350, c: 73, p: 13, f: 1.5 },
-            "Riso": { kcal: 130, c: 28, p: 2.7, f: 0.3 }, // cotto
+            "Riso": { kcal: 130, c: 28, p: 2.7, f: 0.3 },
             "Salmone fresco": { kcal: 208, c: 0, p: 20, f: 13 },
             "Coda di Rospo": { kcal: 70, c: 0, p: 15, f: 1 },
             "Spigola": { kcal: 97, c: 0, p: 18, f: 2 },
@@ -364,8 +364,17 @@
                 updateDietUI();
             });
 
-            db.collection('users').doc(uid).collection('diet_logs').where('date', '==', todayStr).orderBy('timestamp', 'asc').onSnapshot(s => {
+            // Listener Pasti (rimosso orderBy timestamp per non richiedere indici che bloccano l'aggiornamento)
+            db.collection('users').doc(uid).collection('diet_logs').where('date', '==', todayStr).onSnapshot(s => {
                 dietLogs = s.docs.map(d => ({id: d.id, ...d.data()}));
+                
+                // Ordina lato client
+                dietLogs.sort((a,b) => {
+                    let tA = a.timestamp ? a.timestamp.toMillis() : Date.now();
+                    let tB = b.timestamp ? b.timestamp.toMillis() : Date.now();
+                    return tA - tB;
+                });
+                
                 renderDietLogs();
             });
 
@@ -380,13 +389,12 @@
             
             document.getElementById('section-title').innerHTML = tab === 'finances' ? `FinPe <span class="font-cursive text-gray-400 text-3xl lowercase mt-1">light</span>` : `Diet <span class="font-cursive text-gray-400 text-3xl lowercase mt-1">light</span>`;
             
-            // Mostra/Nascondi tasto Analisi
             const btnAna = document.getElementById('btn-analysis');
             if(tab === 'diet') { btnAna.classList.remove('hidden'); btnAna.classList.add('flex'); }
             else { btnAna.classList.add('hidden'); btnAna.classList.remove('flex'); }
         }
 
-        // --- LOGICA FINANZE (Originale e Corretta: Da Pagare in cima) ---
+        // --- LOGICA FINANZE ---
         function getCycleDates(ref) {
             const d = new Date(ref);
             let s, e;
@@ -408,13 +416,12 @@
                 return d >= cycle.startStr && d <= cycle.endStr;
             });
 
-            // ORDINE: Prima le PENDING (da pagare), poi le PAID. A parità di stato, ordina per data.
             items.sort((a, b) => {
                 if (a.status === b.status) return a.date > b.date ? 1 : -1;
                 return a.status === 'pending' ? -1 : 1;
             });
 
-            items.forEach((e, i) => {
+            items.forEach((e) => {
                 if (e.status === 'pending') pendingTotal += e.amount; else paidTotal += e.amount;
                 const div = document.createElement('div');
                 div.className = `bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between cursor-pointer transition active:scale-[0.98] ${e.status === 'paid' ? 'opacity-60' : ''}`;
@@ -546,7 +553,6 @@
             const grams = parseFloat(document.getElementById('diet-grams').value);
             if(!grams || grams <= 0) return alert("Inserisci i grammi corretti");
 
-            // Calcolo Macro
             let c_kcal=0, c_carb=0, c_prot=0, c_fat=0;
             if(NUTRITION_DB[foodName]) {
                 const multi = grams / 100;
@@ -569,34 +575,59 @@
         }
 
         function renderDietLogs() {
-            const c = document.getElementById('diet-logs-container');
-            c.innerHTML = dietLogs.length ? '' : '<p class="text-center text-gray-400 py-4 text-sm">Nessun pasto registrato oggi.</p>';
+            const container = document.getElementById('diet-logs-container');
+            container.innerHTML = '';
             
             let totKcal=0, totC=0, totP=0, totF=0;
+            
+            if(dietLogs.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-400 py-4 text-sm">Nessun pasto registrato oggi.</p>';
+            } else {
+                const mealsOrder = ["Colazione", "Spuntino", "Pranzo", "Cena"];
+                const grouped = {};
+                
+                dietLogs.forEach(l => {
+                    if(l.macros) {
+                        totKcal += l.macros.kcal || 0;
+                        totC += l.macros.c || 0;
+                        totP += l.macros.p || 0;
+                        totF += l.macros.f || 0;
+                    }
+                    if(!grouped[l.meal]) grouped[l.meal] = [];
+                    grouped[l.meal].push(l);
+                });
+                
+                mealsOrder.forEach(mealName => {
+                    if(grouped[mealName] && grouped[mealName].length > 0) {
+                        const mealBlock = document.createElement('div');
+                        mealBlock.className = "mb-4 bg-slate-50 p-4 rounded-2xl border border-slate-100";
+                        
+                        // Header Pasto (es. COLAZIONE)
+                        const mealHeader = document.createElement('div');
+                        mealHeader.className = "text-[10px] font-black uppercase text-emerald-600 tracking-widest border-b border-emerald-100 pb-1 mb-2";
+                        mealHeader.textContent = mealName;
+                        mealBlock.appendChild(mealHeader);
+                        
+                        // Alimenti di quel pasto
+                        grouped[mealName].forEach(l => {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = "flex items-center justify-between py-1.5";
+                            itemDiv.innerHTML = `
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-slate-800 text-sm">${l.notes}</span>
+                                    ${l.macros ? `<span class="text-[10px] text-gray-400 font-bold">${Math.round(l.macros.kcal)} kcal</span>` : ''}
+                                </div>
+                                <button onclick="deleteDietLog('${l.id}')" class="text-slate-300 hover:text-red-400 active:scale-90 transition p-2"><i class="fas fa-trash-can"></i></button>
+                            `;
+                            mealBlock.appendChild(itemDiv);
+                        });
+                        
+                        container.appendChild(mealBlock);
+                    }
+                });
+            }
 
-            dietLogs.forEach(l => {
-                // Somma macro
-                if(l.macros) {
-                    totKcal += l.macros.kcal || 0;
-                    totC += l.macros.c || 0;
-                    totP += l.macros.p || 0;
-                    totF += l.macros.f || 0;
-                }
-
-                const d = document.createElement('div');
-                d.className = "bg-slate-50 p-4 rounded-2xl flex items-center justify-between border border-slate-100";
-                d.innerHTML = `
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-black uppercase text-emerald-600 tracking-widest">${l.meal}</span>
-                        <span class="font-bold text-slate-800 text-lg">${l.notes}</span>
-                        ${l.macros ? `<span class="text-[10px] text-gray-400 font-bold">${Math.round(l.macros.kcal)} kcal</span>` : ''}
-                    </div>
-                    <button onclick="deleteDietLog('${l.id}')" class="w-10 h-10 rounded-full bg-white border border-slate-100 text-slate-400 flex items-center justify-center active:scale-90 transition"><i class="fas fa-trash-can"></i></button>
-                `;
-                c.appendChild(d);
-            });
-
-            // Aggiorna UI Giornaliera
+            // Aggiorna UI Giornaliera (Kcal e Grafico)
             document.getElementById('daily-kcal').textContent = Math.round(totKcal);
             document.getElementById('daily-macros-text').innerHTML = `<span class="text-blue-500">C: ${Math.round(totC)}g</span> <span class="text-red-500">P: ${Math.round(totP)}g</span> <span class="text-yellow-500">G: ${Math.round(totF)}g</span>`;
             updateChart('dailyMacroChart', totC, totP, totF, dailyChartInstance, (inst) => dailyChartInstance = inst);
@@ -606,12 +637,13 @@
             if(confirm("Eliminare pasto?")) await db.collection('users').doc(auth.currentUser.uid).collection('diet_logs').doc(id).delete(); 
         }
 
-        // Funzione per generare il grafico a Torta (usata sia per Oggi che per la Settimana)
+        // Funzione per generare il grafico a Torta
         function updateChart(canvasId, c, p, f, instanceToDestroy, saveInstanceCallback) {
-            const ctx = document.getElementById(canvasId).getContext('2d');
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
             if(instanceToDestroy) instanceToDestroy.destroy();
             
-            // Se tutto 0, mostra un grafico vuoto grigio
             const data = (c===0 && p===0 && f===0) ? [1] : [c, p, f];
             const bgColors = (c===0 && p===0 && f===0) ? ['#f1f5f9'] : ['#3b82f6', '#ef4444', '#eab308'];
 
@@ -635,10 +667,9 @@
             const uid = auth.currentUser.uid;
             const today = new Date();
             const past7 = new Date();
-            past7.setDate(today.getDate() - 6); // Ultimi 7 giorni compreso oggi
+            past7.setDate(today.getDate() - 6);
             const startDateStr = past7.toISOString().split('T')[0];
 
-            // 1. Fetch Stats (Acqua e Integratori)
             const statsSnap = await db.collection('users').doc(uid).collection('daily_stats').where(firebase.firestore.FieldPath.documentId(), '>=', startDateStr).get();
             let totalWater = 0;
             let d3Count = 0, a1Count = 0, a2Count = 0;
@@ -651,7 +682,6 @@
                 if(d.antio2) a2Count++;
             });
 
-            // 2. Fetch Meals (Kcal e Macro)
             const mealsSnap = await db.collection('users').doc(uid).collection('diet_logs').where('date', '>=', startDateStr).get();
             let sumKcal=0, sumC=0, sumP=0, sumF=0;
             mealsSnap.forEach(doc => {
@@ -659,10 +689,9 @@
                 if(m) { sumKcal+=m.kcal; sumC+=m.c; sumP+=m.p; sumF+=m.f; }
             });
 
-            const daysTracked = statsSnap.size || 1; // Evita divisione per zero
+            const daysTracked = statsSnap.size || 1;
             const avgKcal = Math.round(sumKcal / daysTracked);
 
-            // 3. Popola Modale Analisi
             document.getElementById('weekly-avg-kcal').textContent = avgKcal;
             document.getElementById('weekly-total-water').textContent = (totalWater / 1000).toFixed(2) + " L";
             
