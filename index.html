@@ -35,9 +35,6 @@
         body { font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #ffffff; }
         .font-cursive { font-family: 'Dancing Script', cursive; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .modal-container { max-height: 85dvh; } 
-        .stagger-1 { animation-delay: 50ms; }
-        .stagger-2 { animation-delay: 100ms; }
     </style>
 </head>
 <body class="text-slate-800 h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden relative bg-white">
@@ -47,15 +44,15 @@
         <h1 class="font-black text-5xl mb-12 text-slate-950 animate-fade-in-up tracking-tight flex items-center justify-center gap-2">
             FinPe <span class="font-cursive text-gray-400 font-bold text-5xl lowercase mt-2">light</span>
         </h1>
-        <input type="password" id="pin-input" class="w-full max-w-sm text-center text-4xl tracking-[0.5em] py-5 rounded-2xl border border-slate-200 mb-6 outline-none focus:border-blue-500 transition-all text-slate-950" maxlength="4" placeholder="••••" inputmode="numeric">
+        <input type="password" id="pin-input" class="w-full max-w-sm text-center text-4xl tracking-[0.5em] py-5 rounded-2xl border border-slate-200 mb-6 outline-none text-slate-950" maxlength="4" placeholder="••••" inputmode="numeric">
         <button id="btn-verify-pin" class="w-full max-w-sm py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-lg hover:bg-blue-700 transition active:scale-95 text-lg">Sblocca App</button>
     </div>
 
     <div id="app-screen" class="hidden w-full h-full flex-col max-w-md md:max-w-3xl mx-auto relative bg-white overflow-hidden border-x border-slate-100">
         
-        <header class="p-5 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10">
+        <header class="p-5 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10 animate-slide-down">
             <div class="flex items-center gap-3">
-                <img src="MLogo.webp" alt="Logo" class="w-10 h-10 rounded-xl shadow-md">
+                <img src="MLogo.webp" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-slate-100">
                 <h2 id="section-title" class="font-black text-2xl tracking-tight text-slate-950 flex items-center gap-1">
                     FinPe <span class="font-cursive text-gray-400 text-3xl lowercase mt-1">light</span>
                 </h2>
@@ -90,28 +87,22 @@
             </button>
         </main>
 
-        <main id="section-diet" class="hidden flex-1 overflow-y-auto pb-32 hide-scrollbar bg-slate-50/50 w-full">
-            <div class="p-4 space-y-6 max-w-2xl mx-auto">
+        <main id="section-diet" class="hidden flex-1 overflow-y-auto relative pb-32 hide-scrollbar bg-slate-50/50 w-full">
+            <div class="p-4 sm:p-6 space-y-6 max-w-2xl mx-auto">
                 <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100 text-center">
                     <div id="diet-today" class="font-black text-slate-950 text-xl capitalize"></div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2">
-                    <button onclick="toggleSupp('d3')" id="supp-d3" class="p-3 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all">
-                        <i class="fas fa-capsules text-orange-400 mb-1"></i><span class="text-[10px] font-bold">D3</span>
-                    </button>
-                    <button onclick="toggleSupp('antio1')" id="supp-antio1" class="p-3 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all">
-                        <i class="fas fa-shield-virus text-blue-400 mb-1"></i><span class="text-[10px] font-bold">Anti 1</span>
-                    </button>
-                    <button onclick="toggleSupp('antio2')" id="supp-antio2" class="p-3 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all">
-                        <i class="fas fa-leaf text-emerald-400 mb-1"></i><span class="text-[10px] font-bold">Anti 2</span>
-                    </button>
+                    <button onclick="toggleSupp('d3')" id="supp-d3" class="p-3 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all"><i class="fas fa-capsules text-orange-400 mb-1"></i><span class="text-[10px] font-bold">D3</span></button>
+                    <button onclick="toggleSupp('antio1')" id="supp-antio1" class="p-3 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all"><i class="fas fa-shield-virus text-blue-400 mb-1"></i><span class="text-[10px] font-bold">Antio 1</span></button>
+                    <button onclick="toggleSupp('antio2')" id="supp-antio2" class="p-3 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all"><i class="fas fa-leaf text-emerald-400 mb-1"></i><span class="text-[10px] font-bold">Antio 2</span></button>
                 </div>
 
                 <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100 flex items-center justify-between">
                     <div>
                         <h3 class="text-xs font-bold text-gray-400 uppercase">Idratazione</h3>
-                        <div class="text-2xl font-black text-blue-600"><span id="water-liters">0.00</span> L</div>
+                        <div class="text-2xl font-black text-blue-600 tracking-tight"><span id="water-liters">0.00</span> L</div>
                     </div>
                     <div class="flex gap-2">
                         <button onclick="addWater(-250)" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-xs">-250ml</button>
@@ -119,7 +110,10 @@
                     </div>
                 </div>
 
-                <div id="diet-logs-container" class="space-y-4"></div>
+                <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Pasti di oggi</h3>
+                    <div id="diet-logs-container" class="space-y-3"></div>
+                </div>
             </div>
             <button onclick="openDietModal()" class="fixed bottom-24 right-6 w-16 h-16 bg-emerald-600 text-white rounded-2xl shadow-lg flex items-center justify-center text-2xl z-20 active:scale-95 border border-white/20">
                 <i class="fas fa-utensils"></i>
@@ -141,63 +135,37 @@
                     <h3 class="font-black text-2xl text-slate-950">Registra Pasto</h3>
                     <button onclick="closeDietModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center"><i class="fas fa-times"></i></button>
                 </div>
-                <div class="space-y-5">
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase block mb-1">Tipo Pasto</label>
-                        <select id="diet-type" class="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50 font-bold" onchange="updateFoodSelect()">
-                            <option value="Colazione">Colazione</option>
-                            <option value="Spuntino">Spuntino</option>
-                            <option value="Pranzo">Pranzo</option>
-                            <option value="Cena">Cena</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase block mb-1">Alimento</label>
-                        <select id="diet-food" class="w-full p-4 rounded-2xl border border-slate-200 bg-white font-bold"></select>
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase block mb-1">Quantità (gr)</label>
-                        <input type="number" id="diet-grams" class="w-full p-4 rounded-2xl border border-slate-200 font-black text-2xl text-emerald-600" placeholder="Es. 150">
-                    </div>
-                    <button onclick="saveDietLog()" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl shadow-xl active:scale-95">Salva Pasto</button>
+                <div class="space-y-4">
+                    <select id="diet-type" class="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50 font-bold" onchange="updateFoodSelect()">
+                        <option value="Colazione">Colazione</option>
+                        <option value="Spuntino">Spuntino</option>
+                        <option value="Pranzo">Pranzo</option>
+                        <option value="Cena">Cena</option>
+                    </select>
+                    <select id="diet-food" class="w-full p-4 rounded-2xl border border-slate-200 font-bold"></select>
+                    <input type="number" id="diet-grams" class="w-full p-4 rounded-2xl border border-slate-200 font-black text-2xl text-emerald-600" placeholder="gr">
+                    <button onclick="saveDietLog()" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl shadow-xl active:scale-95">Salva</button>
                 </div>
-            </div>
-        </div>
-
-        <div id="settings-panel" class="absolute inset-0 bg-white z-40 hidden flex-col transition-colors duration-500">
-            <header class="p-5 border-b border-slate-100 flex items-center gap-4 bg-white sticky top-0">
-                <button onclick="toggleSettings()" class="w-11 h-11 rounded-full bg-white shadow-md border border-slate-100 flex items-center justify-center"><i class="fas fa-arrow-left text-slate-950"></i></button>
-                <h2 class="font-black text-2xl tracking-tight text-slate-950">Impostazioni</h2>
-            </header>
-            <div class="p-6 max-w-2xl mx-auto w-full flex-1 flex flex-col justify-end pb-12">
-                <button onclick="lockApp()" class="w-full py-4 bg-slate-950 text-white font-bold rounded-2xl shadow-xl hover:bg-slate-800 transition flex items-center justify-center gap-3 text-lg">
-                    <i class="fas fa-lock"></i> Blocca App
-                </button>
             </div>
         </div>
 
         <div id="expense-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden flex-col items-center justify-center p-4 transition-opacity opacity-0 duration-300">
-            <div id="expense-modal-content" class="bg-white rounded-[2rem] p-6 shadow-2xl w-full max-w-md flex flex-col modal-container transform scale-95 transition-all duration-300 border border-slate-100">
-                <div class="flex justify-between items-center mb-6 shrink-0">
-                    <h3 id="modal-title" class="font-black text-3xl tracking-tight text-slate-950">Nuova</h3>
-                    <button onclick="closeExpenseModal()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center"><i class="fas fa-times"></i></button>
-                </div>
+            <div id="expense-modal-content" class="bg-white rounded-[2rem] p-6 shadow-2xl w-full max-w-md flex flex-col modal-container border border-slate-100">
+                <div class="flex justify-between items-center mb-6"><h3 id="modal-title" class="font-black text-3xl text-slate-950">Nuova</h3><button onclick="closeExpenseModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center"><i class="fas fa-times"></i></button></div>
                 <input type="hidden" id="exp-id">
-                <div class="space-y-5 overflow-y-auto hide-scrollbar flex-1 pb-2 pr-1">
-                    <div><label class="text-xs font-bold text-gray-500 uppercase block mb-1">Descrizione</label><input type="text" id="exp-desc" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none" placeholder="Es. Bollo Auto"></div>
-                    <div><label class="text-xs font-bold text-gray-500 uppercase block mb-1">Importo (€)</label><input type="number" id="exp-amount" step="0.01" class="w-full p-4 rounded-2xl border border-slate-200 font-black text-3xl text-blue-600 outline-none" placeholder="0.00"></div>
-                    <div class="grid grid-cols-2 gap-2 bg-slate-50 p-1.5 rounded-2xl">
-                        <button id="btn-type-exact" onclick="setExpDateType('exact')" class="py-2.5 text-sm font-bold rounded-xl bg-white shadow-md text-blue-600 border border-slate-100">Data Esatta</button>
-                        <button id="btn-type-month" onclick="setExpDateType('month')" class="py-2.5 text-sm font-bold rounded-xl text-gray-500">Solo Mese</button>
+                <div class="space-y-5 overflow-y-auto hide-scrollbar flex-1 pr-1">
+                    <input type="text" id="exp-desc" class="w-full p-4 rounded-2xl border border-slate-200 font-bold" placeholder="Descrizione">
+                    <input type="number" id="exp-amount" class="w-full p-4 rounded-2xl border border-slate-200 font-black text-3xl text-blue-600" placeholder="0.00">
+                    <div class="grid grid-cols-2 gap-2 bg-slate-50 p-1 rounded-2xl">
+                        <button id="btn-type-exact" onclick="setExpDateType('exact')" class="py-2 bg-white shadow rounded-xl text-blue-600 font-bold">Data Esatta</button>
+                        <button id="btn-type-month" onclick="setExpDateType('month')" class="py-2 text-gray-500 font-bold">Solo Mese</button>
                     </div>
-                    <div><input type="date" id="exp-date-exact" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none"><input type="month" id="exp-date-month" class="w-full p-4 rounded-2xl border border-slate-200 font-bold hidden outline-none"></div>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                        <label class="text-xs font-bold text-gray-500 uppercase block mb-2">Ripeti ogni...</label>
-                        <div class="flex gap-2 items-center"><input type="number" id="exp-recurrence-val" min="1" value="1" class="hidden w-20 p-3 rounded-xl border border-slate-200 text-center font-bold"><select id="exp-recurrence-type" class="p-3 rounded-xl border border-slate-200 font-bold flex-1" onchange="toggleRecurrenceValue()"><option value="none">Nessuna ricorrenza</option><option value="d">Giorno/i</option><option value="m">Mese/i</option><option value="y">Anno/i</option></select></div>
-                    </div>
-                    <label class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100 cursor-pointer w-full"><span class="font-bold">Stato: <span class="text-gray-400 font-normal">Già Pagata?</span></span><input type="checkbox" id="exp-status" class="w-6 h-6 rounded-lg text-blue-600"></label>
+                    <input type="date" id="exp-date-exact" class="w-full p-4 rounded-2xl border border-slate-200 font-bold">
+                    <input type="month" id="exp-date-month" class="w-full p-4 rounded-2xl border border-slate-200 font-bold hidden">
+                    <select id="exp-recurrence-type" class="w-full p-4 rounded-2xl border border-slate-200 font-bold"><option value="none">Nessuna ricorrenza</option><option value="m">Mese/i</option></select>
+                    <label class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border cursor-pointer"><span class="font-bold">Pagata?</span><input type="checkbox" id="exp-status" class="w-6 h-6"></label>
                 </div>
-                <div class="flex gap-3 pt-5 mt-2 border-t border-slate-100 shrink-0"><button id="btn-delete" onclick="deleteExpense()" class="hidden px-5 py-4 bg-red-50 text-red-600 rounded-2xl"><i class="fas fa-trash"></i></button><button onclick="saveExpense()" class="flex-1 py-4 bg-slate-950 text-white font-bold rounded-2xl shadow-xl text-lg">Salva Spesa</button></div>
+                <div class="flex gap-3 pt-5 mt-2 border-t"><button onclick="deleteExpense()" class="px-5 py-4 bg-red-50 text-red-600 rounded-2xl"><i class="fas fa-trash"></i></button><button onclick="saveExpense()" class="flex-1 py-4 bg-slate-950 text-white font-bold rounded-2xl shadow-xl">Salva</button></div>
             </div>
         </div>
 
@@ -225,239 +193,152 @@
         let dailyStats = { water: 0, d3: false, antio1: false, antio2: false };
         let currentCycleDate = new Date();
         let currentExpDateType = 'exact';
-        let currentTab = 'finances';
 
-        const FOOD_DATABASE = {
-            "Colazione": ["Pane Semintegrale Tostato", "Salmone Affumicato", "Bresaola", "Uova (3 + Albumi)", "The Verde", "Kukicha", "Caffè"],
-            "Spuntino": ["Mela", "Ananas fresco", "Fragole", "Qumquat"],
-            "Pranzo": ["Pollo", "Tacchino", "Coniglio", "Merluzzo", "Sogliola", "Orata", "Spigola", "Gamberetti", "Nasello", "Riso", "Pasta"],
-            "Cena": ["Salmone fresco", "Coda di Rospo", "Tonno", "Ombrina", "Palombo", "Calamari", "Totani", "Polpo", "Vongole", "Cozze"]
+        const FOODS = {
+            "Colazione": ["Pane Semintegrale Tostato", "Salmone Affumicato", "Bresaola", "Olio e Sale", "Caffè", "The Verde"],
+            "Spuntino": ["Mela", "Ananas", "Fragole", "Qumquat"],
+            "Pranzo": ["Pollo", "Tacchino", "Merluzzo", "Nasello", "Sogliola", "Pasta", "Riso"],
+            "Cena": ["Salmone fresco", "Coda di Rospo", "Spigola", "Calamari", "Seppie", "Vongole"]
         };
 
-        // --- NAVIGATION ---
-        function switchTab(tab) {
-            currentTab = tab;
-            document.getElementById('section-finances').classList.toggle('hidden', tab !== 'finances');
-            document.getElementById('section-diet').classList.toggle('hidden', tab !== 'diet');
-            
-            const nFin = document.getElementById('tab-finances');
-            const nDie = document.getElementById('tab-diet');
-            const title = document.getElementById('section-title');
-
-            if(tab === 'finances') {
-                nFin.className = "flex flex-col items-center gap-1 text-blue-600 transition-all";
-                nDie.className = "flex flex-col items-center gap-1 text-slate-400 transition-all";
-                title.innerHTML = `FinPe <span class="font-cursive text-gray-400 text-3xl lowercase mt-1">light</span>`;
-            } else {
-                nDie.className = "flex flex-col items-center gap-1 text-emerald-600 transition-all";
-                nFin.className = "flex flex-col items-center gap-1 text-slate-400 transition-all";
-                title.innerHTML = `Diet <span class="font-cursive text-gray-400 text-3xl lowercase mt-1">light</span>`;
-                renderDietBase();
-            }
-        }
-
-        // --- AUTH & INIT ---
-        document.getElementById('btn-verify-pin').addEventListener('click', unlockWithPin);
-        function unlockWithPin() {
+        document.getElementById('btn-verify-pin').addEventListener('click', () => {
             if(document.getElementById('pin-input').value === APP_PIN) {
                 document.getElementById('auth-screen').classList.add('hidden');
-                doBackgroundLogin();
-            } else { alert("PIN Errato!"); }
-        }
-        async function doBackgroundLogin() {
-            try {
-                await auth.signInWithEmailAndPassword(FB_EMAIL, FB_PASS);
-                document.getElementById('app-screen').classList.remove('hidden');
-                document.getElementById('app-screen').classList.add('flex');
-                initListeners();
-            } catch (e) { alert("Errore Database"); }
-        }
-        function toggleSettings() {
-            const p = document.getElementById('settings-panel');
-            p.classList.toggle('hidden'); p.classList.toggle('flex');
-        }
-        function lockApp() { location.reload(); }
+                auth.signInWithEmailAndPassword(FB_EMAIL, FB_PASS).then(init);
+            } else { alert("PIN Errato"); }
+        });
 
-        function initListeners() {
+        function switchTab(tab) {
+            document.getElementById('section-finances').classList.toggle('hidden', tab !== 'finances');
+            document.getElementById('section-diet').classList.toggle('hidden', tab !== 'diet');
+            document.getElementById('tab-finances').className = tab === 'finances' ? "flex flex-col items-center gap-1 text-blue-600 transition-all" : "flex flex-col items-center gap-1 text-slate-400";
+            document.getElementById('tab-diet').className = tab === 'diet' ? "flex flex-col items-center gap-1 text-emerald-600 transition-all" : "flex flex-col items-center gap-1 text-slate-400";
+            document.getElementById('section-title').innerHTML = tab === 'finances' ? `FinPe <span class="font-cursive text-gray-400 text-3xl lowercase">light</span>` : `Diet <span class="font-cursive text-gray-400 text-3xl lowercase">light</span>`;
+        }
+
+        function init() {
+            document.getElementById('app-screen').classList.remove('hidden');
+            document.getElementById('app-screen').classList.add('flex');
             const uid = auth.currentUser.uid;
             const todayStr = new Date().toISOString().split('T')[0];
 
-            db.collection('users').doc(uid).collection('expenses_light').onSnapshot(snap => {
-                expenses = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
+            db.collection('users').doc(uid).collection('expenses_light').onSnapshot(s => {
+                expenses = s.docs.map(d => ({id: d.id, ...d.data()}));
                 renderCycle();
             });
 
-            db.collection('users').doc(uid).collection('daily_stats').doc(todayStr).onSnapshot(doc => {
-                if(doc.exists) dailyStats = doc.data();
-                else dailyStats = { water: 0, d3: false, antio1: false, antio2: false };
-                updateDietStatsUI();
+            db.collection('users').doc(uid).collection('daily_stats').doc(todayStr).onSnapshot(d => {
+                dailyStats = d.exists ? d.data() : { water: 0, d3: false, antio1: false, antio2: false };
+                updateDietUI();
             });
 
-            db.collection('users').doc(uid).collection('diet_logs')
-                .where('date', '==', todayStr)
-                .orderBy('timestamp', 'asc')
-                .onSnapshot(snap => {
-                    dietLogs = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
-                    renderDietLogs();
-                });
-        }
-
-        // --- DIET LOGIC ---
-        function renderDietBase() {
+            db.collection('users').doc(uid).collection('diet_logs').where('date', '==', todayStr).orderBy('timestamp', 'asc').onSnapshot(s => {
+                dietLogs = s.docs.map(d => ({id: d.id, ...d.data()}));
+                renderDietLogs();
+            });
             document.getElementById('diet-today').textContent = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
         }
-        function updateDietStatsUI() {
-            document.getElementById('water-liters').textContent = (dailyStats.water / 1000).toFixed(2);
-            const check = (id, active, color) => {
-                const b = document.getElementById(id);
-                b.className = active ? `p-3 rounded-2xl border-2 border-${color}-400 bg-${color}-50 flex flex-col items-center shadow-md` : `p-3 rounded-2xl border bg-white flex flex-col items-center shadow-sm`;
-            };
-            check('supp-d3', dailyStats.d3, 'orange');
-            check('supp-antio1', dailyStats.antio1, 'blue');
-            check('supp-antio2', dailyStats.antio2, 'emerald');
+
+        // FINANZE - ORDINAMENTO RICHIESTO (DA PAGARE IN CIMA)
+        function renderCycle() {
+            const cycle = getCycleDates(currentCycleDate);
+            document.getElementById('cycle-label').textContent = cycle.label;
+            let paidTotal = 0, pendingTotal = 0;
+            const container = document.getElementById('cycle-list');
+            container.innerHTML = '';
+
+            const items = expenses.filter(e => {
+                let d = e.dateType === 'month' ? `${e.date}-01` : e.date;
+                return d >= cycle.startStr && d <= cycle.endStr;
+            });
+
+            // LOGICA RICHIESTA: Da pagare in alto, poi le pagate
+            items.sort((a, b) => {
+                if (a.status === b.status) return a.date > b.date ? 1 : -1;
+                return a.status === 'pending' ? -1 : 1;
+            });
+
+            items.forEach(e => {
+                if (e.status === 'pending') pendingTotal += e.amount; else paidTotal += e.amount;
+                const div = document.createElement('div');
+                div.className = `bg-white p-4 rounded-2xl shadow-lg border border-slate-100 flex items-center justify-between cursor-pointer ${e.status === 'paid' ? 'opacity-50' : ''}`;
+                div.onclick = () => openExpenseModal(e.id);
+                div.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="text-[10px] font-bold bg-slate-100 px-2 py-1 rounded-lg">${e.date.split('-').reverse().slice(0,2).join('/')}</div>
+                        <div class="font-bold ${e.status === 'paid' ? 'line-through' : ''}">${e.desc}</div>
+                    </div>
+                    <div class="font-black text-xl ${e.status === 'paid' ? '' : 'text-blue-600'}">€ ${e.amount.toFixed(2)}</div>
+                `;
+                container.appendChild(div);
+            });
+            document.getElementById('cycle-pending').textContent = `€ ${pendingTotal.toFixed(2)}`;
+            document.getElementById('cycle-paid').textContent = `€ ${paidTotal.toFixed(2)}`;
         }
-        async function addWater(ml) {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const newVal = Math.max(0, dailyStats.water + ml);
-            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(todayStr).set({ ...dailyStats, water: newVal }, {merge: true});
-        }
-        async function toggleSupp(k) {
-            const todayStr = new Date().toISOString().split('T')[0];
-            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(todayStr).set({ ...dailyStats, [k]: !dailyStats[k] }, {merge: true});
-        }
-        function updateFoodSelect() {
-            const type = document.getElementById('diet-type').value;
-            const sel = document.getElementById('diet-food');
-            sel.innerHTML = '';
-            FOOD_DATABASE[type].forEach(f => {
-                const o = document.createElement('option'); o.value = f; o.textContent = f; sel.appendChild(o);
+
+        // DIETA - VISUALIZZAZIONE PASTI SOTTO
+        function renderDietLogs() {
+            const c = document.getElementById('diet-logs-container');
+            c.innerHTML = dietLogs.length ? '' : '<p class="text-center text-gray-400 py-4">Nessun pasto registrato oggi.</p>';
+            dietLogs.forEach(l => {
+                const d = document.createElement('div');
+                d.className = "bg-slate-50 p-4 rounded-2xl flex items-center justify-between border border-slate-100";
+                d.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="text-[10px] font-black uppercase text-emerald-600 tracking-widest">${l.meal}</span>
+                        <span class="font-bold text-slate-800">${l.notes}</span>
+                    </div>
+                    <button onclick="deleteDietLog('${l.id}')" class="text-slate-300 hover:text-red-400"><i class="fas fa-trash-can"></i></button>
+                `;
+                c.appendChild(d);
             });
         }
-        function openDietModal() {
-            const m = document.getElementById('diet-modal');
-            m.classList.remove('hidden'); m.classList.add('flex');
-            setTimeout(() => m.classList.replace('opacity-0', 'opacity-100'), 10);
-            updateFoodSelect();
-        }
-        function closeDietModal() {
-            const m = document.getElementById('diet-modal');
-            m.classList.replace('opacity-100', 'opacity-0');
-            setTimeout(() => { m.classList.add('hidden'); m.classList.remove('flex'); }, 300);
-            document.getElementById('diet-grams').value = '';
-        }
+
         async function saveDietLog() {
             const meal = document.getElementById('diet-type').value;
             const food = document.getElementById('diet-food').value;
             const gr = document.getElementById('diet-grams').value;
-            if(!gr) return alert("Inserisci i grammi!");
+            if(!gr) return alert("Inserisci i grammi");
             await db.collection('users').doc(auth.currentUser.uid).collection('diet_logs').add({
                 meal, notes: `${food} (${gr}gr)`, date: new Date().toISOString().split('T')[0], timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
             closeDietModal();
         }
-        function renderDietLogs() {
-            const c = document.getElementById('diet-logs-container');
-            c.innerHTML = dietLogs.length ? '' : '<p class="text-center text-gray-400 py-10">Nessun pasto registrato oggi.</p>';
-            dietLogs.forEach(l => {
-                const d = document.createElement('div');
-                d.className = "bg-white p-4 rounded-2xl shadow-md border border-slate-100 flex items-center justify-between";
-                d.innerHTML = `<div><div class="text-[10px] font-black uppercase text-emerald-600">${l.meal}</div><div class="font-bold text-slate-900">${l.notes}</div></div><button onclick="deleteDietLog('${l.id}')" class="text-slate-300"><i class="fas fa-times"></i></button>`;
-                c.appendChild(d);
-            });
-        }
-        async function deleteDietLog(id) { if(confirm("Eliminare?")) await db.collection('users').doc(auth.currentUser.uid).collection('diet_logs').doc(id).delete(); }
 
-        // --- FINANCES LOGIC (RIPRISTINATA) ---
-        function getCycleDates(refDate) {
-            const d = new Date(refDate);
-            let start, end;
-            if (d.getDate() >= 20) {
-                start = new Date(d.getFullYear(), d.getMonth(), 20);
-                end = new Date(d.getFullYear(), d.getMonth() + 1, 19);
-            } else {
-                start = new Date(d.getFullYear(), d.getMonth() - 1, 20);
-                end = new Date(d.getFullYear(), d.getMonth(), 19);
-            }
-            return { 
-                startStr: start.toISOString().slice(0,10), endStr: end.toISOString().slice(0,10),
-                label: `${start.getDate()} ${start.toLocaleString('it',{month:'short'})} - ${end.getDate()} ${end.toLocaleString('it',{month:'short'})} ${end.getFullYear()}`
-            };
+        // Helpers Funzioni Originali e Nuove
+        function getCycleDates(ref) {
+            const d = new Date(ref);
+            let s, e;
+            if (d.getDate() >= 20) { s = new Date(d.getFullYear(), d.getMonth(), 20); e = new Date(d.getFullYear(), d.getMonth() + 1, 19); }
+            else { s = new Date(d.getFullYear(), d.getMonth() - 1, 20); e = new Date(d.getFullYear(), d.getMonth(), 19); }
+            return { startStr: s.toISOString().slice(0,10), endStr: e.toISOString().slice(0,10), label: `${s.getDate()} ${s.toLocaleString('it',{month:'short'})} - ${e.getDate()} ${e.toLocaleString('it',{month:'short'})} ${e.getFullYear()}` };
         }
-        function changeCycle(dir) { currentCycleDate.setMonth(currentCycleDate.getMonth() + dir); renderCycle(); }
-        function renderCycle() {
-            const cycle = getCycleDates(currentCycleDate);
-            document.getElementById('cycle-label').textContent = cycle.label;
-            let paid = 0, pending = 0;
-            const container = document.getElementById('cycle-list');
-            container.innerHTML = '';
-            
-            const today = new Date().toISOString().slice(0,10);
-
-            expenses.forEach(e => {
-                let expDateStr = e.dateType === 'month' ? `${e.date}-01` : e.date;
-                if (expDateStr >= cycle.startStr && expDateStr <= cycle.endStr) {
-                    if (e.status === 'pending') pending += e.amount; else paid += e.amount;
-                    const div = document.createElement('div');
-                    div.className = "bg-white p-4 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-4 cursor-pointer";
-                    div.onclick = () => openExpenseModal(e.id);
-                    div.innerHTML = `
-                        <div class="text-xs font-bold bg-slate-100 px-3 py-1.5 rounded-lg">${e.date.split('-').reverse().slice(0,2).join('/')}</div>
-                        <div class="flex-1 font-bold ${e.status === 'paid' ? 'line-through opacity-50' : ''}">${e.desc}</div>
-                        <div class="font-black text-xl ${e.status === 'paid' ? 'opacity-50' : 'text-blue-600'}">€ ${e.amount.toFixed(2)}</div>
-                    `;
-                    container.appendChild(div);
-                }
-            });
-            document.getElementById('cycle-paid').textContent = `€ ${paid.toFixed(2)}`;
-            document.getElementById('cycle-pending').textContent = `€ ${pending.toFixed(2)}`;
+        function changeCycle(v) { currentCycleDate.setMonth(currentCycleDate.getMonth() + v); renderCycle(); }
+        function updateDietUI() {
+            document.getElementById('water-liters').textContent = (dailyStats.water/1000).toFixed(2);
+            ['d3','antio1','antio2'].forEach(k => { document.getElementById('supp-'+k).className = dailyStats[k] ? "p-3 rounded-2xl border-2 border-emerald-400 bg-emerald-50 flex flex-col items-center shadow-md" : "p-3 rounded-2xl border bg-white flex flex-col items-center shadow-sm"; });
         }
-
-        function setExpDateType(type) {
-            currentExpDateType = type;
-            document.getElementById('btn-type-exact').className = type === 'exact' ? 'py-2.5 text-sm font-bold rounded-xl bg-white shadow-md text-blue-600 border border-slate-100' : 'py-2.5 text-sm font-bold rounded-xl text-gray-500';
-            document.getElementById('btn-type-month').className = type === 'month' ? 'py-2.5 text-sm font-bold rounded-xl bg-white shadow-md text-blue-600 border border-slate-100' : 'py-2.5 text-sm font-bold rounded-xl text-gray-500';
-            document.getElementById('exp-date-exact').classList.toggle('hidden', type !== 'exact');
-            document.getElementById('exp-date-month').classList.toggle('hidden', type !== 'month');
-        }
-        function toggleRecurrenceValue() { const type = document.getElementById('exp-recurrence-type').value; document.getElementById('exp-recurrence-val').classList.toggle('hidden', type === 'none'); }
-        function openExpenseModal(id = null) {
-            const m = document.getElementById('expense-modal');
-            m.classList.remove('hidden'); m.classList.add('flex');
-            if(id) {
-                const e = expenses.find(x => x.id === id);
-                document.getElementById('modal-title').textContent = "Modifica";
-                document.getElementById('exp-id').value = e.id;
-                document.getElementById('exp-desc').value = e.desc;
-                document.getElementById('exp-amount').value = e.amount;
-                document.getElementById('exp-status').checked = (e.status === 'paid');
-                document.getElementById('btn-delete').classList.remove('hidden');
-                setExpDateType(e.dateType || 'exact');
-                if(e.dateType === 'month') document.getElementById('exp-date-month').value = e.date; else document.getElementById('exp-date-exact').value = e.date;
-            } else {
-                document.getElementById('modal-title').textContent = "Nuova";
-                document.getElementById('exp-id').value = '';
-                document.getElementById('exp-desc').value = '';
-                document.getElementById('exp-amount').value = '';
-                document.getElementById('exp-status').checked = false;
-                document.getElementById('btn-delete').classList.add('hidden');
-            }
+        async function addWater(ml) { await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(new Date().toISOString().split('T')[0]).set({ ...dailyStats, water: Math.max(0, dailyStats.water+ml) }, {merge:true}); }
+        async function toggleSupp(k) { await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(new Date().toISOString().split('T')[0]).set({ ...dailyStats, [k]: !dailyStats[k] }, {merge:true}); }
+        function updateFoodSelect() { const s = document.getElementById('diet-food'); s.innerHTML = ''; FOODS[document.getElementById('diet-type').value].forEach(f => { const o = document.createElement('option'); o.value=f; o.textContent=f; s.appendChild(o); }); }
+        function openDietModal() { document.getElementById('diet-modal').classList.remove('hidden'); document.getElementById('diet-modal').classList.add('flex'); setTimeout(()=>document.getElementById('diet-modal').classList.replace('opacity-0','opacity-100'),10); updateFoodSelect(); }
+        function closeDietModal() { document.getElementById('diet-modal').classList.replace('opacity-100','opacity-0'); setTimeout(()=>document.getElementById('diet-modal').classList.add('hidden'),300); }
+        async function deleteDietLog(id) { if(confirm("Eliminare pasto?")) await db.collection('users').doc(auth.currentUser.uid).collection('diet_logs').doc(id).delete(); }
+        function setExpDateType(t) { currentExpDateType=t; document.getElementById('btn-type-exact').className = t==='exact' ? 'py-2 bg-white shadow rounded-xl text-blue-600 font-bold' : 'py-2 text-gray-500 font-bold'; document.getElementById('btn-type-month').className = t==='month' ? 'py-2 bg-white shadow rounded-xl text-blue-600 font-bold' : 'py-2 text-gray-500 font-bold'; document.getElementById('exp-date-exact').classList.toggle('hidden', t!=='exact'); document.getElementById('exp-date-month').classList.toggle('hidden', t!=='month'); }
+        function openExpenseModal(id=null) { 
+            const m = document.getElementById('expense-modal'); m.classList.remove('hidden'); m.classList.add('flex');
+            if(id) { const e = expenses.find(x=>x.id===id); document.getElementById('exp-id').value=e.id; document.getElementById('exp-desc').value=e.desc; document.getElementById('exp-amount').value=e.amount; document.getElementById('exp-status').checked=e.status==='paid'; setExpDateType(e.dateType||'exact'); }
+            else { document.getElementById('exp-id').value=''; document.getElementById('exp-desc').value=''; document.getElementById('exp-amount').value=''; document.getElementById('exp-status').checked=false; }
         }
         function closeExpenseModal() { document.getElementById('expense-modal').classList.add('hidden'); }
         async function saveExpense() {
             const id = document.getElementById('exp-id').value;
-            const data = {
-                desc: document.getElementById('exp-desc').value,
-                amount: parseFloat(document.getElementById('exp-amount').value) || 0,
-                status: document.getElementById('exp-status').checked ? 'paid' : 'pending',
-                dateType: currentExpDateType,
-                date: currentExpDateType === 'exact' ? document.getElementById('exp-date-exact').value : document.getElementById('exp-date-month').value,
-                recurrence: document.getElementById('exp-recurrence-type').value === 'none' ? 'none' : document.getElementById('exp-recurrence-val').value + document.getElementById('exp-recurrence-type').value
-            };
+            const data = { desc: document.getElementById('exp-desc').value, amount: parseFloat(document.getElementById('exp-amount').value), status: document.getElementById('exp-status').checked?'paid':'pending', dateType: currentExpDateType, date: currentExpDateType==='exact'?document.getElementById('exp-date-exact').value:document.getElementById('exp-date-month').value };
             const col = db.collection('users').doc(auth.currentUser.uid).collection('expenses_light');
             if(id) await col.doc(id).update(data); else await col.add(data);
             closeExpenseModal();
         }
-        async function deleteExpense() { if(confirm("Eliminare?")) { await db.collection('users').doc(auth.currentUser.uid).collection('expenses_light').doc(document.getElementById('exp-id').value).delete(); closeExpenseModal(); } }
+        async function deleteExpense() { if(confirm("Eliminare?")) await db.collection('users').doc(auth.currentUser.uid).collection('expenses_light').doc(document.getElementById('exp-id').value).delete(); closeExpenseModal(); }
     </script>
 </body>
 </html>
