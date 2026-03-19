@@ -134,8 +134,16 @@
 
         <main id="section-diet" class="hidden flex-1 overflow-y-auto relative pb-32 hide-scrollbar bg-slate-50/50 w-full">
             <div class="p-4 sm:p-6 space-y-6 max-w-2xl mx-auto">
-                <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100 text-center">
-                    <div id="diet-today" class="font-black text-slate-950 text-xl capitalize"></div>
+                <div class="flex justify-between items-center bg-white p-5 rounded-3xl shadow-lg border border-slate-100">
+                    <button onclick="changeDietDay(-1)" class="w-12 h-12 rounded-full bg-white text-slate-600 shadow-md flex items-center justify-center border border-slate-100 active:scale-90 transition">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="text-center flex-1">
+                        <div id="diet-today" class="font-black text-slate-950 text-xl capitalize"></div>
+                    </div>
+                    <button onclick="changeDietDay(1)" class="w-12 h-12 rounded-full bg-white text-slate-600 shadow-md flex items-center justify-center border border-slate-100 active:scale-90 transition">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
 
                 <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100 flex items-center gap-4">
@@ -147,10 +155,10 @@
                         <div class="text-3xl font-black text-slate-950 tracking-tight">
                             <span id="daily-kcal">0</span> <span class="text-lg text-gray-500">kcal</span>
                         </div>
-                        <div id="daily-macros-text" class="text-xs font-bold text-gray-500 mt-2 flex gap-2">
-                            <span class="text-blue-500">C: 0g</span> 
-                            <span class="text-red-500">P: 0g</span> 
-                            <span class="text-yellow-500">G: 0g</span>
+                        <div id="daily-macros-text" class="text-[11px] font-bold mt-2 flex flex-col gap-1">
+                            <span class="text-blue-500">C: 0g (0%)</span> 
+                            <span class="text-red-500">P: 0g (0%)</span> 
+                            <span class="text-yellow-500">G: 0g (0%)</span>
                         </div>
                     </div>
                 </div>
@@ -194,7 +202,7 @@
                 </div>
 
                 <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100">
-                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Pasti di oggi</h3>
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Pasti Registrati</h3>
                     <div id="diet-logs-container" class="space-y-4"></div>
                 </div>
             </div>
@@ -251,10 +259,15 @@
         <div id="analysis-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden flex-col items-center justify-end sm:justify-center p-0 sm:p-4 transition-opacity opacity-0 duration-300">
             <div class="bg-white rounded-t-[2rem] sm:rounded-[2rem] p-6 shadow-2xl w-full max-w-md border border-slate-100 max-h-[90dvh] flex flex-col">
                 <div class="flex justify-between items-center mb-6 shrink-0">
-                    <h3 class="font-black text-2xl text-slate-950">Analisi (Ultimi 7 gg)</h3>
-                    <button onclick="closeAnalysisModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center active:scale-90 transition">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <h3 id="analysis-title" class="font-black text-xl text-slate-950">Analisi (Tutto)</h3>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleAnalysisMode()" id="btn-toggle-analysis" class="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-3 py-2 rounded-xl active:scale-95 transition">
+                            Ultimi 7 gg
+                        </button>
+                        <button onclick="closeAnalysisModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center active:scale-90 transition">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="overflow-y-auto hide-scrollbar flex-1 space-y-6 pb-6">
@@ -270,27 +283,27 @@
                     </div>
 
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-center">
-                        <h4 class="text-xs font-bold text-gray-400 uppercase mb-4">Macro Settimanali</h4>
-                        <div class="w-32 h-32 mx-auto relative mb-2">
+                        <h4 class="text-xs font-bold text-gray-400 uppercase mb-4">Media Macronutrienti</h4>
+                        <div class="w-32 h-32 mx-auto relative mb-4">
                             <canvas id="weeklyMacroChart"></canvas>
                         </div>
-                        <div id="weekly-macros-text" class="text-xs font-bold text-gray-500 flex justify-center gap-3"></div>
+                        <div id="weekly-macros-text" class="text-[11px] font-bold flex justify-center gap-3"></div>
                     </div>
 
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                        <h4 class="text-xs font-bold text-gray-400 uppercase mb-4">Costanza Integratori (Su 7 gg)</h4>
+                        <h4 class="text-xs font-bold text-gray-400 uppercase mb-4">Costanza Integratori</h4>
                         <div class="space-y-2 text-sm font-bold">
                             <div class="flex justify-between items-center">
                                 <span class="text-orange-500"><i class="fas fa-capsules mr-2"></i>Vit. D3</span>
-                                <span id="weekly-d3">0/7</span>
+                                <span id="weekly-d3" class="text-gray-500">0 gg</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-blue-500"><i class="fas fa-shield-virus mr-2"></i>Antio 1</span>
-                                <span id="weekly-a1">0/7</span>
+                                <span id="weekly-a1" class="text-gray-500">0 gg</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-emerald-500"><i class="fas fa-leaf mr-2"></i>Antio 2</span>
-                                <span id="weekly-a2">0/7</span>
+                                <span id="weekly-a2" class="text-gray-500">0 gg</span>
                             </div>
                         </div>
                     </div>
@@ -401,6 +414,12 @@
         let currentExpDateType = 'exact';
         let dailyChartInstance = null;
         let weeklyChartInstance = null;
+        
+        // Nuove variabili globali per la Dieta Navigabile
+        let currentDietDate = new Date();
+        let dietStatsUnsubscribe = null;
+        let dietLogsUnsubscribe = null;
+        let currentAnalysisMode = 'all'; // può essere 'all' o '7d'
 
         // DATABASE NUTRIZIONALE (Valori stimati per 100g)
         const NUTRITION_DB = {
@@ -500,7 +519,6 @@
             document.getElementById('app-screen').classList.add('flex');
             
             const uid = auth.currentUser.uid;
-            const todayStr = new Date().toISOString().split('T')[0];
 
             // Inizializzazione Listener Finanze
             db.collection('users').doc(uid).collection('expenses_light').onSnapshot(snapshot => {
@@ -508,28 +526,8 @@
                 renderCycle();
             });
 
-            // Inizializzazione Listener Dieta per Oggi
-            db.collection('users').doc(uid).collection('daily_stats').doc(todayStr).onSnapshot(doc => {
-                dailyStats = doc.exists ? doc.data() : { water: 0, d3: false, antio1_col: false, antio1_pra: false, antio2: false };
-                updateDietUI();
-            });
-
-            // Inizializzazione Listener Pasti di Oggi
-            db.collection('users').doc(uid).collection('diet_logs').where('date', '==', todayStr).onSnapshot(snapshot => {
-                dietLogs = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-                
-                dietLogs.sort((a, b) => {
-                    let tA = a.timestamp ? a.timestamp.toMillis() : Date.now();
-                    let tB = b.timestamp ? b.timestamp.toMillis() : Date.now();
-                    return tA - tB;
-                });
-                
-                renderDietLogs();
-            });
-
-            // Imposta la data a schermo
-            const opzioniData = { weekday: 'long', day: 'numeric', month: 'long' };
-            document.getElementById('diet-today').textContent = new Date().toLocaleDateString('it-IT', opzioniData);
+            // Avvio caricamento dati Dieta per la data corrente
+            loadDietDataForDate(currentDietDate);
         }
 
         function switchTab(tab) {
@@ -600,7 +598,6 @@
                 return formattedDate >= cycle.startStr && formattedDate <= cycle.endStr;
             });
 
-            // Ordinamento: Da pagare in alto, poi pagate. In caso di parità ordina per data.
             itemsInCycle.sort((a, b) => {
                 if (a.status === b.status) {
                     return a.date > b.date ? 1 : -1;
@@ -746,6 +743,53 @@
 
         // --- LOGICA DIETA E ANALISI ---
 
+        // Helper per ottenere la stringa YYYY-MM-DD dalla data selezionata (evitando sballamenti di fuso orario)
+        function getDateString(dateObj) {
+            return new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+        }
+
+        // Funzione per navigare i giorni
+        function changeDietDay(direction) {
+            currentDietDate.setDate(currentDietDate.getDate() + direction);
+            loadDietDataForDate(currentDietDate);
+        }
+
+        // Caricamento Dati Dieta Dinamico
+        function loadDietDataForDate(dateObj) {
+            const uid = auth.currentUser.uid;
+            const dateStr = getDateString(dateObj);
+
+            // Stacco i listener vecchi se esistono (per non ascoltare giorni passati in background)
+            if (dietStatsUnsubscribe) dietStatsUnsubscribe();
+            if (dietLogsUnsubscribe) dietLogsUnsubscribe();
+
+            // Aggiorno Titolo UI
+            const todayStr = getDateString(new Date());
+            const opzioniData = { weekday: 'long', day: 'numeric', month: 'long' };
+            
+            if (dateStr === todayStr) {
+                document.getElementById('diet-today').textContent = "Oggi";
+            } else {
+                document.getElementById('diet-today').textContent = dateObj.toLocaleDateString('it-IT', opzioniData);
+            }
+
+            // Riattacco per il giorno attualmente selezionato
+            dietStatsUnsubscribe = db.collection('users').doc(uid).collection('daily_stats').doc(dateStr).onSnapshot(doc => {
+                dailyStats = doc.exists ? doc.data() : { water: 0, d3: false, antio1_col: false, antio1_pra: false, antio2: false };
+                updateDietUI();
+            });
+
+            dietLogsUnsubscribe = db.collection('users').doc(uid).collection('diet_logs').where('date', '==', dateStr).onSnapshot(snapshot => {
+                dietLogs = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                dietLogs.sort((a, b) => {
+                    let tA = a.timestamp ? a.timestamp.toMillis() : Date.now();
+                    let tB = b.timestamp ? b.timestamp.toMillis() : Date.now();
+                    return tA - tB;
+                });
+                renderDietLogs();
+            });
+        }
+
         function updateDietUI() {
             document.getElementById('water-liters').textContent = (dailyStats.water / 1000).toFixed(2);
             
@@ -760,7 +804,6 @@
                 else if (chiave.includes('antio1')) colorClass = 'blue';
                 else colorClass = 'emerald';
 
-                // Usiamo flex-1 per i pulsanti dell'Antio 1 (perché sono divisi nello stesso blocco)
                 if (chiave.includes('antio1')) {
                     btn.className = isActive 
                         ? `flex-1 p-3 rounded-xl border-2 border-${colorClass}-400 bg-${colorClass}-50 flex items-center justify-center gap-2 shadow-md text-[10px] font-bold transition-all active:scale-95` 
@@ -779,10 +822,10 @@
             
             if(val <= 0) return;
             
-            const todayStr = new Date().toISOString().split('T')[0];
+            const dateStr = getDateString(currentDietDate);
             const currentWater = dailyStats.water || 0;
             
-            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(todayStr).set({ 
+            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(dateStr).set({ 
                 ...dailyStats, 
                 water: currentWater + val 
             }, { merge: true });
@@ -791,10 +834,10 @@
         }
 
         async function toggleSupp(chiave) { 
-            const todayStr = new Date().toISOString().split('T')[0];
+            const dateStr = getDateString(currentDietDate);
             const newValue = !dailyStats[chiave];
             
-            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(todayStr).set({ 
+            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(dateStr).set({ 
                 ...dailyStats, 
                 [chiave]: newValue 
             }, { merge: true }); 
@@ -807,7 +850,6 @@
             selettoreCibo.innerHTML = ''; 
             
             if (tipoPasto === "Colazione") {
-                // Per la colazione non ci sono macro gruppi
                 const cibiColazione = ["Pane Semintegrale Tostato", "Salmone Affumicato", "Bresaola"];
                 cibiColazione.forEach(cibo => {
                     const opzione = document.createElement('option'); 
@@ -816,7 +858,6 @@
                     selettoreCibo.appendChild(opzione);
                 });
             } else {
-                // Per pranzo e cena iteriamo sui macro gruppi
                 for (const [nomeGruppo, listaAlimenti] of Object.entries(FOODS_GROUPS)) {
                     const optgroup = document.createElement('optgroup');
                     optgroup.label = nomeGruppo;
@@ -860,9 +901,7 @@
                 return alert("Inserisci una quantità in grammi valida.");
             }
 
-            // Cerca nel DB nutrizionale in modo case-insensitive
             const foodKeyInDb = Object.keys(NUTRITION_DB).find(k => k.toLowerCase() === foodName.toLowerCase());
-            
             const nutritionValues = NUTRITION_DB[foodKeyInDb] || { kcal: 0, c: 0, p: 0, f: 0 };
             const multiplier = gramsInput / 100;
             
@@ -878,7 +917,7 @@
                 food: foodName,
                 grams: gramsInput,
                 notes: `${foodName} (${gramsInput}g)`, 
-                date: new Date().toISOString().split('T')[0], 
+                date: getDateString(currentDietDate), 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 macros: calcolatedMacros
             });
@@ -893,7 +932,7 @@
             let totalKcal = 0, totalCarbs = 0, totalProteins = 0, totalFats = 0;
             
             if(dietLogs.length === 0) {
-                container.innerHTML = '<p class="text-center text-gray-400 py-4 text-sm">Nessun pasto registrato oggi.</p>';
+                container.innerHTML = '<p class="text-center text-gray-400 py-4 text-sm">Nessun pasto registrato per questa data.</p>';
             } else {
                 const mealsOrderAndConfig = {
                     "Colazione": { colore: "blue" },
@@ -903,7 +942,6 @@
                 
                 const groupedMeals = { "Colazione": [], "Pranzo": [], "Cena": [] };
                 
-                // Raggruppo e sommo i macro
                 dietLogs.forEach(log => {
                     if(log.macros) {
                         totalKcal += log.macros.kcal || 0;
@@ -916,7 +954,6 @@
                     }
                 });
                 
-                // Renderizzo i blocchi per ogni pasto
                 Object.keys(mealsOrderAndConfig).forEach(mealName => {
                     const pastiNelGruppo = groupedMeals[mealName];
                     
@@ -926,13 +963,11 @@
                         const mealBlock = document.createElement('div');
                         mealBlock.className = `mb-4 bg-${colorePasto}-50 p-4 rounded-3xl border border-${colorePasto}-100`;
                         
-                        // Header del pasto (es. COLAZIONE)
                         const mealHeader = document.createElement('div');
                         mealHeader.className = `text-[10px] font-black uppercase text-${colorePasto}-600 tracking-widest border-b border-${colorePasto}-100 pb-1 mb-2`;
                         mealHeader.textContent = mealName;
                         mealBlock.appendChild(mealHeader);
                         
-                        // Alimenti del pasto
                         pastiNelGruppo.forEach(log => {
                             const itemDiv = document.createElement('div');
                             itemDiv.className = "flex items-center justify-between py-1.5";
@@ -956,15 +991,19 @@
                 });
             }
 
-            // Aggiorna la UI Giornaliera dei Kcal e Macro testuali
+            // Calcolo percentuali per i macronutrienti giornalieri
+            const totalMacros = totalCarbs + totalProteins + totalFats;
+            const percC = totalMacros > 0 ? Math.round((totalCarbs / totalMacros) * 100) : 0;
+            const percP = totalMacros > 0 ? Math.round((totalProteins / totalMacros) * 100) : 0;
+            const percF = totalMacros > 0 ? Math.round((totalFats / totalMacros) * 100) : 0;
+
             document.getElementById('daily-kcal').textContent = Math.round(totalKcal);
             document.getElementById('daily-macros-text').innerHTML = `
-                <span class="text-blue-500">C: ${Math.round(totalCarbs)}g</span> 
-                <span class="text-red-500">P: ${Math.round(totalProteins)}g</span> 
-                <span class="text-yellow-500">G: ${Math.round(totalFats)}g</span>
+                <span class="text-blue-500">C: ${Math.round(totalCarbs)}g (${percC}%)</span> 
+                <span class="text-red-500">P: ${Math.round(totalProteins)}g (${percP}%)</span> 
+                <span class="text-yellow-500">G: ${Math.round(totalFats)}g (${percF}%)</span>
             `;
             
-            // Aggiorna il Grafico a Torta
             updateChart('dailyMacroChart', totalCarbs, totalProteins, totalFats, dailyChartInstance, (nuovaIstanza) => {
                 dailyChartInstance = nuovaIstanza;
             });
@@ -1015,24 +1054,42 @@
             callbackSalvataggio(nuovoGrafico);
         }
 
-        // --- ANALISI SETTIMANALE ---
-        async function openAnalysisModal() {
-            const modal = document.getElementById('analysis-modal');
-            modal.classList.remove('hidden'); 
-            modal.classList.add('flex');
-            setTimeout(() => modal.classList.replace('opacity-0', 'opacity-100'), 10);
-
-            const uid = auth.currentUser.uid;
+        // --- ANALISI SETTIMANALE/GLOBALE ---
+        function toggleAnalysisMode() {
+            currentAnalysisMode = currentAnalysisMode === 'all' ? '7d' : 'all';
+            const modeText = currentAnalysisMode === 'all' ? 'Tutto' : 'Ultimi 7 gg';
+            const btnText = currentAnalysisMode === 'all' ? 'Ultimi 7 gg' : 'Vedi Tutto';
             
-            // Calcolo Data Iniziale (Oggi - 6 giorni = 7 giorni totali)
-            const d = new Date();
-            d.setDate(d.getDate() - 6);
-            const dataInizioStr = d.toISOString().split('T')[0];
+            document.getElementById('analysis-title').textContent = `Analisi (${modeText})`;
+            document.getElementById('btn-toggle-analysis').textContent = btnText;
+            
+            fetchAndRenderAnalysis();
+        }
 
-            // Recupero Dati Acqua e Integratori
-            const queryStats = await db.collection('users').doc(uid).collection('daily_stats').where(firebase.firestore.FieldPath.documentId(), '>=', dataInizioStr).get();
+        async function fetchAndRenderAnalysis() {
+            const uid = auth.currentUser.uid;
+            let dataInizioStr = null;
+
+            if (currentAnalysisMode === '7d') {
+                const d = new Date();
+                d.setDate(d.getDate() - 6);
+                dataInizioStr = getDateString(d);
+            }
+
+            let queryStatsRef = db.collection('users').doc(uid).collection('daily_stats');
+            let queryPastiRef = db.collection('users').doc(uid).collection('diet_logs');
+
+            if (dataInizioStr) {
+                queryStatsRef = queryStatsRef.where(firebase.firestore.FieldPath.documentId(), '>=', dataInizioStr);
+                queryPastiRef = queryPastiRef.where('date', '>=', dataInizioStr);
+            }
+
+            // Eseguo le query
+            const [queryStats, queryPasti] = await Promise.all([queryStatsRef.get(), queryPastiRef.get()]);
+            
             let sumWater = 0;
             let counterD3 = 0, counterA1Col = 0, counterA1Pra = 0, counterA2 = 0;
+            let primaDataTrovata = new Date();
             
             queryStats.forEach(doc => {
                 const data = doc.data();
@@ -1041,13 +1098,13 @@
                 if(data.antio1_col) counterA1Col++;
                 if(data.antio1_pra) counterA1Pra++;
                 if(data.antio2) counterA2++;
+                
+                const docDate = new Date(doc.id);
+                if(docDate < primaDataTrovata) primaDataTrovata = docDate;
             });
             
-            // Per l'antio1 calcoliamo quanti giorni è stato preso "in modo completo" o mostriamo il parziale
             const mediaAntio1 = Math.round((counterA1Col + counterA1Pra) / 2);
 
-            // Recupero Dati Pasti (Kcal e Macro)
-            const queryPasti = await db.collection('users').doc(uid).collection('diet_logs').where('date', '>=', dataInizioStr).get();
             let sumKcal = 0, sumC = 0, sumP = 0, sumF = 0;
             
             queryPasti.forEach(doc => {
@@ -1058,29 +1115,57 @@
                     sumP += mac.p; 
                     sumF += mac.f; 
                 }
+                const docDate = new Date(doc.data().date);
+                if(docDate < primaDataTrovata) primaDataTrovata = docDate;
             });
 
-            // Calcoli e Popolamento Interfaccia
-            const giorniTracciati = queryStats.size || 1; // Previene divisioni per zero se l'utente è nuovo
+            // Calcolo Giorni Tracciati per creare la media
+            let giorniTracciati = 1;
+            if (currentAnalysisMode === '7d') {
+                giorniTracciati = 7;
+            } else {
+                // Calcolo differenza tra la primissima registrazione mai fatta e oggi
+                const oggi = new Date();
+                const diffTime = Math.abs(oggi - primaDataTrovata);
+                giorniTracciati = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if (giorniTracciati < 1) giorniTracciati = 1;
+            }
+
             const mediaKcalGiornaliera = Math.round(sumKcal / giorniTracciati);
             const mediaAcquaGiornaliera = sumWater / giorniTracciati;
 
             document.getElementById('weekly-avg-kcal').textContent = mediaKcalGiornaliera;
             document.getElementById('weekly-avg-water').textContent = (mediaAcquaGiornaliera / 1000).toFixed(2) + " L";
             
-            document.getElementById('weekly-d3').textContent = `${counterD3}/7`;
-            document.getElementById('weekly-a1').textContent = `${mediaAntio1}/7`;
-            document.getElementById('weekly-a2').textContent = `${counterA2}/7`;
+            document.getElementById('weekly-d3').textContent = `${counterD3} gg`;
+            document.getElementById('weekly-a1').textContent = `${mediaAntio1} gg`;
+            document.getElementById('weekly-a2').textContent = `${counterA2} gg`;
+
+            // Calcolo percentuali macro globali
+            const totalMacros = sumC + sumP + sumF;
+            const percC = totalMacros > 0 ? Math.round((sumC / totalMacros) * 100) : 0;
+            const percP = totalMacros > 0 ? Math.round((sumP / totalMacros) * 100) : 0;
+            const percF = totalMacros > 0 ? Math.round((sumF / totalMacros) * 100) : 0;
 
             document.getElementById('weekly-macros-text').innerHTML = `
-                <span class="text-blue-500">C: ${Math.round(sumC)}g</span> 
-                <span class="text-red-500">P: ${Math.round(sumP)}g</span> 
-                <span class="text-yellow-500">G: ${Math.round(sumF)}g</span>
+                <span class="text-blue-500">C: ${Math.round(sumC)}g (${percC}%)</span> 
+                <span class="text-red-500">P: ${Math.round(sumP)}g (${percP}%)</span> 
+                <span class="text-yellow-500">G: ${Math.round(sumF)}g (${percF}%)</span>
             `;
             
             updateChart('weeklyMacroChart', sumC, sumP, sumF, weeklyChartInstance, (nuovaIstanza) => {
                 weeklyChartInstance = nuovaIstanza;
             });
+        }
+
+        function openAnalysisModal() {
+            const modal = document.getElementById('analysis-modal');
+            modal.classList.remove('hidden'); 
+            modal.classList.add('flex');
+            setTimeout(() => modal.classList.replace('opacity-0', 'opacity-100'), 10);
+
+            // Carichiamo subito i dati correnti in base alla modalità selezionata
+            fetchAndRenderAnalysis();
         }
 
         function closeAnalysisModal() {
