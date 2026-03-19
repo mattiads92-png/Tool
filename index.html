@@ -8,8 +8,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="MLogo.png">
-    <link rel="icon" type="image/jpeg" href="MLogo.png">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -31,9 +31,18 @@
                         'bounce-slight': 'bounceSlight 2s infinite ease-in-out',
                     },
                     keyframes: {
-                        fadeInUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        slideDown: { '0%': { opacity: '0', transform: 'translateY(-20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        bounceSlight: { '0%, 100%': { transform: 'translateY(-5%)' }, '50%': { transform: 'translateY(0)' } }
+                        fadeInUp: { 
+                            '0%': { opacity: '0', transform: 'translateY(20px)' }, 
+                            '100%': { opacity: '1', transform: 'translateY(0)' } 
+                        },
+                        slideDown: { 
+                            '0%': { opacity: '0', transform: 'translateY(-20px)' }, 
+                            '100%': { opacity: '1', transform: 'translateY(0)' } 
+                        },
+                        bounceSlight: { 
+                            '0%, 100%': { transform: 'translateY(-5%)' }, 
+                            '50%': { transform: 'translateY(0)' } 
+                        }
                     }
                 }
             }
@@ -41,48 +50,69 @@
     </script>
 
     <style>
-        body { font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #ffffff; }
-        .font-cursive { font-family: 'Dancing Script', cursive; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .modal-container { max-height: 85dvh; } 
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+            background-color: #ffffff; 
+        }
+        .font-cursive { 
+            font-family: 'Dancing Script', cursive; 
+        }
+        .hide-scrollbar::-webkit-scrollbar { 
+            display: none; 
+        }
+        .modal-container { 
+            max-height: 85dvh; 
+        } 
     </style>
 </head>
 <body class="text-slate-800 h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden relative bg-white">
 
     <div id="auth-screen" class="w-full h-full px-6 flex flex-col items-center text-center z-50 absolute inset-0 justify-center bg-white transition-all duration-500">
-        <img src="MLogo.png" alt="Logo" class="w-28 h-28 rounded-3xl shadow-lg mb-6 object-cover bg-white animate-fade-in-up" onerror="this.src='https://via.placeholder.com/100?text=G';">
+        <img src="logo.jpg" alt="Logo" class="w-28 h-28 rounded-3xl shadow-lg mb-6 object-cover bg-white animate-fade-in-up" onerror="this.src='https://via.placeholder.com/100?text=G';">
         <h1 class="font-black text-5xl mb-12 text-slate-950 animate-fade-in-up tracking-tight flex items-center justify-center gap-2">
             Gestionale
         </h1>
         <input type="password" id="pin-input" class="w-full max-w-sm text-center text-4xl tracking-[0.5em] py-5 rounded-2xl border border-slate-200 mb-6 outline-none text-slate-950 shadow-md animate-fade-in-up" maxlength="4" placeholder="••••" inputmode="numeric">
-        <button id="btn-verify-pin" class="w-full max-w-sm py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-lg hover:bg-blue-700 transition active:scale-95 text-lg animate-fade-in-up">Sblocca App</button>
+        <button id="btn-verify-pin" class="w-full max-w-sm py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-lg hover:bg-blue-700 transition active:scale-95 text-lg animate-fade-in-up">
+            Sblocca App
+        </button>
     </div>
 
     <div id="app-screen" class="hidden w-full h-full flex-col max-w-md md:max-w-3xl mx-auto relative bg-white overflow-hidden border-x border-slate-100">
         
         <header class="p-5 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10 animate-slide-down">
             <div class="flex items-center gap-3">
-                <img src="MLogo.png" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-slate-100" onerror="this.style.display='none';">
+                <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-slate-100" onerror="this.style.display='none';">
                 <h2 id="section-title" class="font-black text-2xl tracking-tight text-slate-950 flex items-center gap-1">
                     Finanza
                 </h2>
             </div>
             <div class="flex gap-2">
-                <button id="btn-analysis" onclick="openAnalysisModal()" class="hidden w-11 h-11 rounded-full bg-emerald-50 text-emerald-600 shadow-sm border border-emerald-100 flex items-center justify-center active:scale-90 transition"><i class="fas fa-chart-pie"></i></button>
-                <button onclick="toggleSettings()" class="w-11 h-11 rounded-full bg-white shadow-md border border-slate-100 text-slate-600 flex items-center justify-center active:scale-90 transition"><i class="fas fa-cog"></i></button>
+                <button id="btn-analysis" onclick="openAnalysisModal()" class="hidden w-11 h-11 rounded-full bg-emerald-50 text-emerald-600 shadow-sm border border-emerald-100 flex items-center justify-center active:scale-90 transition">
+                    <i class="fas fa-chart-pie"></i>
+                </button>
+                <button onclick="toggleSettings()" class="w-11 h-11 rounded-full bg-white shadow-md border border-slate-100 text-slate-600 flex items-center justify-center active:scale-90 transition">
+                    <i class="fas fa-cog"></i>
+                </button>
             </div>
         </header>
 
         <main id="section-finances" class="flex-1 overflow-y-auto relative pb-32 hide-scrollbar bg-slate-50/50 w-full">
             <div class="p-4 sm:p-6 space-y-6 max-w-2xl mx-auto">
                 <div class="flex justify-between items-center bg-white p-5 rounded-3xl shadow-lg border border-slate-100">
-                    <button onclick="changeCycle(-1)" class="w-12 h-12 rounded-full bg-white text-slate-600 shadow-md flex items-center justify-center border border-slate-100"><i class="fas fa-chevron-left"></i></button>
+                    <button onclick="changeCycle(-1)" class="w-12 h-12 rounded-full bg-white text-slate-600 shadow-md flex items-center justify-center border border-slate-100">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
                     <div class="text-center">
                         <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Periodo Attuale</div>
                         <div id="cycle-label" class="font-black text-slate-950 text-xl tracking-tight">...</div>
                     </div>
-                    <button onclick="changeCycle(1)" class="w-12 h-12 rounded-full bg-white text-slate-600 shadow-md flex items-center justify-center border border-slate-100"><i class="fas fa-chevron-right"></i></button>
+                    <button onclick="changeCycle(1)" class="w-12 h-12 rounded-full bg-white text-slate-600 shadow-md flex items-center justify-center border border-slate-100">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
+
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100 text-center">
                         <div class="text-xs font-bold text-red-600 uppercase tracking-wider mb-2">Da Pagare</div>
@@ -93,8 +123,10 @@
                         <div id="cycle-paid" class="text-3xl font-black text-slate-950 tracking-tight">€ 0.00</div>
                     </div>
                 </div>
+
                 <div id="cycle-list" class="space-y-4 pt-2"></div>
             </div>
+            
             <button onclick="openExpenseModal()" class="fixed bottom-24 right-6 w-16 h-16 bg-blue-600 text-white rounded-2xl shadow-lg flex items-center justify-center text-2xl z-20 animate-bounce-slight border border-white/20 active:scale-95 transition">
                 <i class="fas fa-plus"></i>
             </button>
@@ -112,27 +144,52 @@
                     </div>
                     <div class="flex-1">
                         <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Stima Giornaliera</div>
-                        <div class="text-3xl font-black text-slate-950 tracking-tight"><span id="daily-kcal">0</span> <span class="text-lg text-gray-500">kcal</span></div>
+                        <div class="text-3xl font-black text-slate-950 tracking-tight">
+                            <span id="daily-kcal">0</span> <span class="text-lg text-gray-500">kcal</span>
+                        </div>
                         <div id="daily-macros-text" class="text-xs font-bold text-gray-500 mt-2 flex gap-2">
-                            <span class="text-blue-500">C: 0g</span> <span class="text-red-500">P: 0g</span> <span class="text-yellow-500">G: 0g</span>
+                            <span class="text-blue-500">C: 0g</span> 
+                            <span class="text-red-500">P: 0g</span> 
+                            <span class="text-yellow-500">G: 0g</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-2">
-                    <button onclick="toggleSupp('d3')" id="supp-d3" class="p-4 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all active:scale-95"><i class="fas fa-capsules text-orange-400 text-xl mb-1"></i><span class="text-[10px] font-bold">Vit. D3</span></button>
-                    <button onclick="toggleSupp('antio1')" id="supp-antio1" class="p-4 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all active:scale-95"><i class="fas fa-shield-virus text-blue-400 text-xl mb-1"></i><span class="text-[10px] font-bold">Antio 1</span></button>
-                    <button onclick="toggleSupp('antio2')" id="supp-antio2" class="p-4 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all active:scale-95"><i class="fas fa-leaf text-emerald-400 text-xl mb-1"></i><span class="text-[10px] font-bold">Antio 2</span></button>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex flex-col gap-2">
+                        <button onclick="toggleSupp('d3')" id="supp-d3" class="p-4 h-full rounded-2xl border bg-white flex flex-col items-center justify-center shadow-sm transition-all active:scale-95">
+                            <i class="fas fa-sun text-orange-400 text-xl mb-1"></i>
+                            <span class="text-[10px] font-bold uppercase">Vit. D3</span>
+                        </button>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <button onclick="toggleSupp('antio1_col')" id="supp-antio1_col" class="p-2 rounded-xl border bg-white flex items-center justify-center gap-2 shadow-sm text-[10px] font-bold transition-all active:scale-95">
+                            <i class="fas fa-shield-virus text-blue-400"></i>Antio 1 (Colaz.)
+                        </button>
+                        <button onclick="toggleSupp('antio1_pra')" id="supp-antio1_pra" class="p-2 rounded-xl border bg-white flex items-center justify-center gap-2 shadow-sm text-[10px] font-bold transition-all active:scale-95">
+                            <i class="fas fa-shield-virus text-blue-600"></i>Antio 1 (Pranzo)
+                        </button>
+                    </div>
+                    <div class="col-span-2">
+                        <button onclick="toggleSupp('antio2')" id="supp-antio2" class="p-3 w-full rounded-2xl border bg-white flex items-center justify-center gap-3 shadow-sm transition-all active:scale-95">
+                            <i class="fas fa-leaf text-emerald-400 text-xl"></i>
+                            <span class="text-[10px] font-bold uppercase">Antiossidante 2</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100 flex items-center justify-between">
                     <div>
                         <h3 class="text-xs font-bold text-gray-400 uppercase">Idratazione</h3>
-                        <div class="text-3xl font-black text-blue-600 tracking-tight"><span id="water-liters">0.00</span> <span class="text-lg">L</span></div>
+                        <div class="text-3xl font-black text-blue-600 tracking-tight">
+                            <span id="water-liters">0.00</span> <span class="text-lg">L</span>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="addWater(-250)" class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-sm active:scale-90 transition">-</button>
-                        <button onclick="addWater(250)" class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md font-bold text-sm active:scale-90 transition">+250ml</button>
+                    <div class="flex gap-2 items-center bg-slate-50 p-2 rounded-2xl border border-slate-100">
+                        <input type="number" id="water-input-ml" class="w-16 bg-transparent text-center font-black text-slate-900 outline-none" placeholder="ml">
+                        <button onclick="addCustomWater()" class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md active:scale-90 transition">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -141,6 +198,7 @@
                     <div id="diet-logs-container" class="space-y-4"></div>
                 </div>
             </div>
+            
             <button onclick="openDietModal()" class="fixed bottom-24 right-6 w-16 h-16 bg-emerald-600 text-white rounded-2xl shadow-lg flex items-center justify-center text-2xl z-20 active:scale-95 transition border border-white/20">
                 <i class="fas fa-utensils"></i>
             </button>
@@ -148,10 +206,12 @@
 
         <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 h-20 flex items-center justify-around px-6 z-30 shadow-lg">
             <button onclick="switchTab('finances')" id="tab-finances" class="flex flex-col items-center gap-1 text-blue-600 transition-all">
-                <i class="fas fa-wallet text-xl"></i><span class="text-[10px] font-bold uppercase">Finanze</span>
+                <i class="fas fa-wallet text-xl"></i>
+                <span class="text-[10px] font-bold uppercase">Finanze</span>
             </button>
             <button onclick="switchTab('diet')" id="tab-diet" class="flex flex-col items-center gap-1 text-slate-400 transition-all">
-                <i class="fas fa-apple-whole text-xl"></i><span class="text-[10px] font-bold uppercase">Dieta</span>
+                <i class="fas fa-apple-whole text-xl"></i>
+                <span class="text-[10px] font-bold uppercase">Dieta</span>
             </button>
         </nav>
 
@@ -159,14 +219,16 @@
             <div class="bg-white rounded-[2rem] p-6 shadow-2xl w-full max-w-md border border-slate-100">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="font-black text-2xl text-slate-950">Registra Pasto</h3>
-                    <button onclick="closeDietModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center active:scale-90 transition"><i class="fas fa-times"></i></button>
+                    <button onclick="closeDietModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center active:scale-90 transition">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
+                
                 <div class="space-y-4">
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase block mb-1">Momento</label>
                         <select id="diet-type" class="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50 font-bold outline-none" onchange="updateFoodSelect()">
                             <option value="Colazione">Colazione</option>
-                            <option value="Spuntino">Spuntino</option>
                             <option value="Pranzo">Pranzo</option>
                             <option value="Cena">Cena</option>
                         </select>
@@ -179,7 +241,9 @@
                         <label class="text-xs font-bold text-gray-500 uppercase block mb-1">Quantità (Grammi)</label>
                         <input type="number" id="diet-grams" class="w-full p-4 rounded-2xl border border-slate-200 font-black text-2xl text-emerald-600 outline-none" placeholder="Es. 150">
                     </div>
-                    <button onclick="saveDietLog()" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl shadow-xl active:scale-95 transition text-lg mt-2">Salva Pasto</button>
+                    <button onclick="saveDietLog()" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl shadow-xl active:scale-95 transition text-lg mt-2">
+                        Salva Pasto
+                    </button>
                 </div>
             </div>
         </div>
@@ -188,7 +252,9 @@
             <div class="bg-white rounded-t-[2rem] sm:rounded-[2rem] p-6 shadow-2xl w-full max-w-md border border-slate-100 max-h-[90dvh] flex flex-col">
                 <div class="flex justify-between items-center mb-6 shrink-0">
                     <h3 class="font-black text-2xl text-slate-950">Analisi (Ultimi 7 gg)</h3>
-                    <button onclick="closeAnalysisModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center active:scale-90 transition"><i class="fas fa-times"></i></button>
+                    <button onclick="closeAnalysisModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center active:scale-90 transition">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 
                 <div class="overflow-y-auto hide-scrollbar flex-1 space-y-6 pb-6">
@@ -214,9 +280,18 @@
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
                         <h4 class="text-xs font-bold text-gray-400 uppercase mb-4">Costanza Integratori (Su 7 gg)</h4>
                         <div class="space-y-2 text-sm font-bold">
-                            <div class="flex justify-between items-center"><span class="text-orange-500"><i class="fas fa-capsules mr-2"></i>Vit. D3</span><span id="weekly-d3">0/7</span></div>
-                            <div class="flex justify-between items-center"><span class="text-blue-500"><i class="fas fa-shield-virus mr-2"></i>Antio 1</span><span id="weekly-a1">0/7</span></div>
-                            <div class="flex justify-between items-center"><span class="text-emerald-500"><i class="fas fa-leaf mr-2"></i>Antio 2</span><span id="weekly-a2">0/7</span></div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-orange-500"><i class="fas fa-capsules mr-2"></i>Vit. D3</span>
+                                <span id="weekly-d3">0/7</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-blue-500"><i class="fas fa-shield-virus mr-2"></i>Antio 1</span>
+                                <span id="weekly-a1">0/7</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-emerald-500"><i class="fas fa-leaf mr-2"></i>Antio 2</span>
+                                <span id="weekly-a2">0/7</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -227,18 +302,35 @@
             <div id="expense-modal-content" class="bg-white rounded-[2rem] p-6 shadow-2xl w-full max-w-md flex flex-col modal-container border border-slate-100">
                 <div class="flex justify-between items-center mb-6 shrink-0">
                     <h3 id="modal-title" class="font-black text-3xl text-slate-950">Nuova Spesa</h3>
-                    <button onclick="closeExpenseModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center active:scale-90 transition"><i class="fas fa-times"></i></button>
+                    <button onclick="closeExpenseModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center active:scale-90 transition">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
+                
                 <input type="hidden" id="exp-id">
+                
                 <div class="space-y-4 overflow-y-auto hide-scrollbar flex-1 pr-1">
-                    <input type="text" id="exp-desc" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none" placeholder="Descrizione">
-                    <input type="number" id="exp-amount" step="0.01" class="w-full p-4 rounded-2xl border border-slate-200 font-black text-3xl text-blue-600 outline-none" placeholder="0.00">
-                    <div class="grid grid-cols-2 gap-2 bg-slate-50 p-1 rounded-2xl">
-                        <button id="btn-type-exact" onclick="setExpDateType('exact')" class="py-2.5 text-sm bg-white shadow-sm rounded-xl text-blue-600 font-bold border border-slate-100 transition">Data Esatta</button>
-                        <button id="btn-type-month" onclick="setExpDateType('month')" class="py-2.5 text-sm text-gray-500 font-bold transition">Solo Mese</button>
+                    <div>
+                        <input type="text" id="exp-desc" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none" placeholder="Descrizione">
                     </div>
-                    <input type="date" id="exp-date-exact" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none">
-                    <input type="month" id="exp-date-month" class="w-full p-4 rounded-2xl border border-slate-200 font-bold hidden outline-none">
+                    <div>
+                        <input type="number" id="exp-amount" step="0.01" class="w-full p-4 rounded-2xl border border-slate-200 font-black text-3xl text-blue-600 outline-none" placeholder="0.00">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2 bg-slate-50 p-1 rounded-2xl">
+                        <button id="btn-type-exact" onclick="setExpDateType('exact')" class="py-2.5 text-sm bg-white shadow-sm rounded-xl text-blue-600 font-bold border border-slate-100 transition">
+                            Data Esatta
+                        </button>
+                        <button id="btn-type-month" onclick="setExpDateType('month')" class="py-2.5 text-sm text-gray-500 font-bold transition">
+                            Solo Mese
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <input type="date" id="exp-date-exact" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none">
+                        <input type="month" id="exp-date-month" class="w-full p-4 rounded-2xl border border-slate-200 font-bold hidden outline-none">
+                    </div>
+                    
                     <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
                         <label class="text-[10px] font-bold text-gray-500 uppercase block mb-1">Ricorrenza</label>
                         <select id="exp-recurrence-type" class="w-full p-3 rounded-xl border border-slate-200 font-bold outline-none">
@@ -247,21 +339,29 @@
                             <option value="y">Ogni anno</option>
                         </select>
                     </div>
+                    
                     <label class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100 cursor-pointer">
                         <span class="font-bold">Già Pagata?</span>
                         <input type="checkbox" id="exp-status" class="w-6 h-6 rounded text-blue-600 focus:ring-0">
                     </label>
                 </div>
+                
                 <div class="flex gap-3 pt-5 mt-2 border-t border-slate-100 shrink-0">
-                    <button id="btn-delete-exp" onclick="deleteExpense()" class="hidden px-5 py-4 bg-red-50 text-red-600 rounded-2xl active:scale-95 transition"><i class="fas fa-trash"></i></button>
-                    <button onclick="saveExpense()" class="flex-1 py-4 bg-slate-950 text-white font-bold rounded-2xl shadow-xl active:scale-95 transition">Salva</button>
+                    <button id="btn-delete-exp" onclick="deleteExpense()" class="hidden px-5 py-4 bg-red-50 text-red-600 rounded-2xl active:scale-95 transition">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button onclick="saveExpense()" class="flex-1 py-4 bg-slate-950 text-white font-bold rounded-2xl shadow-xl active:scale-95 transition">
+                        Salva
+                    </button>
                 </div>
             </div>
         </div>
 
         <div id="settings-panel" class="absolute inset-0 bg-white z-[70] hidden flex-col transition-colors duration-500">
             <header class="p-5 border-b border-slate-100 flex items-center gap-4 bg-white sticky top-0">
-                <button onclick="toggleSettings()" class="w-11 h-11 rounded-full bg-white shadow-md border border-slate-100 flex items-center justify-center active:scale-90 transition"><i class="fas fa-arrow-left text-slate-950"></i></button>
+                <button onclick="toggleSettings()" class="w-11 h-11 rounded-full bg-white shadow-md border border-slate-100 flex items-center justify-center active:scale-90 transition">
+                    <i class="fas fa-arrow-left text-slate-950"></i>
+                </button>
                 <h2 class="font-black text-2xl tracking-tight text-slate-950">Impostazioni</h2>
             </header>
             <div class="p-6 max-w-2xl mx-auto w-full flex-1 flex flex-col justify-end pb-12">
@@ -283,6 +383,7 @@
             messagingSenderId: "977985288512",
             appId: "1:977985288512:web:3d0e0d0857bfb28c8f22a5"
         };
+        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
@@ -295,7 +396,7 @@
         // VARIABILI GLOBALI
         let expenses = [];
         let dietLogs = [];
-        let dailyStats = { water: 0, d3: false, antio1: false, antio2: false };
+        let dailyStats = { water: 0, d3: false, antio1_col: false, antio1_pra: false, antio2: false };
         let currentCycleDate = new Date();
         let currentExpDateType = 'exact';
         let dailyChartInstance = null;
@@ -305,51 +406,93 @@
         const NUTRITION_DB = {
             "Pane Semintegrale Tostato": { kcal: 250, c: 45, p: 8, f: 3 },
             "Salmone Affumicato": { kcal: 117, c: 0, p: 18, f: 4 },
-            "Bresaola": { kcal: 150, c: 0, p: 32, f: 2 },
-            "The Verde": { kcal: 0, c: 0, p: 0, f: 0 },
-            "Kukicha": { kcal: 0, c: 0, p: 0, f: 0 },
-            "Caffè": { kcal: 2, c: 0, p: 0, f: 0 },
-            "Olio e Sale": { kcal: 900, c: 0, p: 0, f: 100 }, 
-            "Mela": { kcal: 52, c: 14, p: 0.3, f: 0.2 },
-            "Ananas": { kcal: 50, c: 13, p: 0.5, f: 0.1 },
-            "Fragole": { kcal: 32, c: 8, p: 0.7, f: 0.3 },
-            "Qumquat": { kcal: 71, c: 16, p: 1.9, f: 0.9 },
-            "Pollo": { kcal: 165, c: 0, p: 31, f: 3.6 },
-            "Tacchino": { kcal: 104, c: 0, p: 22, f: 1.7 },
-            "Merluzzo": { kcal: 82, c: 0, p: 18, f: 0.7 },
-            "Nasello": { kcal: 71, c: 0, p: 16, f: 0.6 },
-            "Sogliola": { kcal: 86, c: 0, p: 18, f: 1.5 },
-            "Pasta": { kcal: 350, c: 73, p: 13, f: 1.5 },
-            "Riso": { kcal: 130, c: 28, p: 2.7, f: 0.3 },
-            "Salmone fresco": { kcal: 208, c: 0, p: 20, f: 13 },
-            "Coda di Rospo": { kcal: 70, c: 0, p: 15, f: 1 },
-            "Spigola": { kcal: 97, c: 0, p: 18, f: 2 },
-            "Calamari": { kcal: 92, c: 3, p: 15, f: 1.5 },
-            "Seppie": { kcal: 79, c: 0.8, p: 16, f: 0.7 },
-            "Vongole": { kcal: 74, c: 2.5, p: 10, f: 2.5 }
+            "Bresaola": { kcal: 151, c: 0, p: 32, f: 2.6 },
+            "pollo": { kcal: 165, c: 0, p: 31, f: 3.6 },
+            "tacchino": { kcal: 104, c: 0, p: 22, f: 1.7 },
+            "coniglio": { kcal: 114, c: 0, p: 22, f: 2.3 },
+            "maiale": { kcal: 242, c: 0, p: 27, f: 14 },
+            "manzo": { kcal: 250, c: 0, p: 26, f: 15 },
+            "vitello": { kcal: 172, c: 0, p: 24, f: 8 },
+            "salmone fresco": { kcal: 208, c: 0, p: 20, f: 13 },
+            "salmone scatola sott'olio": { kcal: 220, c: 0, p: 24, f: 13 },
+            "platessa": { kcal: 86, c: 0, p: 17, f: 1.9 },
+            "tonno fresco": { kcal: 144, c: 0, p: 23, f: 4.9 },
+            "tonno scatola sott'olio (130g)": { kcal: 192, c: 0, p: 25, f: 10 },
+            "merluzzo": { kcal: 82, c: 0, p: 18, f: 0.7 },
+            "sogliole": { kcal: 86, c: 0, p: 18, f: 1.5 },
+            "ombrina": { kcal: 90, c: 0, p: 19, f: 1 },
+            "palombo": { kcal: 80, c: 0, p: 18, f: 1 },
+            "orata": { kcal: 115, c: 0, p: 20, f: 3.5 },
+            "spigola": { kcal: 97, c: 0, p: 18, f: 2 },
+            "branzino": { kcal: 97, c: 0, p: 18, f: 2 },
+            "nasello": { kcal: 71, c: 0, p: 16, f: 0.6 },
+            "ricciola": { kcal: 115, c: 0, p: 23, f: 2 },
+            "seppie": { kcal: 79, c: 1, p: 16, f: 1 },
+            "calamari": { kcal: 92, c: 3, p: 15, f: 1.5 },
+            "totani": { kcal: 80, c: 1, p: 16, f: 1 },
+            "polpo": { kcal: 82, c: 2, p: 15, f: 1 },
+            "vongole": { kcal: 74, c: 2.5, p: 10, f: 2.5 },
+            "cozze": { kcal: 86, c: 3, p: 12, f: 2.7 },
+            "gamberetti": { kcal: 71, c: 1, p: 14, f: 1 },
+            "scampi": { kcal: 90, c: 1, p: 18, f: 1 },
+            "mazzancolle": { kcal: 95, c: 1, p: 19, f: 1 },
+            "gamberoni": { kcal: 90, c: 1, p: 18, f: 1 },
+            "sedano": { kcal: 16, c: 3, p: 0.7, f: 0.2 },
+            "carciofi": { kcal: 47, c: 10, p: 3, f: 0.2 },
+            "finocchi": { kcal: 31, c: 7, p: 1.2, f: 0.2 },
+            "zucchine": { kcal: 17, c: 3, p: 1.2, f: 0.3 },
+            "spinaci": { kcal: 23, c: 3.6, p: 2.9, f: 0.4 },
+            "zucca": { kcal: 26, c: 6.5, p: 1, f: 0.1 },
+            "broccoletti": { kcal: 34, c: 7, p: 2.8, f: 0.4 },
+            "asparagi": { kcal: 20, c: 3.9, p: 2.2, f: 0.1 },
+            "piselli": { kcal: 81, c: 14, p: 5, f: 0.4 },
+            "carota": { kcal: 41, c: 10, p: 0.9, f: 0.2 },
+            "olio": { kcal: 884, c: 0, p: 0, f: 100 },
+            "sale": { kcal: 0, c: 0, p: 0, f: 0 }
         };
 
-        const FOODS_LIST = {
-            "Colazione": ["Pane Semintegrale Tostato", "Salmone Affumicato", "Bresaola", "Olio e Sale", "Caffè", "The Verde"],
-            "Spuntino": ["Mela", "Ananas", "Fragole", "Qumquat"],
-            "Pranzo": ["Pollo", "Tacchino", "Merluzzo", "Nasello", "Sogliola", "Pasta", "Riso"],
-            "Cena": ["Salmone fresco", "Coda di Rospo", "Spigola", "Calamari", "Seppie", "Vongole"]
+        const FOODS_GROUPS = {
+            "CARNE": [
+                "pollo", "tacchino", "coniglio", "maiale", "manzo", "vitello"
+            ],
+            "PESCE": [
+                "salmone fresco", "salmone affumicato", "salmone scatola sott'olio", 
+                "platessa", "tonno fresco", "tonno scatola sott'olio (130g)", 
+                "merluzzo", "sogliole", "ombrina", "palombo", "orata", "spigola", 
+                "gamberetti", "scampi", "mazzancolle", "gamberoni", "branzino", 
+                "nasello", "ricciola", "seppie", "calamari", "totani", "polpo", 
+                "vongole", "cozze"
+            ],
+            "VERDURA": [
+                "sedano", "carciofi", "finocchi", "zucchine", "spinaci", "zucca", 
+                "broccoletti", "asparagi", "piselli", "carota"
+            ],
+            "CONDIMENTI": [
+                "olio", "sale"
+            ]
         };
 
-        // --- AUTH ---
+        // --- AUTENTICAZIONE E AVVIO ---
         document.getElementById('btn-verify-pin').addEventListener('click', () => {
             if(document.getElementById('pin-input').value === APP_PIN) {
                 document.getElementById('auth-screen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('auth-screen').classList.add('hidden');
-                    auth.signInWithEmailAndPassword(FB_EMAIL, FB_PASS).then(initApp).catch(e => alert("Errore DB"));
+                    auth.signInWithEmailAndPassword(FB_EMAIL, FB_PASS).then(initApp).catch(e => alert("Errore connessione DB"));
                 }, 300);
-            } else { alert("PIN Errato"); }
+            } else { 
+                alert("PIN Errato"); 
+            }
         });
-        function lockApp() { location.reload(); }
-        function toggleSettings() {
+
+        function lockApp() { 
+            location.reload(); 
+        }
+
+        function toggleSettings() { 
             const p = document.getElementById('settings-panel');
-            p.classList.toggle('hidden'); p.classList.toggle('flex');
+            p.classList.toggle('hidden'); 
+            p.classList.toggle('flex');
         }
 
         function initApp() {
@@ -359,23 +502,23 @@
             const uid = auth.currentUser.uid;
             const todayStr = new Date().toISOString().split('T')[0];
 
-            // Listener Finanze
-            db.collection('users').doc(uid).collection('expenses_light').onSnapshot(s => {
-                expenses = s.docs.map(d => ({id: d.id, ...d.data()}));
+            // Inizializzazione Listener Finanze
+            db.collection('users').doc(uid).collection('expenses_light').onSnapshot(snapshot => {
+                expenses = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
                 renderCycle();
             });
 
-            // Listener Dieta Oggi
-            db.collection('users').doc(uid).collection('daily_stats').doc(todayStr).onSnapshot(d => {
-                dailyStats = d.exists ? d.data() : { water: 0, d3: false, antio1: false, antio2: false };
+            // Inizializzazione Listener Dieta per Oggi
+            db.collection('users').doc(uid).collection('daily_stats').doc(todayStr).onSnapshot(doc => {
+                dailyStats = doc.exists ? doc.data() : { water: 0, d3: false, antio1_col: false, antio1_pra: false, antio2: false };
                 updateDietUI();
             });
 
-            // Listener Pasti
-            db.collection('users').doc(uid).collection('diet_logs').where('date', '==', todayStr).onSnapshot(s => {
-                dietLogs = s.docs.map(d => ({id: d.id, ...d.data()}));
+            // Inizializzazione Listener Pasti di Oggi
+            db.collection('users').doc(uid).collection('diet_logs').where('date', '==', todayStr).onSnapshot(snapshot => {
+                dietLogs = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
                 
-                dietLogs.sort((a,b) => {
+                dietLogs.sort((a, b) => {
                     let tA = a.timestamp ? a.timestamp.toMillis() : Date.now();
                     let tB = b.timestamp ? b.timestamp.toMillis() : Date.now();
                     return tA - tB;
@@ -384,127 +527,218 @@
                 renderDietLogs();
             });
 
-            document.getElementById('diet-today').textContent = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
+            // Imposta la data a schermo
+            const opzioniData = { weekday: 'long', day: 'numeric', month: 'long' };
+            document.getElementById('diet-today').textContent = new Date().toLocaleDateString('it-IT', opzioniData);
         }
 
         function switchTab(tab) {
             document.getElementById('section-finances').classList.toggle('hidden', tab !== 'finances');
             document.getElementById('section-diet').classList.toggle('hidden', tab !== 'diet');
-            document.getElementById('tab-finances').className = tab === 'finances' ? "flex flex-col items-center gap-1 text-blue-600 transition-all" : "flex flex-col items-center gap-1 text-slate-400";
-            document.getElementById('tab-diet').className = tab === 'diet' ? "flex flex-col items-center gap-1 text-emerald-600 transition-all" : "flex flex-col items-center gap-1 text-slate-400";
             
-            document.getElementById('section-title').innerHTML = tab === 'finances' ? `Finanza` : `Dieta`;
+            const tabFinances = document.getElementById('tab-finances');
+            const tabDiet = document.getElementById('tab-diet');
+            
+            if (tab === 'finances') {
+                tabFinances.className = "flex flex-col items-center gap-1 text-blue-600 transition-all";
+                tabDiet.className = "flex flex-col items-center gap-1 text-slate-400 transition-all";
+                document.getElementById('section-title').textContent = 'Finanza';
+            } else {
+                tabDiet.className = "flex flex-col items-center gap-1 text-emerald-600 transition-all";
+                tabFinances.className = "flex flex-col items-center gap-1 text-slate-400 transition-all";
+                document.getElementById('section-title').textContent = 'Dieta';
+            }
             
             const btnAna = document.getElementById('btn-analysis');
-            if(tab === 'diet') { btnAna.classList.remove('hidden'); btnAna.classList.add('flex'); }
-            else { btnAna.classList.add('hidden'); btnAna.classList.remove('flex'); }
+            if(tab === 'diet') { 
+                btnAna.classList.remove('hidden'); 
+                btnAna.classList.add('flex'); 
+            } else { 
+                btnAna.classList.add('hidden'); 
+                btnAna.classList.remove('flex'); 
+            }
         }
 
         // --- LOGICA FINANZE ---
-        function getCycleDates(ref) {
-            const d = new Date(ref);
-            let s, e;
-            if (d.getDate() >= 20) { s = new Date(d.getFullYear(), d.getMonth(), 20); e = new Date(d.getFullYear(), d.getMonth() + 1, 19); }
-            else { s = new Date(d.getFullYear(), d.getMonth() - 1, 20); e = new Date(d.getFullYear(), d.getMonth(), 19); }
-            return { startStr: s.toISOString().slice(0,10), endStr: e.toISOString().slice(0,10), label: `${s.getDate()} ${s.toLocaleString('it',{month:'short'})} - ${e.getDate()} ${e.toLocaleString('it',{month:'short'})} ${e.getFullYear()}` };
+        function getCycleDates(refDate) {
+            const d = new Date(refDate);
+            let startDate, endDate;
+            
+            if (d.getDate() >= 20) { 
+                startDate = new Date(d.getFullYear(), d.getMonth(), 20); 
+                endDate = new Date(d.getFullYear(), d.getMonth() + 1, 19); 
+            } else { 
+                startDate = new Date(d.getFullYear(), d.getMonth() - 1, 20); 
+                endDate = new Date(d.getFullYear(), d.getMonth(), 19); 
+            }
+            
+            const labelStr = `${startDate.getDate()} ${startDate.toLocaleString('it',{month:'short'})} - ${endDate.getDate()} ${endDate.toLocaleString('it',{month:'short'})} ${endDate.getFullYear()}`;
+            
+            return { 
+                startStr: startDate.toISOString().slice(0,10), 
+                endStr: endDate.toISOString().slice(0,10), 
+                label: labelStr 
+            };
         }
-        function changeCycle(v) { currentCycleDate.setMonth(currentCycleDate.getMonth() + v); renderCycle(); }
+
+        function changeCycle(direction) { 
+            currentCycleDate.setMonth(currentCycleDate.getMonth() + direction); 
+            renderCycle(); 
+        }
         
         function renderCycle() {
             const cycle = getCycleDates(currentCycleDate);
             document.getElementById('cycle-label').textContent = cycle.label;
-            let paidTotal = 0, pendingTotal = 0;
+            
+            let paidTotal = 0;
+            let pendingTotal = 0;
             const container = document.getElementById('cycle-list');
             container.innerHTML = '';
 
-            const items = expenses.filter(e => {
-                let d = e.dateType === 'month' ? `${e.date}-01` : e.date;
-                return d >= cycle.startStr && d <= cycle.endStr;
+            const itemsInCycle = expenses.filter(e => {
+                let formattedDate = e.dateType === 'month' ? `${e.date}-01` : e.date;
+                return formattedDate >= cycle.startStr && formattedDate <= cycle.endStr;
             });
 
-            items.sort((a, b) => {
-                if (a.status === b.status) return a.date > b.date ? 1 : -1;
+            // Ordinamento: Da pagare in alto, poi pagate. In caso di parità ordina per data.
+            itemsInCycle.sort((a, b) => {
+                if (a.status === b.status) {
+                    return a.date > b.date ? 1 : -1;
+                }
                 return a.status === 'pending' ? -1 : 1;
             });
 
-            items.forEach((e) => {
-                if (e.status === 'pending') pendingTotal += e.amount; else paidTotal += e.amount;
+            itemsInCycle.forEach(e => {
+                if (e.status === 'pending') {
+                    pendingTotal += e.amount;
+                } else {
+                    paidTotal += e.amount;
+                }
+                
                 const div = document.createElement('div');
                 div.className = `bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between cursor-pointer transition active:scale-[0.98] ${e.status === 'paid' ? 'opacity-60' : ''}`;
                 div.onclick = () => openExpenseModal(e.id);
+                
+                const displayDate = e.date.split('-').reverse().slice(0,2).join('/');
+                const strikethroughClass = e.status === 'paid' ? 'line-through' : '';
+                const amountColorClass = e.status === 'paid' ? 'text-gray-500' : 'text-blue-600';
+                
                 div.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <div class="text-[10px] font-bold bg-slate-100 text-gray-500 px-2 py-1 rounded-lg">${e.date.split('-').reverse().slice(0,2).join('/')}</div>
-                        <div class="font-bold text-slate-900 ${e.status === 'paid' ? 'line-through' : ''}">${e.desc}</div>
+                        <div class="text-[10px] font-bold bg-slate-100 text-gray-500 px-2 py-1 rounded-lg">${displayDate}</div>
+                        <div class="font-bold text-slate-900 ${strikethroughClass}">${e.desc}</div>
                     </div>
-                    <div class="font-black text-xl ${e.status === 'paid' ? 'text-gray-500' : 'text-blue-600'}">€ ${e.amount.toFixed(2)}</div>
+                    <div class="font-black text-xl ${amountColorClass}">€ ${e.amount.toFixed(2)}</div>
                 `;
+                
                 container.appendChild(div);
             });
             
-            if(items.length === 0) container.innerHTML = '<p class="text-center text-gray-400 py-6 text-sm">Nessuna spesa nel periodo.</p>';
+            if(itemsInCycle.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-400 py-6 text-sm">Nessuna spesa nel periodo.</p>';
+            }
             
             document.getElementById('cycle-pending').textContent = `€ ${pendingTotal.toFixed(2)}`;
             document.getElementById('cycle-paid').textContent = `€ ${paidTotal.toFixed(2)}`;
         }
 
-        function setExpDateType(t) { 
-            currentExpDateType=t; 
-            document.getElementById('btn-type-exact').className = t==='exact' ? 'py-2.5 text-sm bg-white shadow-sm rounded-xl text-blue-600 font-bold border border-slate-100' : 'py-2.5 text-sm text-gray-500 font-bold'; 
-            document.getElementById('btn-type-month').className = t==='month' ? 'py-2.5 text-sm bg-white shadow-sm rounded-xl text-blue-600 font-bold border border-slate-100' : 'py-2.5 text-sm text-gray-500 font-bold'; 
-            document.getElementById('exp-date-exact').classList.toggle('hidden', t!=='exact'); 
-            document.getElementById('exp-date-month').classList.toggle('hidden', t!=='month'); 
+        function setExpDateType(type) { 
+            currentExpDateType = type; 
+            
+            const btnExact = document.getElementById('btn-type-exact');
+            const btnMonth = document.getElementById('btn-type-month');
+            const inputExact = document.getElementById('exp-date-exact');
+            const inputMonth = document.getElementById('exp-date-month');
+
+            if(type === 'exact') {
+                btnExact.className = 'py-2.5 text-sm bg-white shadow-sm rounded-xl text-blue-600 font-bold border border-slate-100 transition';
+                btnMonth.className = 'py-2.5 text-sm text-gray-500 font-bold transition';
+                inputExact.classList.remove('hidden');
+                inputMonth.classList.add('hidden');
+            } else {
+                btnMonth.className = 'py-2.5 text-sm bg-white shadow-sm rounded-xl text-blue-600 font-bold border border-slate-100 transition';
+                btnExact.className = 'py-2.5 text-sm text-gray-500 font-bold transition';
+                inputMonth.classList.remove('hidden');
+                inputExact.classList.add('hidden');
+            }
         }
 
-        function openExpenseModal(id=null) { 
-            const m = document.getElementById('expense-modal'); m.classList.remove('hidden'); m.classList.add('flex');
-            setTimeout(()=>m.classList.replace('opacity-0','opacity-100'),10);
+        function openExpenseModal(id = null) { 
+            const modal = document.getElementById('expense-modal'); 
+            modal.classList.remove('hidden'); 
+            modal.classList.add('flex');
+            setTimeout(() => modal.classList.replace('opacity-0', 'opacity-100'), 10);
+            
             const delBtn = document.getElementById('btn-delete-exp');
             
             if(id) { 
-                const e = expenses.find(x=>x.id===id); 
+                const e = expenses.find(x => x.id === id); 
                 document.getElementById('modal-title').textContent = "Modifica Spesa";
-                document.getElementById('exp-id').value=e.id; 
-                document.getElementById('exp-desc').value=e.desc; 
-                document.getElementById('exp-amount').value=e.amount; 
-                document.getElementById('exp-status').checked=e.status==='paid'; 
-                setExpDateType(e.dateType||'exact'); 
-                if(e.dateType === 'month') document.getElementById('exp-date-month').value = e.date; else document.getElementById('exp-date-exact').value = e.date;
+                document.getElementById('exp-id').value = e.id; 
+                document.getElementById('exp-desc').value = e.desc; 
+                document.getElementById('exp-amount').value = e.amount; 
+                document.getElementById('exp-status').checked = (e.status === 'paid'); 
+                
+                setExpDateType(e.dateType || 'exact'); 
+                
+                if(e.dateType === 'month') {
+                    document.getElementById('exp-date-month').value = e.date; 
+                } else {
+                    document.getElementById('exp-date-exact').value = e.date;
+                }
+                
                 delBtn.classList.remove('hidden');
             } else { 
                 document.getElementById('modal-title').textContent = "Nuova Spesa";
-                document.getElementById('exp-id').value=''; 
-                document.getElementById('exp-desc').value=''; 
-                document.getElementById('exp-amount').value=''; 
-                document.getElementById('exp-status').checked=false; 
+                document.getElementById('exp-id').value = ''; 
+                document.getElementById('exp-desc').value = ''; 
+                document.getElementById('exp-amount').value = ''; 
+                document.getElementById('exp-status').checked = false; 
+                
                 delBtn.classList.add('hidden');
             }
         }
+
         function closeExpenseModal() { 
-            const m = document.getElementById('expense-modal');
-            m.classList.replace('opacity-100','opacity-0'); 
-            setTimeout(()=> { m.classList.add('hidden'); m.classList.remove('flex'); }, 300); 
+            const modal = document.getElementById('expense-modal');
+            modal.classList.replace('opacity-100', 'opacity-0'); 
+            setTimeout(() => { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+            }, 300); 
         }
         
         async function saveExpense() {
             const id = document.getElementById('exp-id').value;
-            const data = { 
+            
+            const dataToSave = { 
                 desc: document.getElementById('exp-desc').value, 
                 amount: parseFloat(document.getElementById('exp-amount').value) || 0, 
-                status: document.getElementById('exp-status').checked?'paid':'pending', 
+                status: document.getElementById('exp-status').checked ? 'paid' : 'pending', 
                 dateType: currentExpDateType, 
-                date: currentExpDateType==='exact'?document.getElementById('exp-date-exact').value:document.getElementById('exp-date-month').value,
+                date: currentExpDateType === 'exact' ? document.getElementById('exp-date-exact').value : document.getElementById('exp-date-month').value,
                 recurrence: document.getElementById('exp-recurrence-type').value
             };
-            if(!data.desc || !data.date) return alert("Inserisci descrizione e data");
-            const col = db.collection('users').doc(auth.currentUser.uid).collection('expenses_light');
-            if(id) await col.doc(id).update(data); else await col.add(data);
+            
+            if(!dataToSave.desc || !dataToSave.date) {
+                return alert("Inserisci descrizione e data");
+            }
+            
+            const collectionRef = db.collection('users').doc(auth.currentUser.uid).collection('expenses_light');
+            
+            if(id) {
+                await collectionRef.doc(id).update(dataToSave);
+            } else {
+                await collectionRef.add(dataToSave);
+            }
+            
             closeExpenseModal();
         }
         
         async function deleteExpense() { 
-            if(confirm("Eliminare spesa?")) {
-                await db.collection('users').doc(auth.currentUser.uid).collection('expenses_light').doc(document.getElementById('exp-id').value).delete(); 
+            if(confirm("Sei sicuro di voler eliminare questa spesa?")) {
+                const idToDelete = document.getElementById('exp-id').value;
+                await db.collection('users').doc(auth.currentUser.uid).collection('expenses_light').doc(idToDelete).delete(); 
                 closeExpenseModal(); 
             }
         }
@@ -513,70 +747,142 @@
         // --- LOGICA DIETA E ANALISI ---
 
         function updateDietUI() {
-            document.getElementById('water-liters').textContent = (dailyStats.water/1000).toFixed(2);
-            ['d3','antio1','antio2'].forEach(k => { 
-                const btn = document.getElementById('supp-'+k);
-                let color = k==='d3'?'orange':(k==='antio1'?'blue':'emerald');
-                btn.className = dailyStats[k] ? `p-4 rounded-2xl border-2 border-${color}-400 bg-${color}-50 flex flex-col items-center shadow-md transition-all active:scale-95` : `p-4 rounded-2xl border bg-white flex flex-col items-center shadow-sm transition-all active:scale-95`; 
+            document.getElementById('water-liters').textContent = (dailyStats.water / 1000).toFixed(2);
+            
+            const integratori = ['d3', 'antio1_col', 'antio1_pra', 'antio2'];
+            
+            integratori.forEach(chiave => { 
+                const btn = document.getElementById('supp-' + chiave);
+                const isActive = dailyStats[chiave];
+                
+                let colorClass;
+                if (chiave === 'd3') colorClass = 'orange';
+                else if (chiave.includes('antio1')) colorClass = 'blue';
+                else colorClass = 'emerald';
+
+                // Classi specifiche per i bottoni dell'Antiossidante 1 che sono più piccoli
+                if (chiave.includes('antio1')) {
+                    btn.className = isActive 
+                        ? `p-2 rounded-xl border-2 border-${colorClass}-400 bg-${colorClass}-50 flex items-center justify-center gap-2 shadow-md text-[10px] font-bold transition-all active:scale-95` 
+                        : `p-2 rounded-xl border bg-white flex items-center justify-center gap-2 shadow-sm text-[10px] font-bold transition-all active:scale-95`;
+                } else {
+                    btn.className = isActive 
+                        ? `p-4 h-full rounded-2xl border-2 border-${colorClass}-400 bg-${colorClass}-50 flex flex-col items-center justify-center shadow-md text-[10px] font-bold uppercase transition-all active:scale-95` 
+                        : `p-4 h-full rounded-2xl border bg-white flex flex-col items-center justify-center shadow-sm text-[10px] font-bold uppercase transition-all active:scale-95`;
+                }
             });
         }
 
-        async function addWater(ml) { 
-            const today = new Date().toISOString().split('T')[0];
-            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(today).set({ ...dailyStats, water: Math.max(0, dailyStats.water+ml) }, {merge:true}); 
+        async function addCustomWater() {
+            const inputVal = document.getElementById('water-input-ml').value;
+            const val = parseInt(inputVal) || 0;
+            
+            if(val <= 0) return;
+            
+            const todayStr = new Date().toISOString().split('T')[0];
+            const currentWater = dailyStats.water || 0;
+            
+            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(todayStr).set({ 
+                ...dailyStats, 
+                water: currentWater + val 
+            }, { merge: true });
+            
+            document.getElementById('water-input-ml').value = '';
         }
 
-        async function toggleSupp(k) { 
-            const today = new Date().toISOString().split('T')[0];
-            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(today).set({ ...dailyStats, [k]: !dailyStats[k] }, {merge:true}); 
+        async function toggleSupp(chiave) { 
+            const todayStr = new Date().toISOString().split('T')[0];
+            const newValue = !dailyStats[chiave];
+            
+            await db.collection('users').doc(auth.currentUser.uid).collection('daily_stats').doc(todayStr).set({ 
+                ...dailyStats, 
+                [chiave]: newValue 
+            }, { merge: true }); 
         }
 
         function updateFoodSelect() { 
-            const s = document.getElementById('diet-food'); 
-            s.innerHTML = ''; 
-            FOODS_LIST[document.getElementById('diet-type').value].forEach(f => { 
-                const o = document.createElement('option'); o.value=f; o.textContent=f; s.appendChild(o); 
-            }); 
+            const tipoPasto = document.getElementById('diet-type').value;
+            const selettoreCibo = document.getElementById('diet-food'); 
+            
+            selettoreCibo.innerHTML = ''; 
+            
+            if (tipoPasto === "Colazione") {
+                // Per la colazione non ci sono macro gruppi
+                const cibiColazione = ["Pane Semintegrale Tostato", "Salmone Affumicato", "Bresaola"];
+                cibiColazione.forEach(cibo => {
+                    const opzione = document.createElement('option'); 
+                    opzione.value = cibo; 
+                    opzione.textContent = cibo; 
+                    selettoreCibo.appendChild(opzione);
+                });
+            } else {
+                // Per pranzo e cena iteriamo sui macro gruppi
+                for (const [nomeGruppo, listaAlimenti] of Object.entries(FOODS_GROUPS)) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = nomeGruppo;
+                    
+                    listaAlimenti.forEach(cibo => {
+                        const opzione = document.createElement('option'); 
+                        opzione.value = cibo; 
+                        opzione.textContent = cibo; 
+                        optgroup.appendChild(opzione);
+                    });
+                    
+                    selettoreCibo.appendChild(optgroup);
+                }
+            }
         }
 
         function openDietModal() { 
-            const m = document.getElementById('diet-modal'); 
-            m.classList.remove('hidden'); m.classList.add('flex'); 
-            setTimeout(()=>m.classList.replace('opacity-0','opacity-100'),10); 
+            const modal = document.getElementById('diet-modal'); 
+            modal.classList.remove('hidden'); 
+            modal.classList.add('flex'); 
+            setTimeout(() => modal.classList.replace('opacity-0', 'opacity-100'), 10); 
             updateFoodSelect(); 
         }
 
         function closeDietModal() { 
-            const m = document.getElementById('diet-modal'); 
-            m.classList.replace('opacity-100','opacity-0'); 
-            setTimeout(()=> { m.classList.add('hidden'); m.classList.remove('flex'); }, 300);
+            const modal = document.getElementById('diet-modal'); 
+            modal.classList.replace('opacity-100', 'opacity-0'); 
+            setTimeout(() => { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+            }, 300);
             document.getElementById('diet-grams').value = '';
         }
 
         async function saveDietLog() {
-            const meal = document.getElementById('diet-type').value;
+            const mealSelected = document.getElementById('diet-type').value;
             const foodName = document.getElementById('diet-food').value;
-            const grams = parseFloat(document.getElementById('diet-grams').value);
-            if(!grams || grams <= 0) return alert("Inserisci i grammi corretti");
-
-            let c_kcal=0, c_carb=0, c_prot=0, c_fat=0;
-            if(NUTRITION_DB[foodName]) {
-                const multi = grams / 100;
-                c_kcal = NUTRITION_DB[foodName].kcal * multi;
-                c_carb = NUTRITION_DB[foodName].c * multi;
-                c_prot = NUTRITION_DB[foodName].p * multi;
-                c_fat = NUTRITION_DB[foodName].f * multi;
+            const gramsInput = parseFloat(document.getElementById('diet-grams').value);
+            
+            if(!gramsInput || gramsInput <= 0) {
+                return alert("Inserisci una quantità in grammi valida.");
             }
 
+            // Cerca nel DB nutrizionale in modo case-insensitive
+            const foodKeyInDb = Object.keys(NUTRITION_DB).find(k => k.toLowerCase() === foodName.toLowerCase());
+            
+            const nutritionValues = NUTRITION_DB[foodKeyInDb] || { kcal: 0, c: 0, p: 0, f: 0 };
+            const multiplier = gramsInput / 100;
+            
+            const calcolatedMacros = { 
+                kcal: nutritionValues.kcal * multiplier, 
+                c: nutritionValues.c * multiplier, 
+                p: nutritionValues.p * multiplier, 
+                f: nutritionValues.f * multiplier 
+            };
+
             await db.collection('users').doc(auth.currentUser.uid).collection('diet_logs').add({
-                meal: meal, 
+                meal: mealSelected, 
                 food: foodName,
-                grams: grams,
-                notes: `${foodName} (${grams}g)`, 
+                grams: gramsInput,
+                notes: `${foodName} (${gramsInput}g)`, 
                 date: new Date().toISOString().split('T')[0], 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                macros: { kcal: c_kcal, c: c_carb, p: c_prot, f: c_fat }
+                macros: calcolatedMacros
             });
+            
             closeDietModal();
         }
 
@@ -584,46 +890,63 @@
             const container = document.getElementById('diet-logs-container');
             container.innerHTML = '';
             
-            let totKcal=0, totC=0, totP=0, totF=0;
+            let totalKcal = 0, totalCarbs = 0, totalProteins = 0, totalFats = 0;
             
             if(dietLogs.length === 0) {
                 container.innerHTML = '<p class="text-center text-gray-400 py-4 text-sm">Nessun pasto registrato oggi.</p>';
             } else {
-                const mealsOrder = ["Colazione", "Spuntino", "Pranzo", "Cena"];
-                const grouped = {};
+                const mealsOrderAndConfig = {
+                    "Colazione": { colore: "blue" },
+                    "Pranzo": { colore: "orange" },
+                    "Cena": { colore: "purple" }
+                };
                 
-                dietLogs.forEach(l => {
-                    if(l.macros) {
-                        totKcal += l.macros.kcal || 0;
-                        totC += l.macros.c || 0;
-                        totP += l.macros.p || 0;
-                        totF += l.macros.f || 0;
+                const groupedMeals = { "Colazione": [], "Pranzo": [], "Cena": [] };
+                
+                // Raggruppo e sommo i macro
+                dietLogs.forEach(log => {
+                    if(log.macros) {
+                        totalKcal += log.macros.kcal || 0;
+                        totalCarbs += log.macros.c || 0;
+                        totalProteins += log.macros.p || 0;
+                        totalFats += log.macros.f || 0;
                     }
-                    if(!grouped[l.meal]) grouped[l.meal] = [];
-                    grouped[l.meal].push(l);
+                    if(groupedMeals[log.meal] !== undefined) {
+                        groupedMeals[log.meal].push(log);
+                    }
                 });
                 
-                mealsOrder.forEach(mealName => {
-                    if(grouped[mealName] && grouped[mealName].length > 0) {
-                        const mealBlock = document.createElement('div');
-                        mealBlock.className = "mb-4 bg-slate-50 p-4 rounded-2xl border border-slate-100";
+                // Renderizzo i blocchi per ogni pasto
+                Object.keys(mealsOrderAndConfig).forEach(mealName => {
+                    const pastiNelGruppo = groupedMeals[mealName];
+                    
+                    if(pastiNelGruppo && pastiNelGruppo.length > 0) {
+                        const colorePasto = mealsOrderAndConfig[mealName].colore;
                         
-                        // Header Pasto
+                        const mealBlock = document.createElement('div');
+                        mealBlock.className = `mb-4 bg-${colorePasto}-50 p-4 rounded-3xl border border-${colorePasto}-100`;
+                        
+                        // Header del pasto (es. COLAZIONE)
                         const mealHeader = document.createElement('div');
-                        mealHeader.className = "text-[10px] font-black uppercase text-emerald-600 tracking-widest border-b border-emerald-100 pb-1 mb-2";
+                        mealHeader.className = `text-[10px] font-black uppercase text-${colorePasto}-600 tracking-widest border-b border-${colorePasto}-100 pb-1 mb-2`;
                         mealHeader.textContent = mealName;
                         mealBlock.appendChild(mealHeader);
                         
-                        // Alimenti
-                        grouped[mealName].forEach(l => {
+                        // Alimenti del pasto
+                        pastiNelGruppo.forEach(log => {
                             const itemDiv = document.createElement('div');
                             itemDiv.className = "flex items-center justify-between py-1.5";
+                            
+                            const kcalFormatted = log.macros ? `${Math.round(log.macros.kcal)} kcal` : '';
+                            
                             itemDiv.innerHTML = `
                                 <div class="flex flex-col">
-                                    <span class="font-bold text-slate-800 text-sm">${l.notes}</span>
-                                    ${l.macros ? `<span class="text-[10px] text-gray-400 font-bold">${Math.round(l.macros.kcal)} kcal</span>` : ''}
+                                    <span class="font-bold text-slate-800 text-sm">${log.notes}</span>
+                                    <span class="text-[10px] text-gray-400 font-bold">${kcalFormatted}</span>
                                 </div>
-                                <button onclick="deleteDietLog('${l.id}')" class="text-slate-300 hover:text-red-400 active:scale-90 transition p-2"><i class="fas fa-trash-can"></i></button>
+                                <button onclick="deleteDietLog('${log.id}')" class="text-slate-300 hover:text-red-400 active:scale-90 transition p-2">
+                                    <i class="fas fa-trash-can"></i>
+                                </button>
                             `;
                             mealBlock.appendChild(itemDiv);
                         });
@@ -633,87 +956,140 @@
                 });
             }
 
-            // Aggiorna UI Giornaliera
-            document.getElementById('daily-kcal').textContent = Math.round(totKcal);
-            document.getElementById('daily-macros-text').innerHTML = `<span class="text-blue-500">C: ${Math.round(totC)}g</span> <span class="text-red-500">P: ${Math.round(totP)}g</span> <span class="text-yellow-500">G: ${Math.round(totF)}g</span>`;
-            updateChart('dailyMacroChart', totC, totP, totF, dailyChartInstance, (inst) => dailyChartInstance = inst);
+            // Aggiorna la UI Giornaliera dei Kcal e Macro testuali
+            document.getElementById('daily-kcal').textContent = Math.round(totalKcal);
+            document.getElementById('daily-macros-text').innerHTML = `
+                <span class="text-blue-500">C: ${Math.round(totalCarbs)}g</span> 
+                <span class="text-red-500">P: ${Math.round(totalProteins)}g</span> 
+                <span class="text-yellow-500">G: ${Math.round(totalFats)}g</span>
+            `;
+            
+            // Aggiorna il Grafico a Torta
+            updateChart('dailyMacroChart', totalCarbs, totalProteins, totalFats, dailyChartInstance, (nuovaIstanza) => {
+                dailyChartInstance = nuovaIstanza;
+            });
         }
 
         async function deleteDietLog(id) { 
-            if(confirm("Eliminare pasto?")) await db.collection('users').doc(auth.currentUser.uid).collection('diet_logs').doc(id).delete(); 
+            if(confirm("Vuoi eliminare questo alimento dal pasto?")) {
+                await db.collection('users').doc(auth.currentUser.uid).collection('diet_logs').doc(id).delete(); 
+            }
         }
 
-        // Funzione per generare il grafico a Torta
-        function updateChart(canvasId, c, p, f, instanceToDestroy, saveInstanceCallback) {
-            const canvas = document.getElementById(canvasId);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            if(instanceToDestroy) instanceToDestroy.destroy();
+        // Funzione per generare il grafico a Torta (condivisa tra daily e weekly)
+        function updateChart(canvasId, carbs, proteins, fats, istanzaPrecedente, callbackSalvataggio) {
+            const canvasElement = document.getElementById(canvasId);
+            if (!canvasElement) return;
             
-            const data = (c===0 && p===0 && f===0) ? [1] : [c, p, f];
-            const bgColors = (c===0 && p===0 && f===0) ? ['#f1f5f9'] : ['#3b82f6', '#ef4444', '#eab308'];
+            const ctx = canvasElement.getContext('2d');
+            
+            if(istanzaPrecedente) {
+                istanzaPrecedente.destroy();
+            }
+            
+            const isEmpty = (carbs === 0 && proteins === 0 && fats === 0);
+            const dataArray = isEmpty ? [1] : [carbs, proteins, fats];
+            const backgroundColorsArray = isEmpty ? ['#f1f5f9'] : ['#3b82f6', '#ef4444', '#eab308'];
 
-            const newChart = new Chart(ctx, {
+            const nuovoGrafico = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Carbo', 'Proteine', 'Grassi'],
-                    datasets: [{ data: data, backgroundColor: bgColors, borderWidth: 0, cutout: '75%' }]
+                    labels: ['Carboidrati', 'Proteine', 'Grassi'],
+                    datasets: [{ 
+                        data: dataArray, 
+                        backgroundColor: backgroundColorsArray, 
+                        borderWidth: 0, 
+                        cutout: '75%' 
+                    }]
                 },
-                options: { plugins: { legend: { display: false }, tooltip: { enabled: (c!==0||p!==0||f!==0) } }, responsive: true, maintainAspectRatio: false }
+                options: { 
+                    plugins: { 
+                        legend: { display: false }, 
+                        tooltip: { enabled: !isEmpty } 
+                    }, 
+                    responsive: true, 
+                    maintainAspectRatio: false 
+                }
             });
-            saveInstanceCallback(newChart);
+            
+            callbackSalvataggio(nuovoGrafico);
         }
 
         // --- ANALISI SETTIMANALE ---
         async function openAnalysisModal() {
-            const m = document.getElementById('analysis-modal');
-            m.classList.remove('hidden'); m.classList.add('flex');
-            setTimeout(()=>m.classList.replace('opacity-0','opacity-100'),10);
+            const modal = document.getElementById('analysis-modal');
+            modal.classList.remove('hidden'); 
+            modal.classList.add('flex');
+            setTimeout(() => modal.classList.replace('opacity-0', 'opacity-100'), 10);
 
             const uid = auth.currentUser.uid;
-            const today = new Date();
-            const past7 = new Date();
-            past7.setDate(today.getDate() - 6);
-            const startDateStr = past7.toISOString().split('T')[0];
-
-            const statsSnap = await db.collection('users').doc(uid).collection('daily_stats').where(firebase.firestore.FieldPath.documentId(), '>=', startDateStr).get();
-            let totalWater = 0;
-            let d3Count = 0, a1Count = 0, a2Count = 0;
             
-            statsSnap.forEach(doc => {
-                const d = doc.data();
-                totalWater += d.water || 0;
-                if(d.d3) d3Count++;
-                if(d.antio1) a1Count++;
-                if(d.antio2) a2Count++;
+            // Calcolo Data Iniziale (Oggi - 6 giorni = 7 giorni totali)
+            const d = new Date();
+            d.setDate(d.getDate() - 6);
+            const dataInizioStr = d.toISOString().split('T')[0];
+
+            // Recupero Dati Acqua e Integratori
+            const queryStats = await db.collection('users').doc(uid).collection('daily_stats').where(firebase.firestore.FieldPath.documentId(), '>=', dataInizioStr).get();
+            let sumWater = 0;
+            let counterD3 = 0, counterA1Col = 0, counterA1Pra = 0, counterA2 = 0;
+            
+            queryStats.forEach(doc => {
+                const data = doc.data();
+                sumWater += data.water || 0;
+                if(data.d3) counterD3++;
+                if(data.antio1_col) counterA1Col++;
+                if(data.antio1_pra) counterA1Pra++;
+                if(data.antio2) counterA2++;
+            });
+            
+            // Per l'antio1 calcoliamo quanti giorni è stato preso "in modo completo" o mostriamo il parziale
+            const mediaAntio1 = Math.round((counterA1Col + counterA1Pra) / 2);
+
+            // Recupero Dati Pasti (Kcal e Macro)
+            const queryPasti = await db.collection('users').doc(uid).collection('diet_logs').where('date', '>=', dataInizioStr).get();
+            let sumKcal = 0, sumC = 0, sumP = 0, sumF = 0;
+            
+            queryPasti.forEach(doc => {
+                const mac = doc.data().macros;
+                if(mac) { 
+                    sumKcal += mac.kcal; 
+                    sumC += mac.c; 
+                    sumP += mac.p; 
+                    sumF += mac.f; 
+                }
             });
 
-            const mealsSnap = await db.collection('users').doc(uid).collection('diet_logs').where('date', '>=', startDateStr).get();
-            let sumKcal=0, sumC=0, sumP=0, sumF=0;
-            mealsSnap.forEach(doc => {
-                const m = doc.data().macros;
-                if(m) { sumKcal+=m.kcal; sumC+=m.c; sumP+=m.p; sumF+=m.f; }
-            });
+            // Calcoli e Popolamento Interfaccia
+            const giorniTracciati = queryStats.size || 1; // Previene divisioni per zero se l'utente è nuovo
+            const mediaKcalGiornaliera = Math.round(sumKcal / giorniTracciati);
+            const mediaAcquaGiornaliera = sumWater / giorniTracciati;
 
-            const daysTracked = statsSnap.size || 1;
-            const avgKcal = Math.round(sumKcal / daysTracked);
-            const avgWater = totalWater / daysTracked;
-
-            document.getElementById('weekly-avg-kcal').textContent = avgKcal;
-            document.getElementById('weekly-avg-water').textContent = (avgWater / 1000).toFixed(2) + " L";
+            document.getElementById('weekly-avg-kcal').textContent = mediaKcalGiornaliera;
+            document.getElementById('weekly-avg-water').textContent = (mediaAcquaGiornaliera / 1000).toFixed(2) + " L";
             
-            document.getElementById('weekly-d3').textContent = `${d3Count}/7`;
-            document.getElementById('weekly-a1').textContent = `${a1Count}/7`;
-            document.getElementById('weekly-a2').textContent = `${a2Count}/7`;
+            document.getElementById('weekly-d3').textContent = `${counterD3}/7`;
+            document.getElementById('weekly-a1').textContent = `${mediaAntio1}/7`;
+            document.getElementById('weekly-a2').textContent = `${counterA2}/7`;
 
-            document.getElementById('weekly-macros-text').innerHTML = `<span class="text-blue-500">C: ${Math.round(sumC)}g</span> <span class="text-red-500">P: ${Math.round(sumP)}g</span> <span class="text-yellow-500">G: ${Math.round(sumF)}g</span>`;
-            updateChart('weeklyMacroChart', sumC, sumP, sumF, weeklyChartInstance, (inst) => weeklyChartInstance = inst);
+            document.getElementById('weekly-macros-text').innerHTML = `
+                <span class="text-blue-500">C: ${Math.round(sumC)}g</span> 
+                <span class="text-red-500">P: ${Math.round(sumP)}g</span> 
+                <span class="text-yellow-500">G: ${Math.round(sumF)}g</span>
+            `;
+            
+            updateChart('weeklyMacroChart', sumC, sumP, sumF, weeklyChartInstance, (nuovaIstanza) => {
+                weeklyChartInstance = nuovaIstanza;
+            });
         }
 
         function closeAnalysisModal() {
-            const m = document.getElementById('analysis-modal');
-            m.classList.replace('opacity-100','opacity-0');
-            setTimeout(()=> { m.classList.add('hidden'); m.classList.remove('flex'); }, 300);
+            const modal = document.getElementById('analysis-modal');
+            modal.classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+            }, 300);
         }
 
     </script>
