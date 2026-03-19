@@ -8,8 +8,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="MLogo.png">
-    <link rel="icon" type="image/jpeg" href="MLogo.png">
+    <link rel="apple-touch-icon" href="Mlogo.png">
+    <link rel="icon" type="image/jpeg" href="Mlogo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -69,7 +69,7 @@
 <body class="text-slate-800 h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden relative bg-white">
 
     <div id="auth-screen" class="w-full h-full px-6 flex flex-col items-center text-center z-50 absolute inset-0 justify-center bg-white transition-all duration-500">
-        <img src="MLogo.png" alt="Logo" class="w-28 h-28 rounded-3xl shadow-lg mb-6 object-cover bg-white animate-fade-in-up" onerror="this.src='https://via.placeholder.com/100?text=G';">
+        <img src="Mlogo.png" alt="Logo" class="w-28 h-28 rounded-3xl shadow-lg mb-6 object-cover bg-white animate-fade-in-up" onerror="this.src='https://via.placeholder.com/100?text=G';">
         <h1 class="font-black text-5xl mb-12 text-slate-950 animate-fade-in-up tracking-tight flex items-center justify-center gap-2">
             Gestionale
         </h1>
@@ -83,7 +83,7 @@
         
         <header class="p-5 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10 animate-slide-down">
             <div class="flex items-center gap-3">
-                <img src="MLogo.png" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-slate-100" onerror="this.style.display='none';">
+                <img src="Mlogo.png" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-slate-100" onerror="this.style.display='none';">
                 <h2 id="section-title" class="font-black text-2xl tracking-tight text-slate-950 flex items-center gap-1">
                     Finanza
                 </h2>
@@ -850,7 +850,7 @@
             selettoreCibo.innerHTML = ''; 
             
             if (tipoPasto === "Colazione") {
-                const cibiColazione = ["Pane Semintegrale Tostato", "Salmone Affumicato", "Bresaola"];
+                const cibiColazione = ["Pane Semintegrale Tostato", "Salmone Affumicato", "Bresaola", "olio"];
                 cibiColazione.forEach(cibo => {
                     const opzione = document.createElement('option'); 
                     opzione.value = cibo; 
@@ -1070,6 +1070,7 @@
             const uid = auth.currentUser.uid;
             let dataInizioStr = null;
 
+            // Se l'utente seleziona "Ultimi 7 gg", stabiliamo la finestra temporale (ultimi 7 giorni solari)
             if (currentAnalysisMode === '7d') {
                 const d = new Date();
                 d.setDate(d.getDate() - 6);
@@ -1089,18 +1090,24 @@
             
             let sumWater = 0;
             let counterD3 = 0, counterA1Col = 0, counterA1Pra = 0, counterA2 = 0;
-            let primaDataTrovata = new Date();
+            
+            // Creiamo un "cesto" (Set) per memorizzare in quali date c'è stato effettivamente un inserimento
+            const giorniAttivi = new Set();
             
             queryStats.forEach(doc => {
                 const data = doc.data();
+                const hasStats = data.water > 0 || data.d3 || data.antio1_col || data.antio1_pra || data.antio2;
+                
+                // Se c'è almeno un dato registrato per questa data, la mettiamo nel Set
+                if (hasStats) {
+                    giorniAttivi.add(doc.id);
+                }
+
                 sumWater += data.water || 0;
                 if(data.d3) counterD3++;
                 if(data.antio1_col) counterA1Col++;
                 if(data.antio1_pra) counterA1Pra++;
                 if(data.antio2) counterA2++;
-                
-                const docDate = new Date(doc.id);
-                if(docDate < primaDataTrovata) primaDataTrovata = docDate;
             });
             
             const mediaAntio1 = Math.round((counterA1Col + counterA1Pra) / 2);
@@ -1108,28 +1115,24 @@
             let sumKcal = 0, sumC = 0, sumP = 0, sumF = 0;
             
             queryPasti.forEach(doc => {
-                const mac = doc.data().macros;
+                const data = doc.data();
+                const mac = data.macros;
+                
                 if(mac) { 
                     sumKcal += mac.kcal; 
                     sumC += mac.c; 
                     sumP += mac.p; 
                     sumF += mac.f; 
+                    
+                    // Se ha inserito macronutrienti > 0, consideriamo il giorno attivo
+                    if (mac.kcal > 0 || mac.c > 0 || mac.p > 0 || mac.f > 0) {
+                        giorniAttivi.add(data.date);
+                    }
                 }
-                const docDate = new Date(doc.data().date);
-                if(docDate < primaDataTrovata) primaDataTrovata = docDate;
             });
 
-            // Calcolo Giorni Tracciati per creare la media
-            let giorniTracciati = 1;
-            if (currentAnalysisMode === '7d') {
-                giorniTracciati = 7;
-            } else {
-                // Calcolo differenza tra la primissima registrazione mai fatta e oggi
-                const oggi = new Date();
-                const diffTime = Math.abs(oggi - primaDataTrovata);
-                giorniTracciati = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                if (giorniTracciati < 1) giorniTracciati = 1;
-            }
+            // Calcolo Giorni Tracciati: se il Set è vuoto, uso 1 per evitare di dividere per zero
+            const giorniTracciati = giorniAttivi.size > 0 ? giorniAttivi.size : 1;
 
             const mediaKcalGiornaliera = Math.round(sumKcal / giorniTracciati);
             const mediaAcquaGiornaliera = sumWater / giorniTracciati;
@@ -1148,9 +1151,9 @@
             const percF = totalMacros > 0 ? Math.round((sumF / totalMacros) * 100) : 0;
 
             document.getElementById('weekly-macros-text').innerHTML = `
-                <span class="text-blue-500">C: ${Math.round(sumC)}g (${percC}%)</span> 
-                <span class="text-red-500">P: ${Math.round(sumP)}g (${percP}%)</span> 
-                <span class="text-yellow-500">G: ${Math.round(sumF)}g (${percF}%)</span>
+                <span class="text-blue-500">C: ${Math.round(sumC / giorniTracciati)}g (${percC}%)</span> 
+                <span class="text-red-500">P: ${Math.round(sumP / giorniTracciati)}g (${percP}%)</span> 
+                <span class="text-yellow-500">G: ${Math.round(sumF / giorniTracciati)}g (${percF}%)</span>
             `;
             
             updateChart('weeklyMacroChart', sumC, sumP, sumF, weeklyChartInstance, (nuovaIstanza) => {
