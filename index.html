@@ -345,13 +345,20 @@
                         <input type="month" id="exp-date-month" class="w-full p-4 rounded-2xl border border-slate-200 font-bold hidden outline-none">
                     </div>
                     
-                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                        <label class="text-[10px] font-bold text-gray-500 uppercase block mb-1">Ricorrenza</label>
-                        <select id="exp-recurrence-type" class="w-full p-3 rounded-xl border border-slate-200 font-bold outline-none">
-                            <option value="none">Nessuna ricorrenza</option>
-                            <option value="m">Ogni mese</option>
-                            <option value="y">Ogni anno</option>
-                        </select>
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex items-center gap-2">
+                        <div class="w-24">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase block mb-1">Ogni</label>
+                            <input type="number" id="exp-recurrence-val" class="w-full p-3 rounded-xl border border-slate-200 font-bold outline-none text-center" placeholder="1" min="1" value="1">
+                        </div>
+                        <div class="flex-1">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase block mb-1">Ricorrenza</label>
+                            <select id="exp-recurrence-unit" class="w-full p-3 rounded-xl border border-slate-200 font-bold outline-none">
+                                <option value="none">Nessuna</option>
+                                <option value="d">Giorni</option>
+                                <option value="m">Mesi</option>
+                                <option value="y">Anni</option>
+                            </select>
+                        </div>
                     </div>
                     
                     <label class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100 cursor-pointer">
@@ -688,7 +695,11 @@
                 document.getElementById('exp-old-status').value = e.status; // Mi salvo lo stato precedente
                 document.getElementById('exp-desc').value = e.desc; 
                 document.getElementById('exp-amount').value = e.amount; 
-                document.getElementById('exp-recurrence-type').value = e.recurrence || 'none';
+                
+                // Adatta al nuovo sistema di valori
+                document.getElementById('exp-recurrence-unit').value = e.recurrenceUnit || (e.recurrence && e.recurrence !== 'none' ? e.recurrence : 'none');
+                document.getElementById('exp-recurrence-val').value = e.recurrenceVal || 1;
+                
                 document.getElementById('exp-status').checked = (e.status === 'paid'); 
                 
                 setExpDateType(e.dateType || 'exact'); 
@@ -706,7 +717,10 @@
                 document.getElementById('exp-old-status').value = ''; 
                 document.getElementById('exp-desc').value = ''; 
                 document.getElementById('exp-amount').value = ''; 
-                document.getElementById('exp-recurrence-type').value = 'none';
+                
+                document.getElementById('exp-recurrence-unit').value = 'none';
+                document.getElementById('exp-recurrence-val').value = '1';
+                
                 document.getElementById('exp-status').checked = false; 
                 
                 delBtn.classList.add('hidden');
@@ -722,13 +736,16 @@
             }, 300); 
         }
 
-        // Helper per sommare mesi o anni aggirando i fusi orari
-        function calcNextRecurrence(dateStr, type, dateType) {
+        // Helper per sommare numeri personalizzati aggirando i fusi orari
+        function calcNextRecurrence(dateStr, unit, val, dateType) {
+            val = parseInt(val) || 1;
             if (dateType === 'exact') {
                 let [y, m, d] = dateStr.split('-');
                 let dateObj = new Date(y, m - 1, d);
-                if (type === 'm') dateObj.setMonth(dateObj.getMonth() + 1);
-                if (type === 'y') dateObj.setFullYear(dateObj.getFullYear() + 1);
+                
+                if (unit === 'd') dateObj.setDate(dateObj.getDate() + val);
+                if (unit === 'm') dateObj.setMonth(dateObj.getMonth() + val);
+                if (unit === 'y') dateObj.setFullYear(dateObj.getFullYear() + val);
                 
                 let ny = dateObj.getFullYear();
                 let nm = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -737,8 +754,10 @@
             } else {
                 let [y, m] = dateStr.split('-');
                 let dateObj = new Date(y, m - 1, 1);
-                if (type === 'm') dateObj.setMonth(dateObj.getMonth() + 1);
-                if (type === 'y') dateObj.setFullYear(dateObj.getFullYear() + 1);
+                
+                if (unit === 'd') dateObj.setDate(dateObj.getDate() + val);
+                if (unit === 'm') dateObj.setMonth(dateObj.getMonth() + val);
+                if (unit === 'y') dateObj.setFullYear(dateObj.getFullYear() + val);
                 
                 let ny = dateObj.getFullYear();
                 let nm = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -750,8 +769,10 @@
             const id = document.getElementById('exp-id').value;
             const oldStatus = document.getElementById('exp-old-status').value;
             const newStatus = document.getElementById('exp-status').checked ? 'paid' : 'pending';
-            const recurrenceType = document.getElementById('exp-recurrence-type').value;
             const expDate = currentExpDateType === 'exact' ? document.getElementById('exp-date-exact').value : document.getElementById('exp-date-month').value;
+            
+            const recurrenceUnit = document.getElementById('exp-recurrence-unit').value;
+            const recurrenceVal = parseInt(document.getElementById('exp-recurrence-val').value) || 1;
             
             const dataToSave = { 
                 desc: document.getElementById('exp-desc').value, 
@@ -759,7 +780,8 @@
                 status: newStatus, 
                 dateType: currentExpDateType, 
                 date: expDate,
-                recurrence: recurrenceType
+                recurrenceUnit: recurrenceUnit,
+                recurrenceVal: recurrenceVal
             };
             
             if(!dataToSave.desc || !dataToSave.date) {
@@ -771,13 +793,13 @@
 
             if(id) {
                 // Se la spesa esisteva, era "da pagare" e ora la sto salvando come "pagata" + ha una ricorrenza attiva -> Duplico
-                if (oldStatus === 'pending' && newStatus === 'paid' && recurrenceType !== 'none') {
+                if (oldStatus === 'pending' && newStatus === 'paid' && recurrenceUnit !== 'none') {
                     shouldClone = true;
                 }
                 await collectionRef.doc(id).update(dataToSave);
             } else {
                 // Se creo una spesa nuova già spuntata come "Pagata" + ricorrenza -> Duplico subito la successiva
-                if (newStatus === 'paid' && recurrenceType !== 'none') {
+                if (newStatus === 'paid' && recurrenceUnit !== 'none') {
                     shouldClone = true;
                 }
                 await collectionRef.add(dataToSave);
@@ -785,7 +807,7 @@
 
             // CREAZIONE AUTOMATICA SPESA SUCCESSIVA
             if (shouldClone) {
-                const nextDateStr = calcNextRecurrence(expDate, recurrenceType, currentExpDateType);
+                const nextDateStr = calcNextRecurrence(expDate, recurrenceUnit, recurrenceVal, currentExpDateType);
                 
                 const clonedData = {
                     ...dataToSave,
