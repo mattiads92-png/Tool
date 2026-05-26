@@ -8,8 +8,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="MLogo.webp">
-    <link rel="icon" type="image/jpeg" href="MLogo.webp">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
     
     <link rel="manifest" href="manifest.json">
 
@@ -69,7 +69,7 @@
 <body class="text-slate-800 h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden relative bg-white">
 
     <div id="auth-screen" class="w-full h-full px-6 flex flex-col items-center text-center z-50 absolute inset-0 justify-center bg-white transition-all duration-500">
-        <img src="MLogo.webp" alt="Logo" class="w-28 h-28 rounded-3xl shadow-lg mb-6 object-cover bg-white animate-fade-in-up" onerror="this.src='https://via.placeholder.com/100?text=G';">
+        <img src="logo.jpg" alt="Logo" class="w-28 h-28 rounded-3xl shadow-lg mb-6 object-cover bg-white animate-fade-in-up" onerror="this.src='https://via.placeholder.com/100?text=G';">
         <h1 class="font-black text-5xl mb-12 text-slate-950 animate-fade-in-up tracking-tight flex items-center justify-center gap-2">
             Gestionale
         </h1>
@@ -83,7 +83,7 @@
         
         <header class="p-5 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10 animate-slide-down">
             <div class="flex items-center gap-3">
-                <img src="MLogo.webp" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-slate-100" onerror="this.style.display='none';">
+                <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-xl shadow-md border border-slate-100" onerror="this.style.display='none';">
                 <h2 id="section-title" class="font-black text-2xl tracking-tight text-slate-950 flex items-center gap-1">
                     Finanza
                 </h2>
@@ -129,29 +129,19 @@
             </button>
         </main>
 
+        <!-- SEZIONE TO-DO -->
         <main id="section-todo" class="hidden flex-1 overflow-y-auto relative pb-32 hide-scrollbar bg-slate-50/50 w-full">
             <div class="p-4 sm:p-6 space-y-6 max-w-2xl mx-auto">
                 
-                <div class="flex justify-between items-center">
-                    <button onclick="toggleTodoArchive()" id="btn-todo-archive" class="text-[10px] bg-slate-200 text-slate-600 font-bold px-3 py-2 rounded-xl active:scale-95 transition uppercase tracking-wider ml-auto">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 id="todo-main-title" class="font-black text-2xl tracking-tight text-slate-950">Bacheca Task</h2>
+                    <button onclick="toggleTodoArchive()" id="btn-todo-archive" class="text-[10px] bg-slate-200 text-slate-600 font-bold px-3 py-2 rounded-xl active:scale-95 transition uppercase tracking-wider">
                         <i class="fas fa-box-archive mr-1"></i> Mostra Archiviate
                     </button>
                 </div>
 
-                <div id="todo-navigator" class="flex justify-between items-center bg-white p-5 rounded-3xl shadow-lg border border-slate-100">
-                    <button onclick="changeTodoDay(-1)" class="w-12 h-12 rounded-full bg-white text-slate-600 shadow-md flex items-center justify-center border border-slate-100 active:scale-90 transition">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <div class="text-center flex-1">
-                        <div id="todo-today" class="font-black text-slate-950 text-xl capitalize"></div>
-                    </div>
-                    <button onclick="changeTodoDay(1)" class="w-12 h-12 rounded-full bg-white text-slate-600 shadow-md flex items-center justify-center border border-slate-100 active:scale-90 transition">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-
                 <div class="bg-white p-5 rounded-3xl shadow-lg border border-slate-100">
-                    <h3 id="todo-list-title" class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Cose da fare</h3>
+                    <h3 id="todo-list-title" class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Tutte le cose da fare</h3>
                     <div id="todo-logs-container" class="space-y-3"></div>
                 </div>
             </div>
@@ -172,6 +162,7 @@
             </button>
         </nav>
 
+        <!-- MODALE TO-DO -->
         <div id="todo-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden flex-col items-center justify-center p-4 transition-opacity opacity-0 duration-300">
             <div class="bg-white rounded-[2rem] p-6 shadow-2xl w-full max-w-md border border-slate-100 max-h-[90dvh] flex flex-col">
                 <div class="flex justify-between items-center mb-6 shrink-0">
@@ -189,14 +180,15 @@
                         <input type="text" id="todo-title" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none" placeholder="Cosa devi fare?">
                     </div>
                     <div>
-                        <label class="text-[10px] font-bold text-gray-500 uppercase block mb-1">Scadenza</label>
-                        <input type="date" id="todo-date" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none">
+                        <label class="text-[10px] font-bold text-gray-500 uppercase block mb-1">Scadenza (Facoltativa)</label>
+                        <input type="date" id="todo-date" class="w-full p-4 rounded-2xl border border-slate-200 font-bold outline-none text-gray-600">
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-gray-500 uppercase block mb-1">Descrizione (Opzionale)</label>
                         <textarea id="todo-desc" rows="3" class="w-full p-4 rounded-2xl border border-slate-200 font-medium outline-none resize-none" placeholder="Aggiungi dettagli..."></textarea>
                     </div>
                     
+                    <!-- SEZIONE SOTTOTASK -->
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                         <h4 class="text-[10px] font-bold text-gray-500 uppercase mb-3">Sottotask / Aggiornamenti</h4>
                         
@@ -230,6 +222,7 @@
             </div>
         </div>
 
+        <!-- MODALE SPESE (Invariata) -->
         <div id="expense-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden flex-col items-center justify-center p-4 transition-opacity opacity-0 duration-300">
             <div id="expense-modal-content" class="bg-white rounded-[2rem] p-6 shadow-2xl w-full max-w-md flex flex-col modal-container border border-slate-100">
                 <div class="flex justify-between items-center mb-6 shrink-0">
@@ -340,9 +333,8 @@
         
         // VARIABILI GLOBALI TO-DO
         let todos = [];
-        let currentTodoDate = new Date();
         let isShowingArchived = false;
-        let currentSubtasks = []; // Array temporaneo per i sottotask durante la modifica
+        let currentSubtasks = [];
 
         // --- AUTENTICAZIONE E AVVIO ---
         document.getElementById('btn-verify-pin').addEventListener('click', () => {
@@ -384,8 +376,6 @@
                 todos = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
                 renderTodos();
             });
-
-            updateTodoHeaderDate();
         }
 
         function switchTab(tab) {
@@ -406,7 +396,7 @@
             }
         }
 
-        // --- LOGICA FINANZE (Intatta) ---
+        // --- LOGICA FINANZE ---
         function getCycleDates(refDate) {
             const d = new Date(refDate);
             let startDate, endDate;
@@ -675,40 +665,20 @@
             return new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
         }
 
-        function changeTodoDay(direction) {
-            currentTodoDate.setDate(currentTodoDate.getDate() + direction);
-            updateTodoHeaderDate();
-            renderTodos();
-        }
-
-        function updateTodoHeaderDate() {
-            const todayStr = getDateString(new Date());
-            const selectedStr = getDateString(currentTodoDate);
-            const opzioniData = { weekday: 'long', day: 'numeric', month: 'long' };
-            
-            if (selectedStr === todayStr) {
-                document.getElementById('todo-today').textContent = "Oggi";
-            } else {
-                document.getElementById('todo-today').textContent = currentTodoDate.toLocaleDateString('it-IT', opzioniData);
-            }
-        }
-
         function toggleTodoArchive() {
             isShowingArchived = !isShowingArchived;
             const btn = document.getElementById('btn-todo-archive');
-            const nav = document.getElementById('todo-navigator');
-            const title = document.getElementById('todo-list-title');
+            const mainTitle = document.getElementById('todo-main-title');
+            const listTitle = document.getElementById('todo-list-title');
 
             if (isShowingArchived) {
                 btn.innerHTML = '<i class="fas fa-list mr-1"></i> Mostra Attive';
-                nav.classList.add('hidden');
-                nav.classList.remove('flex');
-                title.textContent = 'Archivio Storico';
+                mainTitle.textContent = 'Archivio Storico';
+                listTitle.textContent = 'Task Archiviate';
             } else {
                 btn.innerHTML = '<i class="fas fa-box-archive mr-1"></i> Mostra Archiviate';
-                nav.classList.remove('hidden');
-                nav.classList.add('flex');
-                title.textContent = 'Cose da fare';
+                mainTitle.textContent = 'Bacheca Task';
+                listTitle.textContent = 'Tutte le cose da fare';
             }
             renderTodos();
         }
@@ -718,40 +688,45 @@
             container.innerHTML = '';
             
             const todayStr = getDateString(new Date());
-            const selectedStr = getDateString(currentTodoDate);
 
-            // Filtro e ordino le task
+            // Filtro le task
             let visibleTodos = todos.filter(t => {
                 if (isShowingArchived) {
                     return t.archived === true;
                 } else {
-                    if (t.archived === true) return false;
-                    // Se la vista è su "Oggi", includo anche quelle scadute (data passata)
-                    if (selectedStr === todayStr) {
-                        return t.dueDate <= todayStr;
-                    }
-                    // Altrimenti visualizzo solo il giorno selezionato
-                    return t.dueDate === selectedStr;
+                    return t.archived !== true;
                 }
             });
 
-            // Ordine: Prima le più vecchie
-            visibleTodos.sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+            // Ordine: Prima le scadenze vicine (o scadute). Quelle senza data ('') vanno in fondo.
+            visibleTodos.sort((a, b) => {
+                const dateA = a.dueDate || '9999-12-31';
+                const dateB = b.dueDate || '9999-12-31';
+                return dateA.localeCompare(dateB);
+            });
 
             if(visibleTodos.length === 0) {
-                container.innerHTML = `<p class="text-center text-gray-400 py-6 text-sm">${isShowingArchived ? "Nessuna task archiviata." : "Nessuna task per questa giornata."}</p>`;
+                container.innerHTML = `<p class="text-center text-gray-400 py-6 text-sm">${isShowingArchived ? "Nessuna task archiviata." : "Nessuna task attiva. Ottimo lavoro!"}</p>`;
                 return;
             }
 
             visibleTodos.forEach(t => {
-                const isOverdue = !isShowingArchived && t.dueDate < todayStr;
+                const isOverdue = !isShowingArchived && t.dueDate && t.dueDate < todayStr;
                 
                 const div = document.createElement('div');
                 div.className = `bg-white p-4 rounded-2xl shadow-sm border ${isOverdue ? 'border-red-200 bg-red-50/30' : 'border-slate-100'} cursor-pointer transition active:scale-[0.98]`;
                 div.onclick = () => openTodoModal(t.id);
 
-                const displayDate = t.dueDate.split('-').reverse().slice(0,2).join('/');
-                const badge = isOverdue ? `<span class="bg-red-100 text-red-700 text-[9px] font-black px-2 py-0.5 rounded uppercase">Scaduta</span>` : '';
+                let dateSection = '';
+                if (t.dueDate) {
+                    const displayDate = t.dueDate.split('-').reverse().slice(0,2).join('/');
+                    const badge = isOverdue ? `<span class="bg-red-100 text-red-700 text-[9px] font-black px-2 py-0.5 rounded uppercase">Scaduta</span>` : '';
+                    dateSection = `
+                    <div class="flex items-center gap-2 mb-1">
+                        <div class="text-[10px] font-bold bg-slate-100 text-gray-500 px-2 py-0.5 rounded-lg">${displayDate}</div>
+                        ${badge}
+                    </div>`;
+                }
                 
                 // Conto i sottotask completati
                 let subText = '';
@@ -763,10 +738,7 @@
                 div.innerHTML = `
                     <div class="flex items-start justify-between gap-3">
                         <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-1">
-                                <div class="text-[10px] font-bold bg-slate-100 text-gray-500 px-2 py-0.5 rounded-lg">${displayDate}</div>
-                                ${badge}
-                            </div>
+                            ${dateSection}
                             <div class="font-bold text-slate-900 ${t.archived ? 'line-through text-gray-500' : ''}">${t.title}</div>
                             ${subText}
                         </div>
@@ -791,7 +763,7 @@
                 document.getElementById('todo-id').value = t.id; 
                 document.getElementById('todo-title').value = t.title; 
                 document.getElementById('todo-desc').value = t.desc || ''; 
-                document.getElementById('todo-date').value = t.dueDate; 
+                document.getElementById('todo-date').value = t.dueDate || ''; 
                 document.getElementById('todo-archived').checked = t.archived || false; 
                 
                 currentSubtasks = t.subtasks ? JSON.parse(JSON.stringify(t.subtasks)) : [];
@@ -801,7 +773,7 @@
                 document.getElementById('todo-id').value = ''; 
                 document.getElementById('todo-title').value = ''; 
                 document.getElementById('todo-desc').value = ''; 
-                document.getElementById('todo-date').value = getDateString(currentTodoDate); 
+                document.getElementById('todo-date').value = ''; 
                 document.getElementById('todo-archived').checked = false; 
                 
                 currentSubtasks = [];
@@ -891,8 +863,8 @@
             const dueDate = document.getElementById('todo-date').value;
             const isArchived = document.getElementById('todo-archived').checked;
             
-            if(!title || !dueDate) {
-                return alert("Inserisci un titolo e una data di scadenza");
+            if(!title) {
+                return alert("Inserisci almeno un titolo per la task.");
             }
             
             const dataToSave = { 
@@ -923,7 +895,7 @@
             }
         }
 
-        // PUNTO A: Script per attivare il Service Worker
+        // Script per attivare il Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
