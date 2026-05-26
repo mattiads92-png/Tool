@@ -1,9 +1,13 @@
-// Un Service Worker basilare per bypassare il controllo di installabilità
-self.addEventListener('install', (e) => {
-    self.skipWaiting();
+// sw.js - Service Worker aggiornato
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
 });
 
-self.addEventListener('fetch', (e) => {
-    // Lasciamo che la rete gestisca tutto normalmente
-    e.respondWith(fetch(e.request));
+self.addEventListener('activate', (event) => {
+  event.waitUntil(clients.claim());
+});
+
+self.addEventListener('fetch', (event) => {
+  // Lascia passare le richieste al database/server
+  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
 });
